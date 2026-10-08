@@ -1,0 +1,1281 @@
+--- before-test-node-installer
++++ new-installer
+@@ -19,11 +19,14 @@
+ readonly EXTRA=/root/nuvrion-xhttp-extra.json
+ readonly LOG=/var/log/nuvrion-xhttp-installer.log
+ ACTION=menu DOMAIN='' PANEL_IP='' EMAIL='' NODE_TAG='' XHTTP_PATH=/api/v3/sync/
+-DOWNLOAD_DOMAIN='' NODE_CONTAINER='' PROFILE_INPUT='' YES=0 NEW_KEYS=0 NO_TUNING=0
++DOWNLOAD_DOMAIN='' NODE_CONTAINER='' PROFILE_INPUT='' YES=0 NO_TUNING=0
+ NO_UPDATES=0 APT_POLICY_ACTIVE=0 APT_POLICY_ORIGINAL=0 APT_PREFERENCES=''
+ ZRAM_STATUS='NOT CONFIGURED' REBOOT_NEEDED=0
+ ADMIN_IP='' SSH_PORT='' SSH_KEY_ONLY=0 SSH_KEY_CONFIRMED=0
+-NO_TRAFFIC=0 NO_PRIVACY=0 NO_SSH=0
++NO_TRAFFIC=0 NO_PRIVACY=0
++SECURE_SOCKETS=0 NGINX_SOCKET=/dev/shm/nginx.sock XHTTP_SOCKET=/dev/shm/xrxh.socket
++HARDEN_PROFILE=0
++SOCKET_DIR_CREATED=0
+ NODE_VERSION='' SELECTED_IMAGE='' SECRET_FILE='' NODE_NEW=0 PATH_EXPLICIT=0
+ BACKUP_INPUT='' ERROR_CODE=0 SERVICES_APPLIED=0
+ FW='' NODE_SERVICE='' PROJECT='' WORKDIR='' XRAY_BIN='' XRAY_VERSION='unknown'
+@@ -55,7 +58,7 @@
+ }
+ banner() {
+     printf '\n══════════════════════════════════════════════════\n  Nuvrion XHTTP Installer · v%s\n  Автор: Nuvrion · nuvrion-kvn\n══════════════════════════════════════════════════\n' "$INSTALLER_VERSION"
+-    printf '  Reality TCP selfsteal + XHTTP · PokéHabitat\n  Д = Да · Н = Нет\n\n'
++    printf '  Reality TCP + XHTTP · PokéHabitat\n  Д = Да · Н = Нет\n\n'
+ }
+ require_root() { (( EUID == 0 )) || die 1 'Запустите от root.'; }
+ detect_os() {
+@@ -81,8 +84,7 @@
+ EXTRA=Path('/root/nuvrion-xhttp-extra.json')
+ HOSTS=Path('/root/nuvrion-xhttp-host-settings.txt')
+ SECURITY_PATHS=[
+- '/etc/ssh/sshd_config.d/00-nuvrion-xhttp.conf',
+- '/etc/ssh/sshd_config.d/99-nuvrion-hardening.conf',
++ '/etc/tmpfiles.d/nuvrion-xhttp.conf',
+  '/etc/fail2ban/jail.d/99-nuvrion-sshd.conf',
+  '/etc/apt/apt.conf.d/52nuvrion-unattended-upgrades',
+  '/etc/sysctl.d/99-zzzzz-nuvrion-xhttp-tfo.conf',
+@@ -114,6 +116,72 @@
+     # tested reload can read the new text without recreating the container.
+     with p.open('w',encoding='utf-8',newline='\n') as stream:
+         stream.write(text);stream.flush();os.fsync(stream.fileno())
++
++def immutable_path(p):
++    # Even restoring an older backup must not undo existing SSH settings.
++    return str(p)=='/etc/ssh' or str(p).startswith(('/etc/ssh/','/root/.ssh/'))
++
++def socket_paths(state):
++    base='/dev/shm/nuvrion-xhttp' if state.get('secure_sockets') else '/dev/shm'
++    return base+'/nginx.sock',base+'/xrxh.socket'
++
++def padding_extra():
++    # Verified in Xray v26.7.28 infra/conf/transport_method.go and xpadding.go.
++    return {'xPaddingObfsMode':True,'xPaddingPlacement':'cookie',
++            'xPaddingKey':'site_session','xPaddingMethod':'tokenish'}
++
++def padding_supported(version):
++    # Conservative gate: newer/older binaries need their own compatibility test.
++    return bool(re.search(r'\bXray\s+26\.7\.28\b',version))
++
++def default_server(domain,lineage,root,sock):
++    return f'''    server {{
++        listen unix:{sock} ssl proxy_protocol default_server;
++        server_name _;
++        http2 on;
++        ssl_certificate "{lineage}/fullchain.pem";
++        ssl_certificate_key "{lineage}/privkey.pem";
++        ssl_protocols TLSv1.2 TLSv1.3;
++        ssl_session_tickets off;
++        root {root};
++        index index.html;
++        add_header X-Robots-Tag "noindex, nofollow, noarchive" always;
++        location ^~ /api/ {{ return 404; }}
++        location ~ /\\. {{ deny all; }}
++        location / {{ try_files $uri $uri/ /index.html; }}
++    }}'''
++
++def nginx_template(state,lineage):
++    domain=valid_domain(state['domain']);ng,_=socket_paths(state)
++    root='/var/www/decoy'
++    return f'''# Nuvrion owns this complete file (recorded in state.json).
++user www-data;
++worker_processes auto;
++error_log /dev/stderr warn;
++pid /var/run/nginx.pid;
++events {{ worker_connections 4096; }}
++http {{
++    include /etc/nginx/mime.types;
++    default_type application/octet-stream;
++    access_log off;
++    server_tokens off;
++    server {{
++        server_name {domain};
++        listen unix:{ng} ssl proxy_protocol;
++        http2 on;
++        ssl_certificate "{lineage}/fullchain.pem";
++        ssl_certificate_key "{lineage}/privkey.pem";
++        ssl_protocols TLSv1.2 TLSv1.3;
++        ssl_session_tickets off;
++        root {root};
++        index index.html;
++        add_header X-Robots-Tag "noindex, nofollow, noarchive" always;
++        location / {{ try_files $uri $uri/ /index.html; }}
++        location ~ /\\. {{ deny all; }}
++    }}
++{default_server(domain,lineage,root,ng)}
++}}
++'''
+ def valid_domain(s):
+     if len(s)>253 or '.' not in s or not re.fullmatch(r'[a-zA-Z0-9.-]+',s): raise ValueError('Некорректный домен')
+     if any(not re.fullmatch(r'[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?',x) for x in s.split('.')): raise ValueError('Некорректный домен')
+@@ -174,7 +242,7 @@
+                 directives.append(t[begin:i]);begin=i+1
+         names=[x[0] for d in directives if d and d[0][0]=='server_name' for x in d[1:]]
+         listen=[' '.join(x[0] for x in d[1:]) for d in directives if d and d[0][0]=='listen']
+-        if domain in names and any('unix:/dev/shm/nginx.sock' in x and 'ssl' in x and 'proxy_protocol' in x for x in listen):
++        if domain in names and any(re.search(r'unix:/dev/shm/(?:nuvrion-xhttp/)?nginx\.sock',x) and 'ssl' in x and 'proxy_protocol' in x for x in listen):
+             roots=[d[1][0] for d in directives if d and d[0][0]=='root' and len(d)==2]
+             if len(roots)!=1 or '$' in roots[0]:raise ValueError('Требуется один простой root в decoy server')
+             found.append((t[start][1],t[end][2],roots[0],directives))
+@@ -183,7 +251,8 @@
+ def strip_marked(text):
+     if text.count(BEGIN)!=text.count(END) or text.count(BEGIN)>2:raise ValueError('Повреждены маркеры Nuvrion')
+     return re.sub(r'(?m)^[ \t]*'+re.escape(BEGIN)+r'[^\n]*\n.*?^[ \t]*'+re.escape(END)+r'[^\n]*\n?','',text,flags=re.S)
+-def nginx_patch(text,domain,path,lineage,meta=None):
++def nginx_patch(text,domain,path,lineage,meta=None,state=None):
++    state=state or {};ng,xh=socket_paths(state)
+     text=strip_marked(text)
+     if meta:
+         for old,new in meta.get('replacements',[]):
+@@ -191,6 +260,10 @@
+     start,end,root,ds=server(text,domain)
+     body=text[start:end];changes=[]
+     for d in ds:
++        if state.get('secure_sockets') and d and d[0][0]=='listen' and 'unix:/dev/shm/nginx.sock' in [x[0] for x in d]:
++            if not text.startswith('# Nuvrion owns this complete file'):raise ValueError('Foreign nginx socket path requires manual migration')
++            old=text[d[0][1]:d[-1][2]]+';';new=old.replace('/dev/shm/nginx.sock',ng)
++            body=body.replace(old,new,1);changes.append([old,new])
+         if d and d[0][0] in ('ssl_certificate','ssl_certificate_key','ssl_trusted_certificate'):
+             filename='privkey.pem' if d[0][0]=='ssl_certificate_key' else 'fullchain.pem'
+             old=text[d[0][1]:d[-1][2]]+';'
+@@ -199,11 +272,13 @@
+     # Locations outside our marked block must not silently be overwritten.
+     bt,bb=blocks(body)
+     for a,o,z in bb:
+-        if bt[a][0]=='location' and any(x[0] in (path,'/api/game/','/_game_unavailable.json') for x in bt[a+1:o]):
++        if bt[a][0]=='location' and any(x[0] in (path,'/api/','/api/game/','/_game_unavailable.json') for x in bt[a+1:o]):
+             raise ValueError('Существующий немаркированный location конфликтует с установкой')
+     route=f'''
+     {BEGIN} ROUTES
+     location ^~ {path} {{
++        if ($ssl_server_name != "{domain}") {{ return 404; }}
++        if ($host != "{domain}") {{ return 404; }}
+         client_max_body_size 0;
+         proxy_set_header X-Real-IP $proxy_protocol_addr;
+         proxy_set_header X-Forwarded-For $proxy_protocol_addr;
+@@ -218,9 +293,11 @@
+         proxy_send_timeout 5m;
+         proxy_buffering off;
+         proxy_request_buffering off;
+-        proxy_pass http://unix:/dev/shm/xrxh.socket;
++        proxy_pass http://unix:{xh};
+     }}
+     location ^~ /api/game/ {{
++        if ($ssl_server_name != "{domain}") {{ return 404; }}
++        if ($host != "{domain}") {{ return 404; }}
+         client_max_body_size 8k;
+         if ($http_origin !~ "^(https://{re.escape(domain)})?$") {{ return 403; }}
+         proxy_pass http://unix:/run/nuvrion-pokehabitat/game.sock;
+@@ -236,9 +313,17 @@
+         proxy_intercept_errors off;
+         add_header Cache-Control "no-store" always;
+     }}
++    location ^~ /api/ {{ return 404; }}
+     {END} ROUTES
+ '''
+     body=body[:-1].rstrip()+route+'}';text=text[:start]+body+text[end:]
++    # Upgrade only the exact default vhost previously generated by Nuvrion.
++    # Retain a reversible replacement; foreign default servers need review.
++    if text.startswith('# Nuvrion owns this complete file'):
++        old_default=re.search(r'    server \{\s*listen unix:[^;]+ default_server;\s*server_name _;\s*ssl_reject_handshake on;\s*return 444;\s*\}',text)
++        if old_default:
++            old=old_default.group();new=default_server(domain,lineage,root,ng)
++            text=text.replace(old,new,1);changes.append([old,new])
+     if not re.search(r'\bmap\s+\$http_upgrade\s+\$connection_upgrade\s*\{',text):
+         mp=f'{BEGIN} MAP\nmap $http_upgrade $connection_upgrade {{ default upgrade; "" close; }}\n{END} MAP\n'
+         t,bs=blocks(text);http=[o for a,o,z in bs if t[a][0]=='http']
+@@ -271,6 +356,15 @@
+             return
+         add_mount(dst,source,target,ro)
+     ensure(ns,config['services'][node],'/dev/shm','/dev/shm')
++    if state.get('docker_hardening'):
++        if config['services'][node].get('privileged'):raise ValueError('Privileged node requires separate review')
++        opts=list(config['services'][node].get('security_opt',[]))
++        if any(x in opts for x in ('no-new-privileges:false','no-new-privileges=false')):raise ValueError('Conflicting no-new-privileges')
++        if not any(x in opts for x in ('no-new-privileges:true','no-new-privileges=true')):opts.append('no-new-privileges:true')
++        ns['security_opt']=opts
++        # Keep s6/Node capabilities and writable runtime until separately verified.
++        ns['pids_limit']=max(int(config['services'][node].get('pids_limit') or 0),1024)
++        if config['services'][node].get('pids_limit')==-1:ns['pids_limit']=-1
+     current=config['services'][node].get('ulimits',{}).get('nofile',{})
+     if isinstance(current,int):current={'soft':current,'hard':current}
+     ns.setdefault('ulimits',{})['nofile']={k:max(int(current.get(k,0)),1048576) if int(current.get(k,0))!=-1 else -1 for k in ('soft','hard')}
+@@ -278,10 +372,46 @@
+         gs=services.setdefault(ng,{})
+         gs['image']=state['nginx_image_id']
+         if state['nginx_new']:
+-            gs.update({'network_mode':'host','restart':'unless-stopped','labels':{'com.nuvrion.xhttp.managed':'1'},
+-                       'logging':{'driver':'json-file','options':{'max-size':'10m','max-file':'3'}},
+-                       'command':['sh','-c','if [ -S /dev/shm/nginx.sock ]; then rm -f /dev/shm/nginx.sock; fi; exec nginx -g "daemon off;"']})
+-            gs['ulimits']={'nofile':{'soft':1048576,'hard':1048576}}
++            ngsock,_=socket_paths(state)
++            start=f'if [ -S {ngsock} ]; then rm -f {ngsock}; fi; '
++            if state.get('secure_sockets'):
++                start+=f'nginx -g "daemon off;" & p=$!; trap \'kill -TERM "$p"; wait "$p"\' TERM INT; '
++                start+=f'for i in $(seq 1 100); do if [ -S {ngsock} ]; then chmod 0600 {ngsock}; break; fi; sleep 0.1; done; '
++                start+=f'[ -S {ngsock} ] || {{ kill -TERM "$p"; wait "$p"; exit 1; }}; wait "$p"'
++            else:start+='exec nginx -g "daemon off;"'
++            base=config['services'].get(ng,{})
++            for field,value in {'network_mode':'host','restart':'unless-stopped',
++                                'logging':{'driver':'json-file','options':{'max-size':'10m','max-file':'3'}}}.items():
++                gs.setdefault(field,copy.deepcopy(base.get(field,value)))
++            gs.setdefault('labels',copy.deepcopy(base.get('labels',{})))['com.nuvrion.xhttp.managed']='1'
++            opts=list(base.get('security_opt',[]))
++            if any(v in opts for v in ('no-new-privileges:false','no-new-privileges=false')):raise ValueError('Conflicting nginx NNP policy')
++            if not any(v in opts for v in ('no-new-privileges:true','no-new-privileges=true')):opts.append('no-new-privileges:true')
++            required_caps={'CHOWN','DAC_OVERRIDE','SETUID','SETGID'}
++            if set(base.get('cap_add',[]))-required_caps:
++                raise ValueError('Custom nginx capabilities require separate review; preserved unchanged')
++            tmpfs=list(base.get('tmpfs',[]))
++            for entry in ['/var/cache/nginx:rw,noexec,nosuid,size=64m','/var/run:rw,noexec,nosuid,size=16m']:
++                target=entry.split(':')[0]
++                previous=[v for v in tmpfs if v.split(':')[0]==target]
++                if previous and previous!=[entry]:raise ValueError('Conflicting nginx tmpfs policy '+target)
++                if not previous:tmpfs.append(entry)
++            command=base.get('command')
++            if isinstance(command,list) and len(command)==3 and command[:2]==['sh','-c']:
++                command=[*command[:2],command[2].replace('$$','$')]
++            legacy_commands=[['sh','-c',f'if [ -S {sock} ]; then rm -f {sock}; fi; exec nginx -g "daemon off;"']
++                             for sock in ['/dev/shm/nginx.sock','/dev/shm/nuvrion-xhttp/nginx.sock']]
++            if command and command not in [*legacy_commands,['sh','-c',start]]:
++                raise ValueError('Custom nginx command requires separate review; preserved unchanged')
++            # Compose interpolates dollars even inside a JSON command array.
++            # Double them so PID/trap variables reach the container shell.
++            gs.update({'command':['sh','-c',start.replace('$','$$')],
++                       'security_opt':opts,'cap_drop':['ALL'],
++                       'cap_add':['CHOWN','DAC_OVERRIDE','SETUID','SETGID'],
++                       'pids_limit':max(int(base.get('pids_limit') or 0),512),'read_only':True,
++                       'tmpfs':tmpfs})
++            if base.get('pids_limit')==-1:gs['pids_limit']=-1
++            gs.setdefault('ulimits',{})['nofile']={'soft':1048576,'hard':1048576}
+             add_mount(gs,state['nginx_config'],'/etc/nginx/nginx.conf',True)
+             add_mount(gs,state['site_root'],'/var/www/decoy',True)
+         base=config['services'].get(ng,{})
+@@ -296,6 +426,11 @@
+             if name==state['nginx_service'] and state['nginx_new']:b['services'].pop(name,None);continue
+             raise ValueError('Неожиданное изменение services')
+         x=a['services'][name];y=b['services'][name]
++        if name==state['node_service'] and state.get('docker_hardening'):
++            for field in ('security_opt','pids_limit'):x.pop(field,None);y.pop(field,None)
++        if name==state['nginx_service'] and state['nginx_new']:
++            for field in ('command','security_opt','cap_drop','cap_add','pids_limit','read_only','tmpfs'):
++                x.pop(field,None);y.pop(field,None)
+         y['image']=x.get('image')
+         mx=mounts(x);my=mounts(y)
+         expected={'/dev/shm'} if name==state['node_service'] else {'/dev/shm','/etc/letsencrypt','/run/nuvrion-pokehabitat'}
+@@ -311,11 +446,12 @@
+     if a!=b:raise ValueError('Compose изменяет сторонние поля; применение остановлено')
+ 
+ def profile(state,key,public,source=None):
++    ngsock,xhsock=socket_paths(state)
++    migrate=state.get('harden_profile',False)
+     sockopt={'tcpFastOpen':True,'tcpcongestion':'bbr','tcpKeepAliveIdle':60,'tcpKeepAliveInterval':30}
+     d=copy.deepcopy(source) if source else {'log':{'access':'none','dnsLog':False,'loglevel':'warning'},
+-        'dns':{'servers':[{'address':'https+local://dns.nextdns.io/'+state.get('nextdns_id','f4e234'),
+-                          'timeoutMs':2000,'queryStrategy':'UseIPv4'},
+-                         {'address':'https+local://dns.adguard-dns.com/dns-query','timeoutMs':2500,'queryStrategy':'UseIPv4'}],
++        'dns':{'servers':[{'address':'https+local://dns.adguard-dns.com/dns-query','timeoutMs':2500,'queryStrategy':'UseIPv4'},
++                         {'address':'https+local://dns.comss.one/dns-query','timeoutMs':2000,'queryStrategy':'UseIPv4'}],
+                'serveStale':True,'disableCache':False,'queryStrategy':'UseIPv4','disableFallback':False,
+                'serveExpiredTTL':600,'enableParallelQuery':False},'inbounds':[],
+         'outbounds':[{'tag':'DIRECT','protocol':'freedom','settings':{'domainStrategy':'UseIPv4'},
+@@ -330,20 +466,22 @@
+         if r['streamSettings']['realitySettings'].get('privateKey')!=key:raise ValueError('Изменение существующего ключа запрещено')
+         if r.get('tag')!=tag:raise ValueError('Сохраните tag существующего Reality inbound')
+         if r['streamSettings'].get('network') not in ('tcp','raw'):raise ValueError('Существующий Reality transport не TCP/RAW')
+-        rs=r['streamSettings']['realitySettings'];rs['xver']=1
+-        rs['target' if 'target' in rs else 'dest']='/dev/shm/nginx.sock'
+-        rs['serverNames']=list(dict.fromkeys(rs.get('serverNames',[])+[state['domain']]))
++        rs=r['streamSettings']['realitySettings']
++        if migrate and rs.get('target',rs.get('dest'))=='/dev/shm/nginx.sock':rs['target' if 'target' in rs else 'dest']=ngsock
++        if rs.get('xver')!=1 or rs.get('target',rs.get('dest'))!=ngsock or state['domain'] not in rs.get('serverNames',[]):
++            raise ValueError('Existing Reality parameters differ; explicit migration required')
+     else:
+         r={'tag':tag,'port':443,'protocol':'vless','settings':{'clients':[],'decryption':'none'},
+            'sniffing':{'enabled':True,'routeOnly':True,'destOverride':['http','tls','quic']},
+            'streamSettings':{'network':'raw','sockopt':copy.deepcopy(sockopt),'security':'reality',
+-               'realitySettings':{'show':False,'xver':1,'target':'/dev/shm/nginx.sock','spiderX':'','minClientVer':'0.0.0',
++               'realitySettings':{'show':False,'xver':1,'target':ngsock,'spiderX':'','minClientVer':'0.0.0',
+                'shortIds':[''],'privateKey':key,'serverNames':[state['domain']]}}}
+         ins.append(r)
+     old=[i for i in ins if i.get('tag')==xh]
+-    if old and (len(old)!=1 or old[0].get('listen')!='/dev/shm/xrxh.socket,0666'):raise ValueError('Конфликт XHTTP tag')
++    listener=xhsock+(',0660' if state.get('secure_sockets') else ',0666')
++    if old and (len(old)!=1 or old[0].get('listen') not in ({listener,'/dev/shm/xrxh.socket,0666'} if migrate else {listener})):raise ValueError('Конфликт XHTTP tag; требуется явная миграция')
+     if any(i.get('tag')==tag and i is not r for i in ins):raise ValueError('Дублирующийся Reality tag')
+-    if any(str(i.get('listen','')).split(',')[0]=='/dev/shm/xrxh.socket' and i not in old for i in ins):raise ValueError('Дублирующийся XHTTP socket')
++    if any(str(i.get('listen','')).split(',')[0]==xhsock and i not in old for i in ins):raise ValueError('Дублирующийся XHTTP socket')
+     # Server and client knobs are combined in the supported extra object.
+     # Remnawave Host still controls the client-side subscription overrides.
+     settings={'mode':'auto','path':state['xhttp_path'],'extra':{'noSSEHeader':True,'xPaddingBytes':'100-1000',
+@@ -351,13 +489,29 @@
+         'scMinPostsIntervalMs':30,'noGRPCHeader':False,
+         'xmux':{'cMaxReuseTimes':0,'maxConcurrency':'16-32','maxConnections':0,'hKeepAlivePeriod':0,
+                 'hMaxRequestTimes':'600-900','hMaxReusableSecs':'1800-3000'}}}
++    if state.get('padding_supported'):settings['extra'].update(padding_extra())
+     inbound=copy.deepcopy(old[0]) if old else {}
+-    inbound.update({'tag':xh,'listen':'/dev/shm/xrxh.socket,0666','protocol':'vless',
++    inbound.update({'tag':xh,'listen':listener,'protocol':'vless',
+              'settings':inbound.get('settings',{'clients':[],'fallbacks':[],'decryption':'none'}),
+              'sniffing':{'enabled':True,'routeOnly':True,'destOverride':['http','tls','quic']},
+              'streamSettings':{'network':'xhttp','xhttpSettings':settings}})
+     if not state.get('trusted_xff'):raise ValueError('Версия Xray не подтверждает trustedXForwardedFor; обновление автоматически не выполняется')
+     inbound['streamSettings']['sockopt']={'trustedXForwardedFor':['X-Forwarded-For']}
++    if old:
++        # Imports/reinstall preserve ALL user transport settings, clients and
++        # extension fields. New defaults apply only to a new inbound.
++        inbound=copy.deepcopy(old[0])
++        if migrate:
++            if not state.get('padding_supported'):raise ValueError('Cookie padding requires verified Xray 26.7.28; no upgrade allowed')
++            inbound['listen']=listener
++            existing_settings=inbound['streamSettings']['xhttpSettings']
++            extra_settings=existing_settings.setdefault('extra',{})
++            # Legacy root options must be retained when normalizing to extra;
++            # otherwise Xray extra parsing would ignore those root values.
++            for name in list(settings['extra']):
++                if name in existing_settings:extra_settings.setdefault(name,existing_settings.pop(name))
++            for name,value in settings['extra'].items():extra_settings.setdefault(name,copy.deepcopy(value))
++            extra_settings.update(padding_extra())
+     ins[:]=[inbound if i in old else i for i in ins]
+     if not old:ins.append(inbound)
+     if not source:
+@@ -370,16 +524,24 @@
+                {'type':'field','domain':['geosite:category-ads-all','domain:analytics.google.com','domain:adjust.net.in',
+                     'domain:amplitude.com','domain:metrika.yandex.ru','domain:mytracker.ru'],'inboundTag':both,'outboundTag':'BLOCK'}]
+         d['routing']={'rules':rules,'domainMatcher':'hybrid','domainStrategy':'AsIs'}
++    if source and migrate:
++        # Explicitly requested revision, not an implicit reinstall/import change.
++        d['dns']=profile({**state,'harden_profile':False},key,public)[0]['dns']
+     tags=[i.get('tag') for i in ins]
+     if len(tags)!=len(set(tags)):raise ValueError('Дублирующиеся inbound tags')
+     extra={'xmux':{'cMaxReuseTimes':0,'maxConcurrency':'16-32','maxConnections':0,'hKeepAlivePeriod':0,
+                    'hMaxRequestTimes':'600-900','hMaxReusableSecs':'1800-3000'},
+            'noGRPCHeader':False,'xPaddingBytes':'100-1000','scMaxEachPostBytes':1000000,'scMinPostsIntervalMs':30}
++    server_extra=inbound.get('streamSettings',{}).get('xhttpSettings',{}).get('extra',{})
++    for name in list(extra):
++        if name in server_extra:extra[name]=copy.deepcopy(server_extra[name])
++    for name in padding_extra():
++        if name in server_extra:extra[name]=server_extra[name]
+     sid=next((x for x in r['streamSettings']['realitySettings'].get('shortIds',[]) if x),'')
+     host=f'''Nuvrion · настройки Host в Remnawave
+ Назначьте ноде оба inbound из профиля. Пользователи управляются панелью.
+ 
+-Reality TCP selfsteal
++Reality TCP
+   Inbound tag: {tag}
+   Адрес: {state['domain']}
+   Порт: 443
+@@ -407,6 +569,112 @@
+   Extra не включает stream separation или downloadSettings.
+ '''
+     return d,extra,host
++
++def secure_directory(path,gid):
++    # Published only after ownership/mode have been assigned; never chmod shm.
++    p=Path(path)
++    if p.is_symlink():raise ValueError('Socket directory is a symlink')
++    if p.exists():
++        st=p.stat()
++        if not p.is_dir() or st.st_uid!=0 or st.st_gid!=gid or st.st_mode & 0o7777!=0o2710:
++            raise ValueError('Foreign/insecure socket directory; automatic takeover forbidden')
++    else:
++        p.mkdir(mode=0o700)
++        os.chown(p,0,gid);os.chmod(p,0o2710)
++
++def profile_checks(data,require_new=False):
++    results=[]
++    def check(ok,name):results.append(('PASS' if ok else 'FAIL',name))
++    ins=data.get('inbounds',[])
++    r=[i for i in ins if i.get('streamSettings',{}).get('security')=='reality']
++    x=[i for i in ins if i.get('streamSettings',{}).get('network')=='xhttp']
++    check(len(r)==1 and r[0].get('port')==443 and r[0]['streamSettings'].get('network') in ('raw','tcp'),'REALITY TCP :443')
++    check(len(x)==1 and x[0].get('listen','').startswith('/dev/shm/'),'XHTTP Unix socket')
++    if x:
++        settings=x[0]['streamSettings']['xhttpSettings'];extra=settings.get('extra',{})
++        check(settings.get('mode')=='auto' and settings.get('path','').endswith('/'),'XHTTP mode/path')
++        check(all(k in extra for k in ('xmux','noSSEHeader','noGRPCHeader','scMaxBufferedPosts','scMaxEachPostBytes','scMinPostsIntervalMs','scStreamUpServerSecs')),'XHTTP extra complete')
++        if require_new:check(all(extra.get(k)==v for k,v in padding_extra().items()),'cookie/tokenish padding')
++    check(len({i.get('tag') for i in ins})==len(ins),'Unique inbound tags')
++    if require_new:
++        check([i.get('address') for i in data.get('dns',{}).get('servers',[])]==
++              ['https+local://dns.adguard-dns.com/dns-query','https+local://dns.comss.one/dns-query'],'DNS AdGuard → COMSS')
++    return results
++
++def tls_audit(state):
++    import ssl
++    domain=state['domain'];results=[]
++    def request(sni,host,path='/',version=None):
++        ctx=ssl.create_default_context();ctx.check_hostname=False
++        if version:ctx.minimum_version=ctx.maximum_version=version
++        with socket.create_connection(('127.0.0.1',443),timeout=8) as sock:
++            with ctx.wrap_socket(sock,server_hostname=sni) as conn:
++                names=[v.lower() for k,v in conn.getpeercert().get('subjectAltName',[]) if k=='DNS']
++                if not any(v==domain or v.startswith('*.') and domain.partition('.')[2]==v[2:] for v in names):
++                    raise ValueError('Unexpected certificate SAN')
++                conn.sendall((f'GET {path} HTTP/1.1\r\nHost: {host}\r\nConnection: close\r\n\r\n').encode())
++                data=b''
++                while len(data)<1024*1024:
++                    chunk=conn.recv(65536)
++                    if not chunk:break
++                    data+=chunk
++                return data.decode(errors='replace')
++    cases=[('correct SNI',domain,domain),('wrong SNI','wrong.invalid','wrong.invalid'),
++           ('no SNI',None,domain),('IP Host',None,state.get('ipv4','127.0.0.1'))]
++    for label,sni,host in cases:
++        try:
++            response=request(sni,host);ok=' 200 ' in response.splitlines()[0] and '<!doctype html' in response.lower() and 'pok' in response.lower()
++        except (OSError,ValueError):ok=False
++        results.append(('PASS' if ok else 'FAIL','HTTPS '+label+' trusted DOMAIN cert + PokéHabitat'))
++    for version in (ssl.TLSVersion.TLSv1_2,ssl.TLSVersion.TLSv1_3):
++        try:ok=' 200 ' in request(domain,domain,version=version).splitlines()[0]
++        except (OSError,ValueError):ok=False
++        results.append(('PASS' if ok else 'FAIL',version.name))
++    for sni,host in [('wrong.invalid',domain),(None,domain),(domain,'wrong.invalid')]:
++        for path in (state['xhttp_path'],'/api/game/me','/api/nodes'):
++            try:ok=' 404 ' in request(sni,host,path).splitlines()[0]
++            except (OSError,ValueError):ok=False
++            results.append(('PASS' if ok else 'FAIL','API guard SNI='+str(sni)+' Host='+host+' '+path))
++    try:
++        response=request(domain,domain,state['xhttp_path'])
++        ok=' 400 ' in response.splitlines()[0] and 'set-cookie: site_session=' in response.lower() and 'x-padding:' not in response.lower()
++    except (OSError,ValueError):ok=False
++    results.append(('PASS' if ok else 'FAIL','XHTTP cookie padding/backend HTTP 400'))
++    return results
++
++def nft_security_rules(panel,api_only,ruleset):
++    address=ipaddress.ip_address(panel);items=ruleset.get('nftables',[])
++    def q(value):
++        value=str(value)
++        if not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_.-]*',value):raise ValueError('Unsupported nft identifier; automatic modification refused')
++        return value
++    tables=[i['table'] for i in items if 'table' in i]
++    chains=[i['chain'] for i in items if 'chain' in i]
++    lines=[]
++    # Delete/reinsert ONLY owned marked rules in ONE kernel transaction. The
++    # previous API guard remains effective until the complete batch commits.
++    for item in items:
++        rule=item.get('rule',{})
++        if rule.get('comment')=='Nuvrion-XHTTP':
++            family=rule['family']
++            if family not in ('inet','ip','ip6'):raise ValueError('Unexpected nft family')
++            lines.append(f'delete rule {family} {q(rule["table"])} {q(rule["chain"])} handle {int(rule["handle"])}')
++    if not any(t.get('family')=='inet' and t.get('name')=='nuvrion_xhttp' for t in tables):
++        lines.append('add table inet nuvrion_xhttp')
++    guard=next((c for c in chains if c.get('family')=='inet' and c.get('table')=='nuvrion_xhttp' and c.get('name')=='api_guard'),None)
++    if guard:
++        if guard.get('hook')!='input' or guard.get('prio')!=-250:raise ValueError('Conflicting API guard chain')
++    else:lines.append('add chain inet nuvrion_xhttp api_guard { type filter hook input priority -250; policy accept; }')
++    lines.append('insert rule inet nuvrion_xhttp api_guard tcp dport 2222 drop comment "Nuvrion-XHTTP"')
++    ip='ip' if address.version==4 else 'ip6'
++    lines.append(f'insert rule inet nuvrion_xhttp api_guard {ip} saddr {address} tcp dport 2222 accept comment "Nuvrion-XHTTP"')
++    for c in chains:
++        family=c.get('family');table=c.get('table');chain=c.get('name')
++        if c.get('hook')!='input' or family not in ('inet','ip','ip6') or table in ('nuvrion_xhttp','nuvrion_tc','nuvrion_privacy'):continue
++        if not api_only:lines.append(f'insert rule {family} {q(table)} {q(chain)} tcp dport 443 accept comment "Nuvrion-XHTTP"')
++        if family=='inet' or family==ip:
++            lines.append(f'insert rule {family} {q(table)} {q(chain)} {ip} saddr {address} tcp dport 2222 accept comment "Nuvrion-XHTTP"')
++    return '\n'.join(lines)+'\n'
+ 
+ def digest(p):
+     p=Path(p)
+@@ -438,6 +706,7 @@
+     folder=safe_backup(folder)
+     records=read(folder/'files.json')
+     for rec in records:
++        if immutable_path(rec['path']):continue
+         if rec['path'] not in selection:continue
+         p=Path(rec['path']);source=folder/'files'/p.relative_to('/')
+         if source.is_symlink() and os.readlink(source)!=SAFE_SNAPSHOT_LINKS.get(str(p)):
+@@ -464,7 +733,7 @@
+     # Tuning runtime reports/boot markers are mutated by its own boot services.
+     # Keep these records; strict ownership checks still protect static configs.
+     return [r['path'] for r in records if r['path'] not in preserved and
+-            r['path'] not in SECURITY_PATHS and
++            not immutable_path(r['path']) and r['path'] not in SECURITY_PATHS and
+             r['path']!='/var/lib/nuvrion-traffic-control' and
+             not r['path'].startswith(own+'/') and
+             r['path']!='/var/lib/nuvrion-tuning' and
+@@ -474,6 +743,19 @@
+     action=sys.argv[1];args=sys.argv[2:]
+     if action=='validate':validate(*args)
+     elif action=='domain':print(valid_domain(args[0]))
++    elif action=='public-key':
++        import base64,subprocess
++        private=base64.urlsafe_b64decode(sys.stdin.read().strip()+'=')
++        if len(private)!=32:raise ValueError('Invalid X25519 private key')
++        der=bytes.fromhex('302e020100300506032b656e04220420')+private
++        result=subprocess.run(['openssl','pkey','-inform','DER','-pubout','-outform','DER'],input=der,capture_output=True,check=True)
++        print(base64.urlsafe_b64encode(result.stdout[-32:]).decode().rstrip('='))
++    elif action=='secure-directory':secure_directory(args[0],int(args[1]))
++    elif action=='profile-check':
++        results=profile_checks(read(args[0]),len(args)>1 and args[1]=='new')
++        for status,name in results:print(f'[{status}] {name}')
++        if any(status=='FAIL' for status,_ in results):raise ValueError('Profile self-check failed')
++    elif action=='nft-security-rules':print(nft_security_rules(args[0],args[1]=='1',json.load(sys.stdin)),end='')
+     elif action=='dns':
+         try:print(' '.join(sorted({x[4][0] for x in socket.getaddrinfo(args[0],None,socket.AF_INET)})))
+         except socket.gaierror:print('')
+@@ -494,6 +776,10 @@
+         obj['node_image_id']=os.environ['NODE_IMAGE_ID'];obj['nginx_image_id']=os.environ['NGINX_IMAGE_ID']
+         obj.setdefault('initial_backup',os.environ['BACKUP']);obj['last_backup']=os.environ['BACKUP']
+         obj['firewall']=os.environ['FW'];obj['trusted_xff']=os.environ['TRUSTED_XFF']=='1'
++        obj['secure_sockets']=os.environ.get('SECURE_SOCKETS')=='1'
++        obj['padding_supported']=padding_supported(os.environ.get('XRAY_VERSION',''))
++        obj['harden_profile']=os.environ.get('HARDEN_PROFILE')=='1'
++        obj['docker_hardening']=True
+         write(STATE,obj)
+     elif action=='nodes':
+         items=json.load(sys.stdin)
+@@ -513,9 +799,10 @@
+              'node_port':next((x.split('=',1)[1] for x in cfg.get('Env',[]) if x.startswith('NODE_PORT=')),'2222')}))
+     elif action=='nginx-info':
+         text=sys.stdin.read();start,end,root,ds=server(text,args[0]);print(root)
++    elif action=='nginx-template':print(nginx_template(read(STATE),args[0]))
+     elif action=='patch-nginx':
+         p=Path(args[0]);meta=read(args[4]) if Path(args[4]).exists() else None
+-        text,m=nginx_patch(p.read_text(),args[1],args[2],args[3],meta);write_nginx(p,text);write(args[4],m)
++        text,m=nginx_patch(p.read_text(),args[1],args[2],args[3],meta,read(STATE));write_nginx(p,text);write(args[4],m)
+     elif action=='unpatch-nginx':
+         p=Path(args[0]);text=strip_marked(p.read_text());meta=read(args[1])
+         for old,new in meta.get('replacements',[]):
+@@ -526,7 +813,11 @@
+     elif action=='verify-compose':verify_compose(read(args[0]),read(args[1]),read(STATE))
+     elif action=='profile':
+         data=json.load(sys.stdin);src=read(args[0]) if args[0] else None
+-        p,e,h=profile(read(STATE),data['private'],data['public'],src);write(PROFILE,p);write(EXTRA,e);write(HOSTS,h)
++        state=read(STATE)
++        p,e,h=profile(state,data['private'],data['public'],src);write(PROFILE,p);write(EXTRA,e);write(HOSTS,h)
++        if state.get('harden_profile') and src:
++            state['profile_pending']=any(i.get('listen')=='/dev/shm/xrxh.socket,0666' for i in src.get('inbounds',[]))
++            write(STATE,state)
+     elif action=='keys':
+         d=read(args[0]);r=[x for x in d.get('inbounds',[]) if x.get('port')==443 and x.get('streamSettings',{}).get('security')=='reality']
+         if len(r)==1:print(r[0]['streamSettings']['realitySettings']['privateKey']);print(r[0]['tag'])
+@@ -567,6 +858,7 @@
+         # Restore only files changed by this run, only while their recorded
+         # contents still match. Foreign later edits are never discarded.
+         for name,hashes in delta.items():
++            if immutable_path(name):continue
+             # Component files inside a broad snapshot (e.g. /etc/sysctl.d)
+             # were already restored by their separate ownership manifest.
+             if len(args)>2 and args[2]=='core' and (name in SECURITY_PATHS or name=='/var/lib/nuvrion-traffic-control' or name.startswith('/var/lib/nuvrion-traffic-control/')):continue
+@@ -586,6 +878,8 @@
+     elif action=='restore':restore(args[0],json.load(sys.stdin))
+     elif action=='uninstall-selection':print(json.dumps(uninstall_selection(read(args[0]),*args[1:])))
+     elif action=='security-paths':print(json.dumps(SECURITY_PATHS))
++    elif action=='tls-audit':
++        for status,name in tls_audit(read(args[0])):print(status,name,sep='\t')
+     elif action=='security-selection':
+         owned=read(args[0]);paths=list(SECURITY_PATHS)
+         if not owned.get('traffic_owned'):paths=[p for p in paths if 'traffic-control' not in p and p!='/usr/local/bin/ntc']
+@@ -596,7 +890,7 @@
+         allowed=set(SECURITY_PATHS)
+         if not owned.get('traffic_owned'):allowed={p for p in allowed if 'traffic-control' not in p and p!='/usr/local/bin/ntc'}
+         if not owned.get('privacy_owned'):allowed={p for p in allowed if 'two-way-ping' not in p}
+-        print(json.dumps([r['path'] for r in read(args[0]) if r['path']!='/etc/letsencrypt' and
++        print(json.dumps([r['path'] for r in read(args[0]) if not immutable_path(r['path']) and r['path']!='/etc/letsencrypt' and
+             (r['path'] not in SECURITY_PATHS or r['path'] in allowed) and
+             (r['path']!='/var/lib/nuvrion-traffic-control' or owned.get('traffic_owned'))]))
+     elif action=='nft-chains':
+@@ -711,6 +1005,25 @@
+         [[ -n ${!name} || $value == '{}' ]] || printf -v "$name" '%s' "$value"
+     done
+     if [[ $PATH_EXPLICIT == 0 ]]; then value=$(state_value xhttp_path); [[ $value == '{}' ]] || XHTTP_PATH=$value; fi
++    [[ $(state_value secure_sockets) != true ]] || SECURE_SOCKETS=1
++    socket_settings
++}
++socket_settings() {
++    if (( SECURE_SOCKETS==1 ));then
++        NGINX_SOCKET=/dev/shm/nuvrion-xhttp/nginx.sock
++        XHTTP_SOCKET=/dev/shm/nuvrion-xhttp/xrxh.socket
++    else NGINX_SOCKET=/dev/shm/nginx.sock;XHTTP_SOCKET=/dev/shm/xrxh.socket;fi
++}
++configure_socket_directory() {
++    (( SECURE_SOCKETS==1 )) || return 0
++    if [[ -e /dev/shm/nuvrion-xhttp || -e /etc/tmpfiles.d/nuvrion-xhttp.conf ]];then
++        [[ -f $STATE && $(state_value secure_sockets) == true ]] || die 6 'Найден чужой socket directory/tmpfiles; автоматическая перезапись запрещена.'
++    fi
++    [[ -d /dev/shm/nuvrion-xhttp ]] || SOCKET_DIR_CREATED=1
++    helper secure-directory /dev/shm/nuvrion-xhttp "$WEB_GID"
++    printf 'd /dev/shm/nuvrion-xhttp 2710 root %s - -\n' "$WEB_GID" > /etc/tmpfiles.d/nuvrion-xhttp.conf
++    chmod 644 /etc/tmpfiles.d/nuvrion-xhttp.conf
++    log_ok 'Shared socket directory: root:web-group 2710; XHTTP 0660; Nginx 0600.'
+ }
+ detect_network() {
+     IPV4=''; A_RECORDS=''
+@@ -786,7 +1099,7 @@
+ text=sys.stdin.read();domain=sys.argv[1]
+ for m in re.finditer(r"(?m)^# configuration file ([^\n]+):\n",text):
+  end=text.find("\n# configuration file ",m.end());chunk=text[m.end():end if end>=0 else len(text)]
+- if re.search(r"server_name\s+[^;]*\b"+re.escape(domain)+r"\b",chunk) and "unix:/dev/shm/nginx.sock" in chunk:
++ if re.search(r"server_name\s+[^;]*\b"+re.escape(domain)+r"\b",chunk) and re.search(r"unix:/dev/shm/(?:nuvrion-xhttp/)?nginx\.sock",chunk):
+   print(m[1]);break' "$DOMAIN"
+ }
+ detect_nginx() {
+@@ -795,7 +1108,7 @@
+     while IFS= read -r container; do
+         [[ -n $container ]] || continue
+         dump=$(docker exec "$container" nginx -T 2>&1 || true)
+-        [[ $dump == *unix:/dev/shm/nginx.sock* ]] || continue
++        [[ $dump == *"unix:$NGINX_SOCKET"* ]] || continue
+         source=$(nginx_source <<< "$dump")
+         [[ -n $source ]] || { log_warn "Nginx $container занимает nginx.sock, но server_name $DOMAIN не найден.";return 5; }
+         NGINX_KIND=docker;NGINX_CONTAINER=$container
+@@ -804,26 +1117,26 @@
+         hostroot=$(helper nginx-info "$DOMAIN" < "$NGINX_CONFIG") || return 5
+         NGINX_ROOT=$hostroot;SITE_ROOT=$(map_container_path "$container" "$hostroot")
+         [[ -n $SITE_ROOT && $SITE_ROOT == /* && ! -L $SITE_ROOT ]] || return 5
+-        NGINX_MAIN=$(sed -n 's/^# configuration file \([^:]*\):$/\1/p' <<< "$dump" | head -n 1)
++        NGINX_MAIN=$(sed -n 's/^# configuration file \([^:]*\):$/\1/p' <<< "$dump" | sed -n '1p')
+         NGINX_SERVICE=$(docker inspect -f '{{index .Config.Labels "com.docker.compose.service"}}' "$container")
+         local ngproject
+         ngproject=$(docker inspect -f '{{index .Config.Labels "com.docker.compose.project"}}' "$container")
+         [[ $ngproject == "$PROJECT" && -n $NGINX_SERVICE ]] || { log_warn 'Nginx и нода принадлежат разным Compose-проектам; автоматическая правка остановлена.';return 5; }
+-        user=$(sed -nE 's/^user[[:space:]]+([^; ]+).*;/\1/p' <<< "$dump" | head -n 1)
++        user=$(sed -nE 's/^user[[:space:]]+([^; ]+).*;/\1/p' <<< "$dump" | sed -n '1p')
+         WEB_GID=$(docker exec "$container" id -g "${user:-nginx}") || return 5
+         candidates=$((candidates+1))
+     done < <(docker ps --format '{{.Names}}' 2>/dev/null || true)
+     (( candidates<=1 )) || { log_warn 'Несколько владельцев nginx.sock.';return 5; }
+     if (( candidates==0 )) && command -v nginx >/dev/null; then
+-        main=$(ps -C nginx -o args= | sed -nE 's/.*master process:.* -c ([^ ]+).*/\1/p' | head -n 1)
++        main=$(ps -C nginx -o args= | sed -nE 's/.*master process:.* -c ([^ ]+).*/\1/p' | sed -n '1p')
+         main=${main:-/etc/nginx/nginx.conf}
+         dump=$(nginx -T -c "$main" 2>&1 || true)
+-        if [[ $dump == *unix:/dev/shm/nginx.sock* ]]; then
++        if [[ $dump == *"unix:$NGINX_SOCKET"* ]]; then
+             source=$(nginx_source <<< "$dump");[[ -f $source && ! -L $source ]] || return 5
+             NGINX_KIND=host;NGINX_CONFIG=$source;NGINX_MAIN=$main
+             SITE_ROOT=$(helper nginx-info "$DOMAIN" < "$source") || return 5
+             NGINX_ROOT=$SITE_ROOT
+-            user=$(sed -nE 's/^user[[:space:]]+([^; ]+).*;/\1/p' <<< "$dump" | head -n 1)
++            user=$(sed -nE 's/^user[[:space:]]+([^; ]+).*;/\1/p' <<< "$dump" | sed -n '1p')
+             WEB_GID=$(id -g "${user:-www-data}") || return 5
+         elif pgrep -x nginx >/dev/null; then
+             log_warn 'Найден сторонний host Nginx без selfsteal socket. Нужна явная адаптация его конфигурации; второй Nginx не создаётся.';return 5
+@@ -851,8 +1164,8 @@
+     managed=$(state_value firewall)
+     if [[ $managed == ufw || $managed == nft || $managed == iptables ]];then
+         FW=$managed
+-    elif command -v ufw >/dev/null && ufw status 2>/dev/null | grep -q '^Status: active'; then FW=ufw
+-    elif command -v nft >/dev/null && nft -j list ruleset 2>/dev/null | helper nft-native-chains | grep -q .; then FW=nft
++    elif command -v ufw >/dev/null && ufw status 2>/dev/null | grep '^Status: active' >/dev/null; then FW=ufw
++    elif command -v nft >/dev/null && nft -j list ruleset 2>/dev/null | helper nft-native-chains | grep . >/dev/null; then FW=nft
+     elif command -v iptables >/dev/null && command -v ip6tables >/dev/null; then FW=iptables
+     elif command -v nft >/dev/null; then FW=nft
+     fi
+@@ -878,14 +1191,21 @@
+ }
+ validate_sockets() {
+     local path inode inner container
+-    for path in /dev/shm/nginx.sock /dev/shm/xrxh.socket; do
++    for path in "$NGINX_SOCKET" "$XHTTP_SOCKET"; do
+         if [[ ! -S $path ]]; then
+-            if [[ $path == /dev/shm/xrxh.socket && ! -f $OWN/profile-applied ]]; then
++            if [[ $path == "$XHTTP_SOCKET" && ! -f $OWN/profile-applied ]]; then
+                 WAITS=$((WAITS+1));log_warn '[WAIT] xrxh.socket: ожидает применения Remnawave profile';continue
+             fi
+             check_result 0 "$path существует";continue
+         fi
+         stat -c '  %n: %F %a %U:%G inode=%i' "$path";ls -lah "$path"
++        if (( SECURE_SOCKETS==1 ));then
++            local expected=660
++            [[ $path != "$NGINX_SOCKET" ]] || expected=600
++            if [[ $(stat -c %a "$path") == "$expected" && $(stat -c %u "$path") == 0 && $(stat -c %g "$path") == "$WEB_GID" ]];then
++                check_result 1 "$path restricted permissions"
++            else check_result 0 "$path restricted permissions";fi
++        fi
+         inode=$(stat -c '%d:%i' "$path")
+         for container in "$NODE_CONTAINER" "$NGINX_CONTAINER"; do
+             [[ -n $container ]] || continue
+@@ -903,22 +1223,22 @@
+     if [[ $DECOY_CODE == 200 ]]; then check_result 1 'HTTPS decoy: HTTP 200 (TLS verified)'
+     elif (( WAITS>0 )) && [[ ! -f $OWN/profile-applied ]]; then WAITS=$((WAITS+1));log_warn "[WAIT] HTTPS decoy: $DECOY_CODE; примените Reality inbound"
+     else check_result 0 "HTTPS decoy: $DECOY_CODE";fi
+-    if [[ -S /dev/shm/xrxh.socket ]]; then
++    if [[ -S $XHTTP_SOCKET ]]; then
+         local direct
+-        direct=$(curl --noproxy '*' --unix-socket /dev/shm/xrxh.socket -sS --max-time 10 -H "Host: $DOMAIN" -o /dev/null -w '%{http_code}' "http://localhost$XHTTP_PATH" 2>/dev/null || true)
++        direct=$(curl --noproxy '*' --unix-socket "$XHTTP_SOCKET" -sS --max-time 10 -H "Host: $DOMAIN" -o /dev/null -w '%{http_code}' "http://localhost$XHTTP_PATH" 2>/dev/null || true)
+         if [[ $ROUTE_CODE == 400 && $direct == 400 ]]; then check_result 1 'XHTTP: HTTP 400 совпадает с прямым ответом backend'
+         else check_result 0 "XHTTP backend: proxy=$ROUTE_CODE direct=$direct; ожидается 400/400";fi
+     else log_warn "[WAIT] XHTTP route: $ROUTE_CODE; socket ещё не создан панелью";fi
+ }
+ diagnostic_logs() {
+     local output
+-    output=$(docker logs --since 3m --tail 120 "$NODE_CONTAINER" 2>&1 || true)
+-    if [[ -n $NGINX_CONTAINER ]]; then output+=$'\n'$(docker logs --since 3m --tail 120 "$NGINX_CONTAINER" 2>&1 || true)
+-    elif [[ -f /var/log/nginx/error.log ]]; then output+=$'\n'$(tail -n 60 /var/log/nginx/error.log);fi
++    output=$(docker logs --since 3m --tail 120 "$NODE_CONTAINER" 2>&1 | tr -d '\000' || true)
++    if [[ -n $NGINX_CONTAINER ]]; then output+=$'\n'$(docker logs --since 3m --tail 120 "$NGINX_CONTAINER" 2>&1 | tr -d '\000' || true)
++    elif [[ -f /var/log/nginx/error.log ]]; then output+=$'\n'$(tail -n 60 /var/log/nginx/error.log | tr -d '\000');fi
+     local errors
+     errors=$(grep -Ei 'connect\(\).*xrxh.socket.*failed|permission denied|address already in use|duplicate inbound|failed to listen|invalid config' <<< "$output" || true)
+     # A missing backend before panel application is expected, never marked PASS.
+-    if [[ ! -S /dev/shm/xrxh.socket && ! -f $OWN/profile-applied ]]; then errors=$(grep -Eiv 'connect\(\).*xrxh.socket.*No such file' <<< "$errors" || true);fi
++    if [[ ! -S $XHTTP_SOCKET && ! -f $OWN/profile-applied ]]; then errors=$(grep -Eiv 'connect\(\).*xrxh.socket.*No such file' <<< "$errors" || true);fi
+     if [[ -n $errors ]]; then printf '%s\n' "$errors" | scrub;check_result 0 'Свежие ошибки nginx/Xray'
+     else check_result 1 'Критических ошибок nginx/Xray за последние 3 минуты не найдено';fi
+ }
+@@ -946,7 +1266,7 @@
+     if systemctl is-active --quiet certbot.timer && systemctl is-enabled --quiet certbot.timer;then check_result 1 'Certbot renewal timer active/enabled'
+     else check_result 0 'Certbot renewal timer active/enabled';fi
+     backupfile=$(state_value last_backup)
+-    if [[ $(state_value ssh_managed) != true && -f $backupfile/ssh.sha256 ]];then
++    if [[ -f $backupfile/ssh.sha256 ]];then
+         if sha256sum -c --status "$backupfile/ssh.sha256";then check_result 1 'Конфигурация и ключи SSH не изменены'
+         else check_result 0 'Конфигурация и ключи SSH не изменены';fi
+     fi
+@@ -979,7 +1299,7 @@
+             local loaded
+             loaded=$(nginx_command -T 2>&1 || true)
+             printf '%s\n' "$loaded" | grep -E '# configuration file|listen .*nginx.sock|location .*api|proxy_pass .*xrxh|ssl_certificate' | scrub
+-            if [[ $loaded == *"location ^~ $XHTTP_PATH"* && $loaded == *'proxy_pass http://unix:/dev/shm/xrxh.socket;'* && $loaded != *'grpc_pass unix:/dev/shm/xrxh.socket'* ]]; then check_result 1 'Загружен HTTP proxy_pass к XHTTP socket'
++            if [[ $loaded == *"location ^~ $XHTTP_PATH"* && $loaded == *"proxy_pass http://unix:$XHTTP_SOCKET;"* && $loaded != *'grpc_pass'* ]]; then check_result 1 'Загружен HTTP proxy_pass к XHTTP socket'
+             else check_result 0 'Загружен HTTP proxy_pass к XHTTP socket';fi
+             validate_https
+         fi
+@@ -995,7 +1315,7 @@
+         else log_warn 'Сертификат пока не найден.';fi
+     fi
+     systemctl status certbot.timer --no-pager 2>/dev/null || true
+-    case $FW in ufw) ufw status verbose;;nft) nft list ruleset | scrub;;iptables) iptables -S INPUT;ip6tables -S INPUT;;esac
++    case $FW in ufw) ufw status verbose;;nft) nft -t list ruleset | scrub;;iptables) iptables -S INPUT;ip6tables -S INPUT;;esac
+     validate_firewall_and_preservation
+     validate_security_components
+     validate_rps
+@@ -1008,6 +1328,42 @@
+     else STATUS='NOT INSTALLED';fi
+     log_info "Состояние: $STATUS; ошибок: $FAILS; ожидают профиля: $WAITS"
+ }
++run_self_check() {
++    # No locks, logging setup, downloads, installs or configuration writes.
++    local source=${BASH_SOURCE[0]} command_line container field previous_fails
++    if bash -n "$source";then check_result 1 'Bash syntax';else check_result 0 'Bash syntax';fi
++    if command -v shellcheck >/dev/null;then
++        if shellcheck "$source";then check_result 1 'ShellCheck';else check_result 0 'ShellCheck';fi
++    else log_warn '[NOT RUN] ShellCheck: пакет отсутствует';fi
++    if [[ -f $PROFILE ]];then
++        if helper profile-check "$PROFILE";then check_result 1 'Profile JSON/transport/extra';else check_result 0 'Profile JSON/transport/extra';fi
++    else log_warn '[NOT RUN] Profile: файл отсутствует';fi
++    previous_fails=$FAILS;run_diagnostics;FAILS=$((FAILS+previous_fails))
++    for container in "$NODE_CONTAINER" "$NGINX_CONTAINER";do
++        [[ -n $container ]] || continue
++        command_line=$(docker inspect "$container" | python3 -c 'import json,sys
++d=json.load(sys.stdin)[0];h=d["HostConfig"]
++print(json.dumps({"apparmor":d.get("AppArmorProfile"),"privileged":h.get("Privileged"),"security_opt":h.get("SecurityOpt"),"cap_add":h.get("CapAdd"),"cap_drop":h.get("CapDrop"),"pids_limit":h.get("PidsLimit"),"read_only":h.get("ReadonlyRootfs"),"docker_socket":any(m["Destination"]=="/var/run/docker.sock" for m in d["Mounts"])}))')
++        printf '  Docker %s: %s\n' "$container" "$command_line"
++        if python3 -c 'import json,sys;d=json.load(sys.stdin);assert not d["privileged"] and not d["docker_socket"];assert d["apparmor"];assert any(x in ("no-new-privileges:true","no-new-privileges=true") for x in (d["security_opt"] or []));assert (d["pids_limit"] or 0)>0' <<< "$command_line";then
++            check_result 1 "$container isolation"
++        else check_result 0 "$container isolation";fi
++        field=$(docker exec "$container" sh -c 'grep -E "^(NoNewPrivs|Seccomp):" /proc/1/status' 2>/dev/null || true)
++        printf '  %s\n' "$field"
++        if [[ $field == *$'NoNewPrivs:\t1'* && $field == *$'Seccomp:\t2'* ]];then check_result 1 "$container NNP/seccomp"
++        else check_result 0 "$container NNP/seccomp";fi
++    done
++    if [[ -f $STATE && -S $XHTTP_SOCKET ]];then
++        while IFS=$'\t' read -r field command_line;do
++            check_result "$([[ $field == PASS ]] && printf 1 || printf 0)" "$command_line"
++        done < <(helper tls-audit "$STATE")
++        field=$(curl --noproxy '*' --http2 --resolve "$DOMAIN:443:127.0.0.1" -sS --max-time 15 -o /dev/null -w '%{http_code} %{http_version}' "https://$DOMAIN/" || true)
++        check_result "$([[ $field == '200 2' ]] && printf 1 || printf 0)" "HTTP/2: $field"
++    else log_warn '[NOT RUN] TLS/SNI/padding: ожидает применения профиля.';fi
++    log_warn '[NOT RUN] Clean installation/rollback/reboot: execute isolated test suite; read-only self-check never performs them.'
++    log_warn '[NOT RUN] Authenticated REALITY/XHTTP, DNS fallback and HAPP/INCY: require temporary client credentials and integration tests.'
++    (( FAILS==0 ))
++}
+ 
+ remove_nft_comment() {
+     local family table chain handle
+@@ -1025,7 +1381,7 @@
+ }
+ firewall_remove() {
+     case $FW in
+-        ufw) remove_ufw_comment 'Nuvrion-XHTTP ';remove_ufw_comment Nuvrion-XHTTP-ACME;;
++        ufw) remove_ufw_comment 'Nuvrion-XHTTP ';remove_ufw_comment Nuvrion-XHTTP-ACME;remove_ufw_comment Nuvrion-XHTTP-API-STAGING;;
+         nft)
+             remove_nft_comment Nuvrion-XHTTP;remove_nft_comment Nuvrion-XHTTP-ACME
+             if nft list table inet nuvrion_xhttp >/dev/null 2>&1; then nft delete table inet nuvrion_xhttp;fi;;
+@@ -1048,45 +1404,39 @@
+     case $FW in
+         ufw)
+             # Reconcile only our marked rules; retain all foreign rules.
++            # Temporary deny precedes removal, so API cannot become public.
++            ufw insert 1 deny 2222/tcp comment 'Nuvrion-XHTTP-API-STAGING' >/dev/null
+             remove_ufw_comment 'Nuvrion-XHTTP '
+             ufw insert 1 deny 2222/tcp comment 'Nuvrion-XHTTP API guard' >/dev/null
+             ufw insert 1 allow from "$PANEL_IP" to any port 2222 proto tcp comment 'Nuvrion-XHTTP panel' >/dev/null
+             (( api_only==1 )) || ufw insert 1 allow 443/tcp comment 'Nuvrion-XHTTP HTTPS' >/dev/null
++            remove_ufw_comment 'Nuvrion-XHTTP-API-STAGING'
+             grep -Eq '^IPV6=yes$' /etc/default/ufw || die 7 'UFW не фильтрует IPv6. Глобальная настройка UFW автоматически не меняется.';;
+         nft)
+-            remove_nft_comment Nuvrion-XHTTP
+-            if ! nft list table inet nuvrion_xhttp >/dev/null 2>&1; then nft add table inet nuvrion_xhttp;fi
+-            if ! nft list chain inet nuvrion_xhttp api_guard >/dev/null 2>&1; then
+-                nft 'add chain inet nuvrion_xhttp api_guard { type filter hook input priority -250; policy accept; }'
+-            fi
+-            # The guard denies API traffic before foreign broad ALLOW rules.
+-            if [[ $panel_version == 4 ]]; then
+-                nft add rule inet nuvrion_xhttp api_guard tcp dport 2222 ip saddr != "$PANEL_IP" drop comment Nuvrion-XHTTP
+-                nft add rule inet nuvrion_xhttp api_guard meta nfproto ipv6 tcp dport 2222 drop comment Nuvrion-XHTTP
+-            else
+-                nft add rule inet nuvrion_xhttp api_guard tcp dport 2222 ip6 saddr != "$PANEL_IP" drop comment Nuvrion-XHTTP
+-                nft add rule inet nuvrion_xhttp api_guard meta nfproto ipv4 tcp dport 2222 drop comment Nuvrion-XHTTP
+-            fi
+-            # ACCEPT in one nft base chain cannot override a later DROP. Add
+-            # the narrow exceptions to every existing INPUT base chain.
+-            while IFS=$'\t' read -r family table chain; do
+-                [[ -n $chain ]] || continue
+-                (( api_only==1 )) || nft insert rule "$family" "$table" "$chain" tcp dport 443 accept comment Nuvrion-XHTTP
+-                if [[ $family == inet || $family == ip && $panel_version == 4 || $family == ip6 && $panel_version == 6 ]]; then
+-                    args=ip;[[ $panel_version == 4 ]] || args=ip6
+-                    nft insert rule "$family" "$table" "$chain" "$args" saddr "$PANEL_IP" tcp dport 2222 accept comment Nuvrion-XHTTP
+-                fi
+-            done < <(nft -j list ruleset | helper nft-chains platform);;
++            local rules
++            rules=$(nft -a -j list ruleset | helper nft-security-rules "$PANEL_IP" "$api_only") || die 7 'Не удалось подготовить атомарные правила firewall.'
++            printf '%s\n' "$rules" | nft -c -f - || die 7 'nftables отклонил новые правила; действующие правила сохранены.'
++            printf '%s\n' "$rules" | nft -f - || die 7 'Атомарное применение не удалось; прежняя защита сохранена.';;
+         iptables)
+             for binary in iptables ip6tables; do
+-                "$binary" -w 10 -S NUVRION_XHTTP >/dev/null 2>&1 || "$binary" -w 10 -N NUVRION_XHTTP
+-                while "$binary" -w 10 -D NUVRION_XHTTP 1 2>/dev/null; do :;done
++                local previous batch jump=''
++                previous=$("$binary" -w 10 -S NUVRION_XHTTP 2>/dev/null || true)
++                "$binary" -w 10 -C INPUT -j NUVRION_XHTTP 2>/dev/null || jump='-I INPUT 1 -j NUVRION_XHTTP'
++                batch=$(printf '%s\n' "$previous" | python3 -c 'import sys
++lines=sys.stdin.read().splitlines()
++print("*filter")
++if not any(line.startswith("-N ") for line in lines):print(":NUVRION_XHTTP - [0:0]")
++for line in lines:
++ if line.startswith("-A "):print("-D "+line[3:])')
+                 if [[ $binary == iptables && $panel_version == 4 || $binary == ip6tables && $panel_version == 6 ]]; then
+-                    "$binary" -w 10 -A NUVRION_XHTTP -p tcp -s "$PANEL_IP" --dport 2222 -j ACCEPT
++                    batch+=$'\n'"-A NUVRION_XHTTP -p tcp -s $PANEL_IP --dport 2222 -j ACCEPT"
+                 fi
+-                "$binary" -w 10 -A NUVRION_XHTTP -p tcp --dport 2222 -j DROP
+-                (( api_only==1 )) || "$binary" -w 10 -A NUVRION_XHTTP -p tcp --dport 443 -j ACCEPT
+-                "$binary" -w 10 -C INPUT -j NUVRION_XHTTP 2>/dev/null || "$binary" -w 10 -I INPUT 1 -j NUVRION_XHTTP
++                batch+=$'\n''-A NUVRION_XHTTP -p tcp --dport 2222 -j DROP'
++                (( api_only==1 )) || batch+=$'\n''-A NUVRION_XHTTP -p tcp --dport 443 -j ACCEPT'
++                [[ -z $jump ]] || batch+=$'\n'"$jump"
++                batch+=$'\nCOMMIT\n'
++                printf '%s' "$batch" | "$binary-restore" -w 10 --test --noflush || die 7 'iptables validation failed; old rules preserved.'
++                printf '%s' "$batch" | "$binary-restore" -w 10 --noflush || die 7 'iptables transaction failed; old rules preserved.'
+             done;;
+         *) die 7 'Не удалось определить firewall backend.';;
+     esac
+@@ -1248,7 +1598,7 @@
+     else NGINX_IMAGE_ID=$(docker image inspect -f '{{.Id}}' nginx:1.30);fi
+     FILES_JSON=$(python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "${COMPOSE_FILES[@]}")
+     TRUSTED_XFF=$(helper xff-version "$XRAY_VERSION")
+-    export DOMAIN PANEL_IP EMAIL NODE_TAG XHTTP_PATH DOWNLOAD_DOMAIN NODE_CONTAINER NODE_SERVICE PROJECT WORKDIR NGINX_KIND NGINX_CONTAINER NGINX_SERVICE NGINX_CONFIG NGINX_MAIN NGINX_ROOT SITE_ROOT WEB_GID CERT_LINEAGE XRAY_BIN IPV4 NGINX_NEW NODE_IMAGE_ID NGINX_IMAGE_ID FILES_JSON BACKUP FW TRUSTED_XFF
++    export DOMAIN PANEL_IP EMAIL NODE_TAG XHTTP_PATH DOWNLOAD_DOMAIN NODE_CONTAINER NODE_SERVICE PROJECT WORKDIR NGINX_KIND NGINX_CONTAINER NGINX_SERVICE NGINX_CONFIG NGINX_MAIN NGINX_ROOT SITE_ROOT WEB_GID CERT_LINEAGE XRAY_BIN IPV4 NGINX_NEW NODE_IMAGE_ID NGINX_IMAGE_ID FILES_JSON BACKUP FW TRUSTED_XFF SECURE_SOCKETS XRAY_VERSION HARDEN_PROFILE
+     helper state
+ }
+ unpack_bundle() {
+@@ -1272,13 +1622,13 @@
+         private=${imported%%$'\n'*}
+     fi
+     if [[ -n $private ]]; then
+-        output=$(docker exec "$NODE_CONTAINER" "$XRAY_BIN" x25519 -i "$private")
++        PUBLIC_KEY=$(printf '%s' "$private" | helper public-key)
+     else
+-        [[ -z $(ss -H -lnt '( sport = :443 )') || $NEW_KEYS == 1 ]] || die 1 'На :443 уже есть вход. Укажите --profile-input для сохранения ключей или явно --allow-new-reality.'
++        [[ -z $(ss -H -lnt '( sport = :443 )') ]] || die 1 'На :443 уже есть вход. Импортируйте профиль для сохранения действующих ключей.'
+         output=$(docker exec "$NODE_CONTAINER" "$XRAY_BIN" x25519)
+-        private=$(sed -nE 's/^[Pp]rivate[[:space:]]*[Kk]ey:[[:space:]]*//p' <<< "$output" | head -n 1)
+-    fi
+-    PUBLIC_KEY=$(sed -nE 's/^(Public[[:space:]]*[Kk]ey|Password([[:space:]]+\(PublicKey\))?):[[:space:]]*//p' <<< "$output" | head -n 1)
++        private=$(sed -nE 's/^[Pp]rivate[[:space:]]*[Kk]ey:[[:space:]]*//p' <<< "$output" | sed -n '1p')
++        PUBLIC_KEY=$(sed -nE 's/^(Public[[:space:]]*[Kk]ey|Password([[:space:]]+\(PublicKey\))?):[[:space:]]*//p' <<< "$output" | sed -n '1p')
++    fi
+     [[ $private =~ ^[A-Za-z0-9_-]{43}$ && $PUBLIC_KEY =~ ^[A-Za-z0-9_-]{43}$ ]] || die 1 'Не удалось разобрать штатный вывод Xray x25519.'
+     # Secrets travel only through stdin, never command logging or stdout.
+     printf '%s\n%s\n' "$private" "$PUBLIC_KEY" | python3 -c 'import json,sys;a=sys.stdin.read().splitlines();print(json.dumps(dict(private=a[0],public=a[1])))' > "$WORK/keys.json"
+@@ -1299,43 +1649,14 @@
+         scrub < "$WORK/profile-test.txt";die 1 'Xray отклонил профиль. Версия ядра не изменена.'
+     fi
+     log_ok 'Профиль ноды проверен установленным Xray; настройки Host и extra сохранены.'
++    if [[ $(state_value profile_pending) == true ]];then
++        rm -f "$OWN/profile-applied"
++        log_warn 'Миграция ожидает применения output JSON в Remnawave; диагностика покажет WAIT до создания нового socket.'
++    fi
+ }
+ configure_nginx() {
+     if [[ $NGINX_NEW == 1 && ! -f $NGINX_CONFIG ]]; then
+-        cat > "$NGINX_CONFIG" <<EOF
+-# Nuvrion owns this complete file (recorded in state.json).
+-user www-data;
+-worker_processes auto;
+-error_log /dev/stderr warn;
+-pid /var/run/nginx.pid;
+-events { worker_connections 4096; }
+-http {
+-    include /etc/nginx/mime.types;
+-    default_type application/octet-stream;
+-    access_log off;
+-    server_tokens off;
+-    server {
+-        server_name $DOMAIN;
+-        listen unix:/dev/shm/nginx.sock ssl proxy_protocol;
+-        http2 on;
+-        ssl_certificate "$CERT_LINEAGE/fullchain.pem";
+-        ssl_certificate_key "$CERT_LINEAGE/privkey.pem";
+-        ssl_protocols TLSv1.2 TLSv1.3;
+-        ssl_session_tickets off;
+-        root /var/www/decoy;
+-        index index.html;
+-        add_header X-Robots-Tag "noindex, nofollow, noarchive" always;
+-        location / { try_files \$uri \$uri/ /index.html; }
+-        location ~ /\\. { deny all; }
+-    }
+-    server {
+-        listen unix:/dev/shm/nginx.sock ssl proxy_protocol default_server;
+-        server_name _;
+-        ssl_reject_handshake on;
+-        return 444;
+-    }
+-}
+-EOF
++        helper nginx-template "$CERT_LINEAGE" > "$NGINX_CONFIG"
+         chmod 644 "$NGINX_CONFIG"
+     fi
+     helper patch-nginx "$NGINX_CONFIG" "$DOMAIN" "$XHTTP_PATH" "$CERT_LINEAGE" "$OWN/nginx-patch.json"
+@@ -1357,32 +1678,11 @@
+ }
+ 
+ choose_node_version() {
+-    local choice releases index=1 version
+-    declare -a versions=()
+-    if [[ -z $NODE_VERSION ]]; then
+-        printf '\n  Версия Remnanode:\n'
+-        (( NODE_NEW==1 )) || printf '    0. Сохранить установленный образ (по умолчанию)\n'
+-        printf '    1. Последняя стабильная\n    2. Выбрать доступную версию\n'
+-        prompt choice 'Вариант' "$(( NODE_NEW==1 ? 1 : 0 ))"
+-        case $choice in 0) (( NODE_NEW==0 )) || die 3 'Нода ещё не установлена.';NODE_VERSION=keep;;
+-            1) NODE_VERSION=latest;;2) NODE_VERSION=choose;;*) die 1 'Неизвестный вариант версии.';;esac
+-    fi
+-    if [[ $NODE_VERSION == keep ]]; then (( NODE_NEW==0 )) || die 3 'Нельзя сохранить отсутствующую ноду.';return 0;fi
+-    releases=$(helper releases) || die 3 'Не удалось получить официальный список релизов; текущая нода сохранена.'
+-    mapfile -t versions <<< "$releases"
+-    ((${#versions[@]}>0)) && [[ -n ${versions[0]} ]] || die 3 'Список релизов пуст.'
+-    case $NODE_VERSION in
+-        latest) NODE_VERSION=${versions[0]};;
+-        choose)
+-            for version in "${versions[@]}"; do printf '    %2s. %s\n' "$index" "$version";index=$((index+1));done
+-            prompt choice 'Номер версии' 1
+-            [[ $choice =~ ^[0-9]+$ ]] || die 1 'Некорректный номер версии.'
+-            (( choice>=1 && choice<=${#versions[@]} )) || die 1 'Некорректный номер версии.'
+-            NODE_VERSION=${versions[choice-1]};;
+-        *) printf '%s\n' "$releases" | grep -Fxq "$NODE_VERSION" || die 3 'Версия отсутствует среди стабильных официальных релизов.';;
+-    esac
+-    SELECTED_IMAGE=remnawave/node:$NODE_VERSION
+-    log_info "Выбран Remnanode: $SELECTED_IMAGE (Xray поставляется внутри образа этой версии)."
++    # Replacing a Node image also replaces its bundled Xray. This security
++    # revision therefore requires an existing Node and pins its current image.
++    (( NODE_NEW==0 )) || die 3 'Установите Remnanode отдельно: установка/замена Xray этой версией запрещена.'
++    [[ -z $NODE_VERSION || $NODE_VERSION == keep ]] || die 3 'Смена образа ноды заменяет Xray и запрещена.'
++    NODE_VERSION=keep;SELECTED_IMAGE=''
+ }
+ collect_inputs() {
+     [[ -n $DOMAIN ]] || prompt DOMAIN 'Домен decoy / SNI' ''
+@@ -1409,8 +1709,17 @@
+     fi
+     choose_node_version
+     detect_nginx || die 5 'Нельзя безопасно адаптировать найденный Nginx.'
++    if (( HARDEN_PROFILE==1 ));then SECURE_SOCKETS=1
++    elif [[ ! -f $STATE && ! -f $PROFILE && -z $PROFILE_INPUT && $NGINX_NEW == 1 ]];then SECURE_SOCKETS=1;fi
++    socket_settings
++    if (( SECURE_SOCKETS==1 ));then
++        if [[ -e /dev/shm/nuvrion-xhttp || -e /etc/tmpfiles.d/nuvrion-xhttp.conf ]];then
++            [[ -f $STATE && $(state_value secure_sockets) == true ]] || die 6 'Защищённый каталог/tmpfiles уже существует без записи владения; установка остановлена.'
++        fi
++        [[ $(docker exec "$NODE_CONTAINER" id -u) == 0 ]] || die 6 'Защищённые sockets требуют проверенного root Xray; UID контейнера не меняется автоматически.'
++    fi
+     if (( NODE_NEW==0 )); then
+-        [[ $(helper xff-version "$XRAY_VERSION") == 1 || $NODE_VERSION != keep ]] || die 3 'Установленный Xray старше проверенного v26.3.27. Выберите версию ноды явно или сохраните сервер без изменений.'
++        [[ $(helper xff-version "$XRAY_VERSION") == 1 || $NODE_VERSION != keep ]] || die 3 'Установленный Xray старше проверенного v26.3.27. Обновление Xray автоматически не выполняется; установка остановлена.'
+         local config
+         config=$("${COMPOSE_CMD[@]}" config --format json) || die 3 'Исходный Compose не проходит проверку.'
+         # Validate conflicts in the original mounts before making an override.
+@@ -1441,8 +1750,8 @@
+         helper nginx-info "$DOMAIN" < "$NGINX_CONFIG" >/dev/null || die 5 'Конфигурация decoy не распознана.'
+     fi
+     [[ ! -f $OWN/assets.json ]] || helper asset-check "$SITE_ROOT" "$OWN/assets.json" || die 1 'Сайт изменён после установки; автоматическая замена запрещена.'
+-    if [[ -z $PROFILE_INPUT && ! -f $PROFILE && -n $(ss -H -lnt '( sport = :443 )') && $NEW_KEYS == 0 ]]; then
+-        die 1 'Для существующего входа :443 нужен --profile-input с ключами или явный --allow-new-reality.'
++    if [[ -z $PROFILE_INPUT && ! -f $PROFILE && -n $(ss -H -lnt '( sport = :443 )') ]]; then
++        die 1 'Для существующего входа :443 нужен --profile-input с сохранёнными ключами.'
+     fi
+     if (( NO_TUNING==0 )); then
+         log_info 'Тюнинг: BBR/fq, TCP/UDP буферы, conntrack, nofile, ZRAM/RPS по ресурсам; сетевые sysctl из Nuvrion Vision.'
+@@ -1474,7 +1783,7 @@
+ with open(sys.argv[1],"a") as f:
+  for line in sys.stdin:
+   p,v,s=line.rstrip().split("\t",2)
+-  if s=="install ok installed" and p.split(":")[0].startswith(("docker","containerd","runc")):
++  if s=="install ok installed" and p.split(":")[0].startswith(("docker","containerd","runc","openssh")):
+    f.write("\nPackage: "+p+"\nPin: version "+v+"\nPin-Priority: 1001\n")' "$APT_PREFERENCES"
+     # Prevent maintainer scripts/needrestart from restarting SSH, Docker or VPN.
+     # Preserve an existing policy, including symlinks and its permissions.
+@@ -1587,14 +1896,14 @@
+         # Test the selected core without starting its entrypoint or binding
+         # host ports; node recreation is deferred until validated Compose.
+         XRAY_BIN=/usr/local/bin/rw-core
+-        XRAY_VERSION=$(docker run --rm --network none --entrypoint "$XRAY_BIN" "$SELECTED_IMAGE" version | head -n 1)
++        XRAY_VERSION=$(docker run --rm --network none --entrypoint "$XRAY_BIN" "$SELECTED_IMAGE" version | sed -n '1p')
+     else
+         local _attempt
+         for _attempt in {1..30}; do
+             if docker exec "$NODE_CONTAINER" /usr/local/bin/rw-core version >/dev/null 2>&1; then break;fi
+             sleep 1
+         done
+-        XRAY_BIN=/usr/local/bin/rw-core;XRAY_VERSION=$(docker exec "$NODE_CONTAINER" "$XRAY_BIN" version | head -n 1)
++        XRAY_BIN=/usr/local/bin/rw-core;XRAY_VERSION=$(docker exec "$NODE_CONTAINER" "$XRAY_BIN" version | sed -n '1p')
+     fi
+     [[ $(helper xff-version "$XRAY_VERSION") == 1 ]] || die 3 'Выбранный Xray старше проверенного синтаксиса trustedXForwardedFor.'
+     if (( NGINX_NEW==1 )); then
+@@ -1720,7 +2029,7 @@
+         else reload_nginx;fi
+     else reload_nginx;fi
+     local _attempt
+-    for _attempt in {1..20}; do [[ -S /dev/shm/nginx.sock ]] && break;sleep 1;done
++    for _attempt in {1..20}; do [[ -S $NGINX_SOCKET ]] && break;sleep 1;done
+     validate_nginx || die 5 'Nginx config failed после запуска.'
+ }
+ configure_firewall_service() {
+@@ -1755,19 +2064,11 @@
+         prompt ADMIN_IP 'IP администратора для исключения Traffic Control' ''
+     fi
+     python3 -c 'import ipaddress,sys;assert 1<=int(sys.argv[2])<=65535;assert not sys.argv[1] or ipaddress.ip_address(sys.argv[1])' "$ADMIN_IP" "$SSH_PORT" || die 1 'Некорректный IP администратора/SSH-порт.'
+-    if (( SSH_KEY_ONLY==1 ));then
+-        (( NO_SSH==0 && NO_TUNING==0 )) || die 1 '--ssh-key-only несовместим с --no-ssh-hardening и --no-tuning.'
+-        (( SSH_KEY_CONFIRMED==1 )) || die 1 '--ssh-key-only требует --ssh-key-login-confirmed после отдельной проверки входа по ключу.'
+-        [[ -s /root/.ssh/authorized_keys ]] || die 1 'authorized_keys отсутствует: вход только по ключу не может быть безопасно включён.'
+-    fi
+-    log_info 'Auto Tuning: полный performance/security блок, Fail2ban, security updates, NTP/TRIM, disk/inode и reboot-проверки.'
+-    (( NO_PRIVACY==1 )) || log_info 'Two-Way Ping: собственные правила входящих echo/timestamp; PMTU и исходящий ping сохраняются.'
+-    (( NO_TRAFFIC==1 )) || log_info 'Traffic Control: три списка, ручное управление, исключения панели/администратора, журнал, таймер и ntc.'
+-    if (( NO_SSH==0 ));then
+-        log_info 'SSH: MaxAuthTries=3, LoginGraceTime=30, запрет Agent/X11 forwarding, Tunnel и GatewayPorts; порт/TCP forwarding сохраняются.'
+-        if (( SSH_KEY_ONLY==1 ));then log_warn 'После подтверждения будет применён вход только по ключу.'
+-        elif [[ ! -s /root/.ssh/authorized_keys ]];then log_warn 'SSH-ключ отсутствует: парольный вход сохраняется; ограничения и Fail2ban будут включены.';fi
+-    fi
++    (( SSH_KEY_ONLY==0 && SSH_KEY_CONFIRMED==0 )) || die 1 'Изменения SSH отключены этой версией установщика.'
++    log_info 'Auto Tuning: performance/security, Fail2ban, updates, NTP/TRIM; SSH только аудит.'
++    (( NO_PRIVACY==1 )) || log_info 'Two-Way Ping: собственные правила; PMTU и исходящий ping сохраняются.'
++    (( NO_TRAFFIC==1 )) || log_info 'Traffic Control: списки, исключения панели/администратора, таймер и ntc.'
++
+ }
+ security_baseline() {
+     [[ -f $STATE ]] || die 1 'Для компонентов безопасности нужна запись установленной ноды.'
+@@ -1779,47 +2080,7 @@
+         helper set "$STATE" components_backup "\"$BACKUP\""
+     fi
+ }
+-configure_ssh() {
+-    (( NO_SSH==0 )) || return 0
+-    local target=/etc/ssh/sshd_config.d/00-nuvrion-xhttp.conf mode before after tmp
+-    [[ ! -L $target ]] || die 1 'SSH drop-in является symlink.'
+-    command install -d -m 755 /run/sshd
+-    sshd -t || die 1 'Исходный SSH config не проходит проверку.'
+-    if systemctl is-active --quiet ssh.service;then mode=service
+-    elif systemctl is-active --quiet ssh.socket;then mode=socket
+-    else die 1 'SSH service/socket не активны.';fi
+-    before=$(sshd -T)
+-    command install -d -m 755 /etc/ssh/sshd_config.d /run/sshd
+-    tmp=$(mktemp /etc/ssh/sshd_config.d/.nuvrion-xhttp.XXXXXXXX)
+-    cat > "$tmp" <<'SSHCONF'
+-# BEGIN NUVRION XHTTP
+-MaxAuthTries 3
+-LoginGraceTime 30
+-AllowAgentForwarding no
+-PermitTunnel no
+-X11Forwarding no
+-GatewayPorts no
+-# END NUVRION XHTTP
+-SSHCONF
+-    chmod 644 "$tmp"
+-    if [[ -f $target ]] && cmp -s "$target" "$tmp";then rm -f "$tmp"
+-    else mv -f "$tmp" "$target";fi
+-    sshd -t || die 1 'SSH config после изменений не проходит проверку; будет предложен rollback.'
+-    after=$(sshd -T)
+-    python3 -c 'import sys
+-def parse(text):return dict(line.split(None,1) for line in text.splitlines() if " " in line)
+-before=parse(sys.argv[1]);after=parse(sys.argv[2])
+-expected={"maxauthtries":"3","logingracetime":"30","allowagentforwarding":"no","permittunnel":"no","x11forwarding":"no","gatewayports":"no"}
+-assert all(after.get(k)==v for k,v in expected.items())
+-assert all(after.get(k)==before.get(k) for k in ["port","allowtcpforwarding","passwordauthentication","pubkeyauthentication","permitrootlogin","kbdinteractiveauthentication","authenticationmethods"])' "$before" "$after" || die 1 'SSH Match/приоритеты конфликтуют с ограничениями; rollback сохранит прежний вход.'
+-    if [[ $before != "$after" ]];then
+-        if [[ $mode == service ]];then systemctl reload ssh.service
+-        else systemctl daemon-reload;systemctl is-active --quiet ssh.socket;fi
+-    fi
+-    helper set "$STATE" ssh_managed true
+-    (( SSH_KEY_ONLY==0 )) || helper set "$STATE" ssh_key_only true
+-    log_ok 'Ограничения SSH проверены; порт и текущий способ входа сохранены.'
+-}
++configure_ssh() { log_info 'SSH: только аудит; параметры и ключи не изменяются.'; }
+ configure_privacy() {
+     (( NO_PRIVACY==0 )) || return 0
+     local owned
+@@ -1890,24 +2151,9 @@
+         if [[ $(sysctl -n net.ipv4.tcp_fastopen) == 3 ]];then check_result 1 'TCP Fast Open: client + server'
+         else check_result 0 'TCP Fast Open: client + server';fi
+     fi
+-    if [[ $(state_value ssh_managed) == true ]];then
+-        ok=1
+-        sshd -t >/dev/null 2>&1 || ok=0
+-        for value in 'maxauthtries 3' 'logingracetime 30' 'allowagentforwarding no' 'permittunnel no' 'x11forwarding no' 'gatewayports no';do
+-            sshd -T | grep -x "$value" >/dev/null || ok=0
+-        done
+-        if [[ $(state_value ssh_key_only) == true ]];then sshd -T | grep -x 'passwordauthentication no' >/dev/null || ok=0;fi
+-        local baseline
+-        baseline=$(state_value components_backup)
+-        if [[ -f $baseline/ssh-effective.txt ]];then
+-            python3 -c 'import sys
+-def parse(text):return dict(line.split(None,1) for line in text.splitlines() if " " in line)
+-before=parse(open(sys.argv[1]).read());after=parse(sys.argv[2])
+-keys=["port","allowtcpforwarding"]
+-if sys.argv[3]!="true":keys += ["passwordauthentication","pubkeyauthentication","permitrootlogin","kbdinteractiveauthentication","authenticationmethods"]
+-assert all(before.get(k)==after.get(k) for k in keys)' "$baseline/ssh-effective.txt" "$(sshd -T)" "$(state_value ssh_key_only)" || ok=0
+-        fi
+-        check_result "$ok" 'SSH config и согласованные ограничения valid'
++    if command -v sshd >/dev/null;then
++        if sshd -t >/dev/null 2>&1;then check_result 1 'SSH config valid (read-only audit)'
++        else check_result 0 'SSH config valid (read-only audit)';fi
+     fi
+     if [[ $(state_value privacy_expected) == true ]];then
+         if systemctl is-active --quiet nuvrion-two-way-ping.service && systemctl is-enabled --quiet nuvrion-two-way-ping.service && nft list table inet nuvrion_privacy >/dev/null 2>&1;then check_result 1 'Two-Way Ping active/enabled'
+@@ -1935,8 +2181,6 @@
+ }
+ security_restore_runtime() {
+     systemctl daemon-reload
+-    sshd -t || die 1 'Восстановленный SSH config invalid; reload запрещён.'
+-    if systemctl is-active --quiet ssh.service;then systemctl reload ssh.service;fi
+     if systemctl is-active --quiet fail2ban.service;then fail2ban-client -t >/dev/null;systemctl reload-or-restart fail2ban.service;fi
+     if [[ -x /usr/local/bin/nuvrion-traffic-control && -e /var/lib/nuvrion-traffic-control/enabled ]];then /usr/local/bin/nuvrion-traffic-control restore;fi
+ }
+@@ -2011,8 +2255,8 @@
+     export -f systemctl docker
+     local rc=0
+     NEEDRESTART_MODE=l NEEDRESTART_SUSPEND=1 NUVRION_ASSUME_YES=1 \
+-      NUVRION_SECURITY=1 NUVRION_INSTALL_SECURITY_PACKAGES=0 NUVRION_HARDEN_SSH="$SSH_KEY_ONLY" \
+-      NUVRION_SSH_KEY_LOGIN_CONFIRMED="$SSH_KEY_CONFIRMED" NUVRION_MANAGED_FIREWALL=1 NUVRION_ENABLE_UFW=0 \
++      NUVRION_SECURITY=1 NUVRION_INSTALL_SECURITY_PACKAGES=0 NUVRION_HARDEN_SSH=0 \
++      NUVRION_SSH_KEY_LOGIN_CONFIRMED=0 NUVRION_MANAGED_FIREWALL=1 NUVRION_ENABLE_UFW=0 \
+       NUVRION_ALLOW_NODE_RECREATE=0 NUVRION_ALLOW_DOCKER_RESTART=0 NUVRION_CERTIFICATES=0 \
+       NUVRION_INSTALL_ZRAM_MODULES=1 NUVRION_PANEL_PORT=2222 NUVRION_PANEL_IPS="$PANEL_IP" \
+       bash -c '
+@@ -2321,14 +2565,14 @@
+ final_report() {
+     printf '\n══════════════════════════════════════════════════\n  Nuvrion XHTTP Installer · v%s\n\n' "$INSTALLER_VERSION"
+     printf '  Статус: %s\n  Домен: %s\n  Remnanode: %s\n  Xray: %s\n  Node API: :2222\n  Внешний вход: :443\n' "$STATUS" "$DOMAIN" "$NODE_CONTAINER" "$XRAY_VERSION"
+-    printf '  Nginx socket: /dev/shm/nginx.sock\n  XHTTP socket: %s\n  XHTTP path: %s\n' "$([[ -S /dev/shm/xrxh.socket ]] && printf /dev/shm/xrxh.socket || printf 'ожидает применения Remnawave profile')" "$XHTTP_PATH"
++    printf '  Nginx socket: %s\n  XHTTP socket: %s\n  XHTTP path: %s\n' "$NGINX_SOCKET" "$([[ -S $XHTTP_SOCKET ]] && printf '%s' "$XHTTP_SOCKET" || printf 'ожидает применения Remnawave profile')" "$XHTTP_PATH"
+     printf '  Decoy: HTTP %s\n  XHTTP route: HTTP %s\n  TLS: %s\n  Certbot: renewal enabled\n  Firewall: %s, API только %s\n' "$DECOY_CODE" "$ROUTE_CODE" "$CERT_LINEAGE" "$FW" "$PANEL_IP"
+     [[ -z $CERT_LINEAGE ]] || openssl x509 -in "$CERT_LINEAGE/fullchain.pem" -noout -enddate
+     printf '  Reality public key: %s\n  Backup: %s\n  Remnawave profile: %s\n  Host settings: %s\n  Extra: %s\n\n' "$PUBLIC_KEY" "$BACKUP" "$PROFILE" "$HOSTS" "$EXTRA"
+     printf '  ZRAM: %s\n' "$ZRAM_STATUS"
+     [[ $(state_value rps_managed) != true ]] || printf '  RPS: RX-маски / RFS / автозапуск проверены\n'
+     [[ $(state_value security_expected) != true ]] || printf '  Безопасность: kernel hardening, Fail2ban и security updates включены\n'
+-    [[ $(state_value ssh_managed) != true ]] || printf '  SSH: ограничения включены; порт сохранён\n'
++    printf '  SSH: настройки и ключи сохранены\n'
+     [[ $(state_value privacy_expected) != true ]] || printf '  Two-Way Ping: включён\n'
+     [[ $(state_value traffic_expected) != true ]] || printf '  Traffic Control: включён; управление — ntc\n'
+     (( REBOOT_NEEDED==0 )) || log_warn 'Для обновлённого ядра/ZRAM требуется перезагрузка, затем --diagnose.'
+@@ -2347,7 +2591,7 @@
+     # Restrict the API BEFORE a new Remnanode can bind its public host port.
+     configure_firewall;prepare_node;configure_firewall_service
+     configure_certbot
+-    configure_game;configure_nginx;configure_shared_shm
++    configure_socket_directory;configure_game;configure_nginx;configure_shared_shm
+     generate_reality_keys;generate_remnawave_profile
+     prevalidate_nginx;apply_compose;apply_tuning
+     configure_security_components
+@@ -2357,7 +2601,7 @@
+     helper rps-snapshot "$OWN/rps-after.json"
+     run_diagnostics
+     (( FAILS==0 )) || die 1 'Приёмочные проверки не пройдены. Успех не объявляется.'
+-    if (( WAITS==0 ));then touch "$OWN/profile-applied";chmod 600 "$OWN/profile-applied";fi
++    if (( WAITS==0 ));then touch "$OWN/profile-applied";chmod 600 "$OWN/profile-applied";helper set "$STATE" profile_pending false;fi
+     local initial
+     initial=$(state_value initial_backup)
+     helper delta "$initial" "$OWN/owned-delta.json"
+@@ -2371,6 +2615,20 @@
+         log_error "Ошибка (код $rc). Резервная копия: $BACKUP"
+         if (( YES==1 )) || ask_yes 'Выполнить rollback последнего изменения?';then
+             rollback "$BACKUP";rc=8
++            if (( SOCKET_DIR_CREATED==1 )) && [[ ! -e /etc/tmpfiles.d/nuvrion-xhttp.conf ]];then
++                # Only the directory created by THIS transaction is eligible.
++                # Live sockets and any unexpected content prevent removal.
++                python3 -c 'import os,stat,subprocess
++from pathlib import Path
++p=Path("/dev/shm/nuvrion-xhttp")
++if p.is_dir() and not p.is_symlink():
++ active=subprocess.check_output(["ss","-xlpn"],text=True)
++ if str(p)+"/" not in active:
++  children=list(p.iterdir())
++  if all(x.name in ("nginx.sock","xrxh.socket") and stat.S_ISSOCK(x.lstat().st_mode) and x.lstat().st_uid==0 for x in children):
++   for x in children:x.unlink()
++   p.rmdir()' || log_warn 'Socket directory retained; inspect before retry.'
++            fi
+         fi
+     fi
+     [[ -z $WORK || $WORK != /tmp/nuvrion-xhttp.* ]] || rm -rf -- "$WORK"
+@@ -2379,19 +2637,20 @@
+ usage() {
+     cat <<'EOF'
+ Nuvrion XHTTP Installer v1.0.0
+-  --install | --reinstall | --maintain | --diagnose | --remove | --restore
++  --install | --reinstall | --maintain | --diagnose | --self-check | --remove | --restore
+   --domain DOMAIN --panel-ip IP --email EMAIL --node-tag TAG
+   --xhttp-path /api/v3/sync/ --node-container NAME
+-  --node-version keep|latest|VERSION
++  --node-version keep    (образ/Xray сохраняется; нода должна быть установлена)
++  --harden-profile       (явная миграция output: защищённые sockets, cookie-padding, AdGuard/COMSS)
+   --secret-key-file /root/node-secret.txt   (новая нода; root 0600)
+   --profile-input /root/existing-profile.json
+-  --allow-new-reality   (явное разрешение новых ключей при существующем :443)
++  Действующие Reality keys сохраняются; --allow-new-reality отклоняется.
+   --backup /root/nuvrion-xhttp-backups/TIMESTAMP --no-tuning --no-updates --yes
+   --admin-ip IP --ssh-port PORT
+   --no-traffic-control --no-two-way-ping --no-ssh-hardening
+-  --ssh-key-only --ssh-key-login-confirmed   (только после проверки входа по ключу)
++  SSH: только аудит; прежние параметры изменения SSH отклоняются.
+ Диагностика ничего не меняет. --yes подтверждает показанный план и rollback
+-при критической ошибке. Перед сменой версии ноды сохраняется её текущий образ.
++при критической ошибке. Образ ноды и бинарник Xray не заменяются.
+ --maintain: пакеты Ubuntu, зависимости, ZRAM/сеть и безопасная очистка;
+ без изменения профиля/образов и автоматической перезагрузки.
+ EOF
+@@ -2399,7 +2658,7 @@
+ parse_args() {
+     while (($#));do
+         case $1 in
+-            --install) ACTION=install;;--reinstall) ACTION=reinstall;;--maintain) ACTION=maintain;;--diagnose) ACTION=diagnose;;--remove) ACTION=remove;;--restore) ACTION=restore;;
++            --install) ACTION=install;;--reinstall) ACTION=reinstall;;--maintain) ACTION=maintain;;--diagnose) ACTION=diagnose;;--self-check) ACTION=self-check;;--remove) ACTION=remove;;--restore) ACTION=restore;;
+             --acme-pre) ACTION=acme-pre;;--acme-post) ACTION=acme-post;;--acme-deploy) ACTION=acme-deploy;;
+             --firewall-apply) ACTION=firewall-apply;;--game-socket) ACTION=game-socket;;
+             --domain|--panel-ip|--email|--node-tag|--xhttp-path|--node-container|--node-version|--secret-key-file|--profile-input|--backup|--admin-ip|--ssh-port)
+@@ -2407,14 +2666,16 @@
+                 case $1 in --domain) DOMAIN=$2;;--panel-ip) PANEL_IP=$2;;--email) EMAIL=$2;;--node-tag) NODE_TAG=$2;;
+                     --xhttp-path) XHTTP_PATH=$2;PATH_EXPLICIT=1;;--node-container) NODE_CONTAINER=$2;;--node-version) NODE_VERSION=$2;;
+                     --secret-key-file) SECRET_FILE=$2;;--profile-input) PROFILE_INPUT=$2;;--backup) BACKUP_INPUT=$2;;--admin-ip) ADMIN_IP=$2;;--ssh-port) SSH_PORT=$2;;esac;shift;;
+-            --no-traffic-control) NO_TRAFFIC=1;;--no-two-way-ping) NO_PRIVACY=1;;--no-ssh-hardening) NO_SSH=1;;
+-            --ssh-key-only) SSH_KEY_ONLY=1;;--ssh-key-login-confirmed) SSH_KEY_CONFIRMED=1;;
+-            --allow-new-reality) NEW_KEYS=1;;--no-tuning) NO_TUNING=1;;--no-updates) NO_UPDATES=1;;--yes) YES=1;;--help|-h) usage;exit 0;;*) die 1 "Неизвестный параметр: $1";;
++            --no-traffic-control) NO_TRAFFIC=1;;--no-two-way-ping) NO_PRIVACY=1;;--no-ssh-hardening) :;;
++            --ssh-key-only|--ssh-key-login-confirmed) die 1 'Изменения SSH запрещены; используйте отдельную процедуру вне установщика.';;
++            --harden-profile) HARDEN_PROFILE=1;;
++            --allow-new-reality) die 1 'Замена действующих Reality keys запрещена; импортируйте существующий профиль.';;--no-tuning) NO_TUNING=1;;--no-updates) NO_UPDATES=1;;--yes) YES=1;;--help|-h) usage;exit 0;;*) die 1 "Неизвестный параметр: $1";;
+         esac;shift
+     done
+ }
+ main() {
+     parse_args "$@";require_root
++    if [[ $ACTION == self-check ]];then load_settings;banner;run_self_check;return;fi
+     if [[ $ACTION == diagnose ]];then load_settings;banner;run_diagnostics;(( FAILS==0 ));return;fi
+     case $ACTION in
+         acme-pre|acme-post|acme-deploy|firewall-apply|game-socket)

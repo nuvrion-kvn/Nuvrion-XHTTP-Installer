@@ -1,0 +1,7 @@
+* text=auto eol=lf
+site/dist/** linguist-generated=true -whitespace
+site/server/dist/** linguist-generated=true -whitespace
+*.webp binary
+*.png binary
+*.diff -whitespace
+nuvrion-xhttp-install.sh whitespace=-blank-at-eof

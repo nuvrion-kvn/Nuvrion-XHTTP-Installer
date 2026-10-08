@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="480" viewBox="0 0 1600 480" role="img" aria-labelledby="title desc">
+  <title id="title">Nuvrion XHTTP Installer</title>
+  <desc id="desc">Белый и золотой баннер Nuvrion. REALITY TCP, XHTTP, Remnawave, Xray.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#f7f3eb"/></linearGradient>
+    <linearGradient id="gold" x2="1" y2="1"><stop stop-color="#fff1c9"/><stop offset=".35" stop-color="#d59b30"/><stop offset=".65" stop-color="#efc974"/><stop offset="1" stop-color="#a76b16"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#eacb8c" stop-opacity=".38"/><stop offset="1" stop-color="#eacb8c" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="480" rx="28" fill="url(#bg)"/>
+  <ellipse cx="320" cy="250" rx="360" ry="250" fill="url(#glow)"/>
+  <g fill="none" stroke="#d9b76e" stroke-opacity=".36" stroke-width="2">
+    <path d="M-40 116 Q440 -60 820 62 T1640 64"/>
+    <path d="M-40 403 Q490 580 1040 367 T1640 332"/>
+    <path d="M76 -20 Q-24 216 165 495"/>
+  </g>
+  <g fill="url(#gold)">
+    <circle cx="108" cy="79" r="12"/><circle cx="934" cy="58" r="9"/>
+    <circle cx="1465" cy="109" r="14"/><circle cx="1134" cy="397" r="10"/>
+    <circle cx="333" cy="432" r="8"/>
+  </g>
+  <circle cx="268" cy="242" r="132" fill="none" stroke="url(#gold)" stroke-width="40"/>
+  <path d="M210 319 V172 L327 312 V170" fill="none" stroke="url(#gold)" stroke-width="29" stroke-linejoin="round"/>
+  <g font-family="Segoe UI,Arial,sans-serif" fill="#242424">
+    <text x="480" y="215" font-size="118" font-weight="800" letter-spacing="-4">Nuvrion</text>
+    <text x="486" y="307" font-size="70" font-weight="700" letter-spacing="-2">XHTTP Installer</text>
+    <text x="490" y="366" font-size="27" letter-spacing="3" fill="#655c4d">Remnawave · Xray · REALITY TCP + XHTTP</text>
+  </g>
+  <rect x="1348" y="394" width="170" height="43" rx="21" fill="#f2e5c7"/>
+  <text x="1433" y="423" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="700" fill="#825c20">v1.0.0</text>
+</svg>

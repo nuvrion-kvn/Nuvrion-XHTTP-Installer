@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+node_modules/
+.env
+*.env
+*.pem
+*.key
+*.sqlite*
+*.log
+.release-state.json
+.test-tmp/

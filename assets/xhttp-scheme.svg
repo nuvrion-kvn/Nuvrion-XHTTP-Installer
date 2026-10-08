@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+  <title id="title">Nuvrion REALITY TCP + XHTTP</title>
+  <desc id="desc">Internet на Xray 443. REALITY VPN обрабатывается Xray. HTTPS идёт через nginx Unix socket к PokéHabitat, игровому API или XHTTP socket.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9a7434"/></marker></defs>
+  <rect width="1400" height="760" rx="24" fill="#fcfbf8"/>
+  <g font-family="Segoe UI,Arial,sans-serif" text-anchor="middle" fill="#292720">
+    <text x="700" y="49" font-size="28" font-weight="700">REALITY TCP + XHTTP · одна точка входа</text>
+    <g fill="#fff" stroke="#d5bd89" stroke-width="2">
+      <rect x="530" y="78" width="340" height="64" rx="14"/>
+      <rect x="510" y="184" width="380" height="88" rx="14"/>
+      <rect x="80" y="306" width="310" height="90" rx="14"/>
+      <rect x="477" y="318" width="447" height="82" rx="14"/>
+      <rect x="553" y="447" width="294" height="72" rx="14"/>
+      <rect x="57" y="588" width="370" height="85" rx="14"/>
+      <rect x="466" y="588" width="389" height="85" rx="14"/>
+      <rect x="895" y="588" width="448" height="85" rx="14"/>
+    </g>
+    <text x="700" y="119" font-size="24">Internet · TCP 443</text>
+    <text x="700" y="220" font-size="25" font-weight="700">Xray / Remnanode</text>
+    <text x="700" y="251" font-size="19">network_mode: host · REALITY inbound</text>
+    <text x="235" y="343" font-size="23" font-weight="700">Авторизованный REALITY</text>
+    <text x="235" y="374" font-size="19">VLESS → Xray routing → Internet</text>
+    <text x="700" y="351" font-size="19">/dev/shm/nuvrion-xhttp/nginx.sock</text>
+    <text x="700" y="382" font-size="18">Reality target · xver: 1 · TLS + PROXY protocol</text>
+    <text x="700" y="478" font-size="24" font-weight="700">Nginx</text>
+    <text x="700" y="504" font-size="17">HTTPS / HTTP/2 · только Unix socket</text>
+    <text x="242" y="621" font-size="22" font-weight="700">/ → PokéHabitat</text>
+    <text x="242" y="651" font-size="18">локальные HTML / JS / изображения</text>
+    <text x="660" y="621" font-size="22" font-weight="700">/api/game/ → game.sock</text>
+    <text x="660" y="651" font-size="18">локальный игровой API / SQLite</text>
+    <text x="1119" y="621" font-size="22" font-weight="700">/api/v3/sync/ → Xray XHTTP</text>
+    <text x="1119" y="651" font-size="17">/dev/shm/nuvrion-xhttp/xrxh.socket</text>
+    <text x="700" y="722" font-size="18" fill="#706957">Общий /dev/shm · защищённые permissions · обычный HTTP proxy_pass</text>
+  </g>
+  <g fill="none" stroke="#9a7434" stroke-width="3" marker-end="url(#arrow)">
+    <path d="M700 142V181"/><path d="M700 272V315"/><path d="M510 235H235V303"/>
+    <path d="M700 400V444"/><path d="M600 519V555H242V585"/>
+    <path d="M700 519V556H660V585"/><path d="M800 519V555H1119V585"/>
+  </g>
+</svg>

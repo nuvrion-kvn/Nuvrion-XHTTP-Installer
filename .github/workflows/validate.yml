@@ -1,0 +1,42 @@
+name: Проверка XHTTP Installer
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Проверка Bash и SHA-256
+        run: |
+          bash -n nuvrion-xhttp-install.sh
+          sha256sum -c SHA256SUMS
+
+      - name: Проверка Python и shell regression tests
+        run: sudo python3 -m unittest discover -s tests -p 'test_xhttp*.py' -v
+
+      - name: Воспроизводимая автономная сборка
+        run: |
+          cp nuvrion-xhttp-install.sh /tmp/xhttp.before
+          cp SHA256SUMS /tmp/SHA256SUMS.before
+          python3 tools/build_xhttp.py
+          cmp /tmp/xhttp.before nuvrion-xhttp-install.sh
+          cmp /tmp/SHA256SUMS.before SHA256SUMS
+
+      - name: Установка ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Проверка ShellCheck
+        run: shellcheck -S style nuvrion-xhttp-install.sh vendor/nuvrion-auto-tuning-xhttp.sh src/*.sh
+
+      - name: Проверка diff
+        run: git diff --check
