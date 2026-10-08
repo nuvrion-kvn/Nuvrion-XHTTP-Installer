@@ -77,8 +77,8 @@ def main():
         site=work/'site';site.mkdir();site.chmod(0o755)
         with tarfile.open(fileobj=io.BytesIO(base64.b64decode(raw)),mode='r:gz') as archive:
             for member in archive.getmembers():
-                if not member.name.startswith('pokehabitat/public/'):continue
-                relative=Path(member.name.removeprefix('pokehabitat/public/'))
+                if not member.name.startswith('beer-atlas/public/'):continue
+                relative=Path(member.name.removeprefix('beer-atlas/public/'))
                 if relative.is_absolute() or '..' in relative.parts:raise ValueError('Unsafe archive')
                 dest=site/relative;dest.parent.mkdir(parents=True,exist_ok=True)
                 for p in [dest.parent,*dest.parent.parents]:
@@ -104,8 +104,7 @@ def main():
         # container command after create, then start ONLY this isolated service.
         ng.update({'container_name':ng_name,'network_mode':'none','volumes':[]})
         for src,dest,ro in [(work/'nginx.conf','/etc/nginx/nginx.conf',True),(site,'/var/www/decoy',True),
-                            (shm,'/dev/shm',False),('/etc/letsencrypt','/etc/letsencrypt',True),
-                            ('/run/nuvrion-pokehabitat','/run/nuvrion-pokehabitat',True)]:
+                            (shm,'/dev/shm',False),('/etc/letsencrypt','/etc/letsencrypt',True)]:
             ng['volumes'].append({'type':'bind','source':str(src),'target':dest,'read_only':ro})
         write(work/'compose.json',{'services':{'nginx':ng}})
         compose=['docker','compose','-p','nuvrion-isolated-'+token,'-f',str(work/'compose.json')]
@@ -182,7 +181,9 @@ def main():
             for sock in [ngsock,xhsock]:
                 denied=run(['setpriv','--reuid=65534','--regid=65534','--clear-groups','python3','-c',denied_code,str(sock)],check=False)
                 record('foreign local UID denied '+sock.name,denied.returncode!=0 and 'PermissionError' in denied.stderr)
-            record('Game API',' 200 ' in request(args.domain,args.domain,'/api/game/me').splitlines()[0])
+            record('Retired game API',' 404 ' in request(args.domain,args.domain,'/api/game/me').splitlines()[0])
+            record('Atlas module MIME','content-type: text/javascript' in request(args.domain,args.domain,'/app.mjs').lower())
+            record('Atlas catalogue',' 200 ' in request(args.domain,args.domain,'/beers.json').splitlines()[0])
 
             # Exercise the actual Node/s6 entrypoint, not just the Xray binary.
             # Same secret is read in memory and written only to a temporary 0600

@@ -1,0 +1,1889 @@
+[
+  {
+    "id": "ru-ochakovo-svetloe",
+    "name": {
+      "ru": "Очаково Светлое",
+      "en": "Ochakovo Pale"
+    },
+    "brewery": {
+      "ru": "Очаково",
+      "en": "Ochakovo"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Москва · сеть заводов России",
+      "en": "Moscow · Russian brewery network"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Светлый лагер",
+      "en": "Pale lager"
+    },
+    "abv": 4.5,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав не опубликован в официальной карточке"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The official product page does not publish the full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Классический светлый сорт, для которого «Очаково» использует каскадное брожение с двумя культурами дрожжей. Производитель описывает его как многогранное, сбалансированное пиво с мягкой горечью.",
+      "en": "A classic pale beer made with Ochakovo’s cascade fermentation using two yeast cultures. The producer describes a layered, balanced flavour with gentle bitterness."
+    },
+    "aroma": {
+      "ru": "Солодовый и хмелевой профиль стиля",
+      "en": "Malt and hop style profile"
+    },
+    "taste": {
+      "ru": "Сбалансированный, с мягкой горечью",
+      "en": "Balanced with gentle bitterness"
+    },
+    "food": {
+      "ru": [
+        "Курица на гриле",
+        "Запечённый картофель",
+        "Полутвёрдый сыр"
+      ],
+      "en": [
+        "Grilled chicken",
+        "Baked potatoes",
+        "Semi-hard cheese"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · бокал для лагера",
+      "en": "5–7 °C · lager glass"
+    },
+    "color": "#346b9a",
+    "image": "/assets/beer-rus-extra-ochakovo-svetloe.png",
+    "imageCredit": "https://ochakovo.ru/wp-content/uploads/2026/05/can-ochakovo-light.png",
+    "sources": [
+      {
+        "label": "Очаково · официальная карточка / official product page",
+        "url": "https://ochakovo.ru/brand/ochakovo-svetloe/"
+      },
+      {
+        "label": "Очаково · производитель / producer",
+        "url": "https://ochakovo.ru/kompaniya/"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации. «Очаково» производит напитки на нескольких заводах; адрес конкретной партии смотрите на этикетке.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions. Ochakovo operates several plants; check the batch label for the actual production address."
+    }
+  },
+  {
+    "id": "ru-ochakovo-pshenichnoe",
+    "name": {
+      "ru": "Очаково Пшеничное",
+      "en": "Ochakovo Wheat"
+    },
+    "brewery": {
+      "ru": "Очаково",
+      "en": "Ochakovo"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Москва · сеть заводов России",
+      "en": "Moscow · Russian brewery network"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Пшеничное пиво",
+      "en": "Wheat beer"
+    },
+    "abv": 4.9,
+    "ingredients": {
+      "ru": [
+        "Типичная основа пшеничного стиля: вода, пшеничный и ячменный солод, хмель",
+        "Полный состав не опубликован в официальной карточке"
+      ],
+      "en": [
+        "Typical wheat-beer base: water, wheat and barley malt, hops",
+        "The official product page does not publish the full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Пшеничный сорт на технологии каскадного брожения с двумя видами дрожжей. Пряный характер дополнен лёгкой банановой сладостью и мягкой горечью.",
+      "en": "A wheat beer made with cascade fermentation using two yeast types. Its spicy character is complemented by light banana sweetness and gentle bitterness."
+    },
+    "aroma": {
+      "ru": "Пряные и банановые оттенки",
+      "en": "Spicy and banana notes"
+    },
+    "taste": {
+      "ru": "Мягкий, пряный, с лёгкой банановой сладостью",
+      "en": "Soft and spicy with light banana sweetness"
+    },
+    "food": {
+      "ru": [
+        "Птица",
+        "Запечённая рыба",
+        "Мягкий сыр"
+      ],
+      "en": [
+        "Poultry",
+        "Baked fish",
+        "Soft cheese"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · высокий пшеничный бокал",
+      "en": "6–8 °C · tall wheat-beer glass"
+    },
+    "color": "#d4aa4c",
+    "image": "/assets/beer-rus-extra-ochakovo-pshenichnoe.png",
+    "imageCredit": "https://ochakovo.ru/wp-content/uploads/2026/05/can-ochakovo-pshenichnoe.png",
+    "sources": [
+      {
+        "label": "Очаково · официальная карточка / official product page",
+        "url": "https://ochakovo.ru/brand/ochakovo-pshenichnoe/"
+      },
+      {
+        "label": "Очаково · производитель / producer",
+        "url": "https://ochakovo.ru/kompaniya/"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации. «Очаково» производит напитки на нескольких заводах; адрес конкретной партии смотрите на этикетке.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions. Ochakovo operates several plants; check the batch label for the actual production address."
+    }
+  },
+  {
+    "id": "ru-ochakovo-bezalkogolnoe",
+    "name": {
+      "ru": "Очаково Безалкогольное",
+      "en": "Ochakovo Non-Alcoholic"
+    },
+    "brewery": {
+      "ru": "Очаково",
+      "en": "Ochakovo"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Москва · сеть заводов России",
+      "en": "Moscow · Russian brewery network"
+    },
+    "style": "nonalcoholic",
+    "styleName": {
+      "ru": "Безалкогольное светлое",
+      "en": "Non-alcoholic pale beer"
+    },
+    "abv": 0,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав не опубликован в официальной карточке"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The official product page does not publish the full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Безалкогольная версия, в которой каскадное брожение работает на вкус и аромат. Одна культура дрожжей формирует основу вкуса, а другая помогает создать выразительный аромат.",
+      "en": "A non-alcoholic version using cascade fermentation to develop flavour and aroma. One yeast culture forms the flavour base while another helps create its aroma."
+    },
+    "aroma": {
+      "ru": "Выразительный пивной аромат",
+      "en": "Distinct beer aroma"
+    },
+    "taste": {
+      "ru": "Насыщенный пивной вкус и мягкая горечь",
+      "en": "Full beer flavour and gentle bitterness"
+    },
+    "food": {
+      "ru": [
+        "Овощной салат",
+        "Курица",
+        "Закуски"
+      ],
+      "en": [
+        "Vegetable salad",
+        "Chicken",
+        "Snacks"
+      ]
+    },
+    "serve": {
+      "ru": "4–6 °C · бокал для лагера",
+      "en": "4–6 °C · lager glass"
+    },
+    "color": "#537da4",
+    "image": "/assets/beer-rus-extra-ochakovo-bezalkogolnoe.png",
+    "imageCredit": "https://ochakovo.ru/wp-content/uploads/2026/05/can-ochakovo-na.png",
+    "sources": [
+      {
+        "label": "Очаково · официальная карточка / official product page",
+        "url": "https://ochakovo.ru/brand/ochakovo-bezalkogolnoe/"
+      },
+      {
+        "label": "Очаково · производитель / producer",
+        "url": "https://ochakovo.ru/kompaniya/"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации. «Очаково» производит напитки на нескольких заводах; адрес конкретной партии смотрите на этикетке. Крепость 0% приведена так, как она указана производителем на сайте; характеристики партии уточняйте по этикетке.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions. Ochakovo operates several plants; check the batch label for the actual production address. The 0% ABV value follows the producer’s website; check the label for batch specifications."
+    }
+  },
+  {
+    "id": "ru-halzan",
+    "name": {
+      "ru": "Халзан",
+      "en": "Halzan"
+    },
+    "brewery": {
+      "ru": "Очаково",
+      "en": "Ochakovo"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Москва · сеть заводов России",
+      "en": "Moscow · Russian brewery network"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Светлое пиво",
+      "en": "Pale beer"
+    },
+    "abv": 4.5,
+    "ingredients": {
+      "ru": [
+        "Компоненты, названные производителем: вода, ячмень, хмель",
+        "Полный маркировочный состав — на этикетке"
+      ],
+      "en": [
+        "Components named by the producer: water, barley, hops",
+        "Complete label ingredients: see the package"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Светлый сорт, приготовленный по классической технологии. Производитель указывает воду, ячмень и хмель и подчёркивает свежий хмелевой аромат.",
+      "en": "A pale beer made using a classic brewing process. The producer identifies water, barley and hops and highlights a fresh hop aroma."
+    },
+    "aroma": {
+      "ru": "Свежий хмелевой аромат",
+      "en": "Fresh hop aroma"
+    },
+    "taste": {
+      "ru": "Лёгкий солодовый профиль и хмелевая горечь · профиль стиля",
+      "en": "Light malt profile and hop bitterness · style profile"
+    },
+    "food": {
+      "ru": [
+        "Птица",
+        "Копчёный сыр",
+        "Картофель"
+      ],
+      "en": [
+        "Poultry",
+        "Smoked cheese",
+        "Potatoes"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · бокал для лагера",
+      "en": "5–7 °C · lager glass"
+    },
+    "color": "#507367",
+    "image": "/assets/beer-rus-extra-halzan.png",
+    "imageCredit": "https://ochakovo.ru/wp-content/uploads/2024/09/halzan-can.png",
+    "sources": [
+      {
+        "label": "Очаково · официальная карточка / official product page",
+        "url": "https://ochakovo.ru/brand/halzan/"
+      },
+      {
+        "label": "Очаково · производитель / producer",
+        "url": "https://ochakovo.ru/kompaniya/"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации. «Очаково» производит напитки на нескольких заводах; адрес конкретной партии смотрите на этикетке.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions. Ochakovo operates several plants; check the batch label for the actual production address."
+    }
+  },
+  {
+    "id": "ru-ledokol",
+    "name": {
+      "ru": "Ледокол",
+      "en": "Ledokol"
+    },
+    "brewery": {
+      "ru": "Очаково",
+      "en": "Ochakovo"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Москва · сеть заводов России",
+      "en": "Moscow · Russian brewery network"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Крепкий светлый эль",
+      "en": "Strong pale ale"
+    },
+    "abv": 8,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав не опубликован в официальной карточке"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The official product page does not publish the full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Крепкий светлый эль с продолжительным брожением, в ходе которого формируется его крепость. Насыщенный вкус и яркий аромат сочетаются со сбалансированной хмелевой горечью.",
+      "en": "A strong pale ale whose alcohol develops through extended fermentation. A full flavour and vivid aroma are balanced by hop bitterness."
+    },
+    "aroma": {
+      "ru": "Яркий пивной аромат",
+      "en": "Vivid beer aroma"
+    },
+    "taste": {
+      "ru": "Насыщенный, с уравновешенной хмелевой горечью",
+      "en": "Full-flavoured with balanced hop bitterness"
+    },
+    "food": {
+      "ru": [
+        "Жаркое",
+        "Говядина на гриле",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Roast meat",
+        "Grilled beef",
+        "Mature cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · небольшой тюльпан",
+      "en": "8–10 °C · small tulip glass"
+    },
+    "color": "#a4363d",
+    "image": "/assets/beer-rus-extra-ledokol.png",
+    "imageCredit": "https://ochakovo.ru/wp-content/uploads/2024/09/ledokol-can.png",
+    "sources": [
+      {
+        "label": "Очаково · официальная карточка / official product page",
+        "url": "https://ochakovo.ru/brand/ledokol/"
+      },
+      {
+        "label": "Очаково · производитель / producer",
+        "url": "https://ochakovo.ru/kompaniya/"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации. «Очаково» производит напитки на нескольких заводах; адрес конкретной партии смотрите на этикетке.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions. Ochakovo operates several plants; check the batch label for the actual production address."
+    }
+  },
+  {
+    "id": "ru-ora-et-labora-brune",
+    "name": {
+      "ru": "Ora et Labora Brune",
+      "en": "Ora et Labora Brune"
+    },
+    "brewery": {
+      "ru": "Очаково",
+      "en": "Ochakovo"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Москва · сеть заводов России",
+      "en": "Moscow · Russian brewery network"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Бельгийский тёмный эль",
+      "en": "Belgian dark ale"
+    },
+    "abv": 6.5,
+    "ingredients": {
+      "ru": [
+        "Раскрыты: несколько специальных солодов",
+        "Бельгийская культура дрожжей верхового брожения",
+        "Полный маркировочный состав не опубликован"
+      ],
+      "en": [
+        "Disclosed: several speciality malts",
+        "Belgian top-fermenting yeast culture",
+        "The full label ingredients are not published"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Тёмный эль верхового брожения на бельгийской культуре дрожжей и нескольких специальных солодах. По словам производителя, вкус и аромат формируются без дополнительных вкусоароматических добавок.",
+      "en": "A top-fermented dark ale using a Belgian yeast culture and several speciality malts. The producer says its flavour and aroma develop without added flavourings."
+    },
+    "aroma": {
+      "ru": "Тёмный солод и дрожжевые эфиры · профиль стиля",
+      "en": "Dark malt and yeast esters · style profile"
+    },
+    "taste": {
+      "ru": "Солодовая полнота и пряные оттенки · профиль стиля",
+      "en": "Malt richness and spicy notes · style profile"
+    },
+    "food": {
+      "ru": [
+        "Тушёная говядина",
+        "Запечённая утка",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Braised beef",
+        "Roast duck",
+        "Mature cheese"
+      ]
+    },
+    "serve": {
+      "ru": "10–12 °C · тюльпан",
+      "en": "10–12 °C · tulip glass"
+    },
+    "color": "#7b5340",
+    "image": "/assets/beer-rus-extra-ora-et-labora-brune.png",
+    "imageCredit": "https://ochakovo.ru/wp-content/uploads/2024/10/ora-et-labora-brune.png",
+    "sources": [
+      {
+        "label": "Очаково · официальная карточка / official product page",
+        "url": "https://ochakovo.ru/brand/ora-et-labora-brune/"
+      },
+      {
+        "label": "Очаково · производитель / producer",
+        "url": "https://ochakovo.ru/kompaniya/"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации. «Очаково» производит напитки на нескольких заводах; адрес конкретной партии смотрите на этикетке.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions. Ochakovo operates several plants; check the batch label for the actual production address."
+    }
+  },
+  {
+    "id": "ru-ora-et-labora-blonde",
+    "name": {
+      "ru": "Ora et Labora Blonde",
+      "en": "Ora et Labora Blonde"
+    },
+    "brewery": {
+      "ru": "Очаково",
+      "en": "Ochakovo"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Москва · сеть заводов России",
+      "en": "Moscow · Russian brewery network"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Бельгийский светлый эль",
+      "en": "Belgian blonde ale"
+    },
+    "abv": 6.5,
+    "ingredients": {
+      "ru": [
+        "Раскрыта бельгийская культура дрожжей верхового брожения",
+        "Типичная солодовая основа эля; полный состав — на этикетке"
+      ],
+      "en": [
+        "Belgian top-fermenting yeast culture is disclosed",
+        "Typical ale malt base; see the label for full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Янтарно-золотистый эль верхового брожения на бельгийских дрожжах. Во вкусе солод и дрожжевая пряность дополнены сухофруктовыми, цитрусовыми и хлебными оттенками.",
+      "en": "An amber-gold top-fermented ale using Belgian yeast. Malt and yeast spice are joined by dried-fruit, citrus and bready notes."
+    },
+    "aroma": {
+      "ru": "Фрукты, пряности и хлеб",
+      "en": "Fruit, spice and bread"
+    },
+    "taste": {
+      "ru": "Солод, сухофрукты, пряность и цитрус",
+      "en": "Malt, dried fruit, spice and citrus"
+    },
+    "food": {
+      "ru": [
+        "Птица",
+        "Морепродукты",
+        "Полутвёрдый сыр"
+      ],
+      "en": [
+        "Poultry",
+        "Seafood",
+        "Semi-hard cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · тюльпан",
+      "en": "8–10 °C · tulip glass"
+    },
+    "color": "#c19645",
+    "image": "/assets/beer-rus-extra-ora-et-labora-blonde.png",
+    "imageCredit": "https://ochakovo.ru/wp-content/uploads/2024/10/ora-et-labora-blonde.png",
+    "sources": [
+      {
+        "label": "Очаково · официальная карточка / official product page",
+        "url": "https://ochakovo.ru/brand/ora-et-labora-blonde/"
+      },
+      {
+        "label": "Очаково · производитель / producer",
+        "url": "https://ochakovo.ru/kompaniya/"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации. «Очаково» производит напитки на нескольких заводах; адрес конкретной партии смотрите на этикетке.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions. Ochakovo operates several plants; check the batch label for the actual production address."
+    }
+  },
+  {
+    "id": "ru-ora-et-labora-blanche",
+    "name": {
+      "ru": "Ora et Labora Blanche",
+      "en": "Ora et Labora Blanche"
+    },
+    "brewery": {
+      "ru": "Очаково",
+      "en": "Ochakovo"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Москва · сеть заводов России",
+      "en": "Moscow · Russian brewery network"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Бельгийский бланш",
+      "en": "Belgian blanche"
+    },
+    "abv": 4.9,
+    "ingredients": {
+      "ru": [
+        "Пшеничный солод",
+        "Бельгийские дрожжи",
+        "Экстракт кориандра",
+        "Натуральный ароматизатор цедры горького апельсина",
+        "Приведены раскрытые компоненты; полный состав — на этикетке"
+      ],
+      "en": [
+        "Wheat malt",
+        "Belgian yeast",
+        "Coriander extract",
+        "Natural bitter-orange-peel flavouring",
+        "Disclosed components only; full ingredients: see the label"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Нефильтрованный бельгийский пшеничный сорт с естественной мутностью и мягкой текстурой. Пшеничный солод, бельгийские дрожжи, экстракт кориандра и натуральный ароматизатор цедры горького апельсина создают его пряный цитрусовый характер.",
+      "en": "An unfiltered Belgian wheat beer with natural haze and a smooth texture. Wheat malt, Belgian yeast, coriander extract and natural bitter-orange-peel flavouring create its spicy citrus character."
+    },
+    "aroma": {
+      "ru": "Цитрус и кориандр",
+      "en": "Citrus and coriander"
+    },
+    "taste": {
+      "ru": "Мягкая пшеничная основа, пряность и цитрус",
+      "en": "Soft wheat base with spice and citrus"
+    },
+    "food": {
+      "ru": [
+        "Морепродукты",
+        "Лёгкие салаты",
+        "Свежий сыр"
+      ],
+      "en": [
+        "Seafood",
+        "Light salads",
+        "Fresh cheese"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · пшеничный бокал или тюльпан",
+      "en": "5–7 °C · wheat or tulip glass"
+    },
+    "color": "#cbb67c",
+    "image": "/assets/beer-rus-extra-ora-et-labora-blanche.png",
+    "imageCredit": "https://ochakovo.ru/wp-content/uploads/2024/10/ora-et-labora-blanche.png",
+    "sources": [
+      {
+        "label": "Очаково · официальная карточка / official product page",
+        "url": "https://ochakovo.ru/brand/ora-et-labora-blanche/"
+      },
+      {
+        "label": "Очаково · производитель / producer",
+        "url": "https://ochakovo.ru/kompaniya/"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации. «Очаково» производит напитки на нескольких заводах; адрес конкретной партии смотрите на этикетке.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions. Ochakovo operates several plants; check the batch label for the actual production address."
+    }
+  },
+  {
+    "id": "ru-bakunin-god-hand",
+    "name": {
+      "ru": "Bakunin Рука Бога",
+      "en": "Bakunin God’s Hand"
+    },
+    "brewery": {
+      "ru": "Bakunin Brewery",
+      "en": "Bakunin Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург",
+      "en": "Saint Petersburg"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Золотой эль",
+      "en": "Golden ale"
+    },
+    "abv": 4.5,
+    "ingredients": {
+      "ru": [
+        "Раскрытый хмель: Sorachi Ace",
+        "Типичная солодовая основа эля; полный состав не опубликован"
+      ],
+      "en": [
+        "Disclosed hop: Sorachi Ace",
+        "Typical ale malt base; full ingredients are not published"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Лёгкий золотой эль из регулярной линейки Bakunin, впервые сваренный к футбольному чемпионату мира 2014 года. Хмель Sorachi Ace придаёт характерные оттенки лайма и зелёного чая.",
+      "en": "A light golden ale from Bakunin’s regular range, first brewed for the 2014 football World Cup. Sorachi Ace hops give it characteristic lime and green-tea notes."
+    },
+    "aroma": {
+      "ru": "Лайм и зелёный чай",
+      "en": "Lime and green tea"
+    },
+    "taste": {
+      "ru": "Лёгкий и освежающий золотой эль",
+      "en": "Light and refreshing golden ale"
+    },
+    "food": {
+      "ru": [
+        "Рыба на гриле",
+        "Курица",
+        "Овощные блюда"
+      ],
+      "en": [
+        "Grilled fish",
+        "Chicken",
+        "Vegetable dishes"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · тюльпан или бокал для эля",
+      "en": "6–8 °C · tulip or ale glass"
+    },
+    "color": "#4e674a",
+    "image": "/assets/beer-rus-extra-bakunin-god-hand-cutout.webp",
+    "imageCredit": "https://static.tildacdn.com/tild3937-6334-4965-b032-366133623135/--mini.png",
+    "sources": [
+      {
+        "label": "Bakunin · актуальная регулярная линейка / current regular range",
+        "url": "https://bakuninbrewery.com/regbeer"
+      },
+      {
+        "label": "Bakunin · описание рецепта / recipe description",
+        "url": "https://bakuninbrewery.com/page2630370.html"
+      },
+      {
+        "label": "Bakunin · Санкт-Петербург / Saint Petersburg production",
+        "url": "https://bakuninbrewery.com/wte"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-bakunin-moloko",
+    "name": {
+      "ru": "Bakunin Молоко +",
+      "en": "Bakunin Moloko+"
+    },
+    "brewery": {
+      "ru": "Bakunin Brewery",
+      "en": "Bakunin Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург",
+      "en": "Saint Petersburg"
+    },
+    "style": "stout",
+    "styleName": {
+      "ru": "Молочный стаут",
+      "en": "Milk stout"
+    },
+    "abv": 6.5,
+    "ingredients": {
+      "ru": [
+        "Раскрытый компонент: лактоза (молочный сахар)",
+        "Типичная основа стаута: тёмные солода и хмель; полная маркировка не опубликована"
+      ],
+      "en": [
+        "Disclosed component: lactose (milk sugar)",
+        "Typical stout base: dark malts and hops; complete label ingredients are not published"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Классический сладкий молочный стаут, в котором лактоза сохраняется после брожения и формирует десертный характер. Шоколадный аромат сопровождается вкусом молочных ирисок.",
+      "en": "A classic sweet milk stout in which lactose remains after fermentation, giving it a dessert-like character. A chocolate aroma is accompanied by a milky-toffee flavour."
+    },
+    "aroma": {
+      "ru": "Шоколад",
+      "en": "Chocolate"
+    },
+    "taste": {
+      "ru": "Молочные ириски, сладость и плотное тёмное тело",
+      "en": "Milky toffee, sweetness and a full dark body"
+    },
+    "food": {
+      "ru": [
+        "Шоколадный брауни",
+        "Ванильный десерт",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Chocolate brownie",
+        "Vanilla dessert",
+        "Mature cheese"
+      ]
+    },
+    "serve": {
+      "ru": "10–12 °C · пинта или тюльпан",
+      "en": "10–12 °C · pint or tulip glass"
+    },
+    "color": "#77706e",
+    "image": "/assets/beer-rus-extra-bakunin-moloko-cutout.webp",
+    "imageCredit": "https://drive.google.com/file/d/1A9bSY_u7wHBLbre2t_yO0y7Bdo21ySjg/view",
+    "sources": [
+      {
+        "label": "Bakunin · актуальная регулярная линейка / current regular range",
+        "url": "https://bakuninbrewery.com/regbeer"
+      },
+      {
+        "label": "Bakunin · описание рецепта / recipe description",
+        "url": "https://bakuninbrewery.com/page2630370.html"
+      },
+      {
+        "label": "Bakunin · Санкт-Петербург / Saint Petersburg production",
+        "url": "https://bakuninbrewery.com/wte"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-bakunin-fibonacci",
+    "name": {
+      "ru": "Bakunin Fibonacci",
+      "en": "Bakunin Fibonacci"
+    },
+    "brewery": {
+      "ru": "Bakunin Brewery",
+      "en": "Bakunin Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург",
+      "en": "Saint Petersburg"
+    },
+    "style": "ipa",
+    "styleName": {
+      "ru": "Двойной IPA",
+      "en": "Double IPA"
+    },
+    "abv": 8,
+    "ingredients": {
+      "ru": [
+        "Раскрытый хмель: Mosaic, Chinook, Centennial",
+        "Типичная солодовая основа IPA; полный состав не опубликован"
+      ],
+      "en": [
+        "Disclosed hops: Mosaic, Chinook, Centennial",
+        "Typical IPA malt base; full ingredients are not published"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Двойной IPA, в котором идея последовательности Фибоначчи перенесена на добавление хмеля. Mosaic, Chinook и Centennial создают тропическую ароматику и выраженную горечь в послевкусии.",
+      "en": "A double IPA whose hop additions are inspired by the Fibonacci sequence. Mosaic, Chinook and Centennial create tropical aromas and a distinctly bitter finish."
+    },
+    "aroma": {
+      "ru": "Тропические фрукты",
+      "en": "Tropical fruit"
+    },
+    "taste": {
+      "ru": "Насыщенный хмелевой вкус с горьким послевкусием",
+      "en": "Intense hop flavour with a bitter finish"
+    },
+    "food": {
+      "ru": [
+        "Бургер",
+        "Барбекю",
+        "Выдержанный чеддер"
+      ],
+      "en": [
+        "Burger",
+        "Barbecue",
+        "Mature cheddar"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · тюльпан",
+      "en": "8–10 °C · tulip glass"
+    },
+    "color": "#8b7243",
+    "image": "/assets/beer-rus-extra-bakunin-fibonacci-cutout.webp",
+    "imageCredit": "https://static.tildacdn.com/tild3361-6563-4064-b662-306434623866/Fibonacci_05.png",
+    "sources": [
+      {
+        "label": "Bakunin · актуальная регулярная линейка / current regular range",
+        "url": "https://bakuninbrewery.com/regbeer"
+      },
+      {
+        "label": "Bakunin · описание рецепта / recipe description",
+        "url": "https://bakuninbrewery.com/page2630370.html"
+      },
+      {
+        "label": "Bakunin · Санкт-Петербург / Saint Petersburg production",
+        "url": "https://bakuninbrewery.com/wte"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-bakunin-yunost",
+    "name": {
+      "ru": "Bakunin Юность",
+      "en": "Bakunin Yunost"
+    },
+    "brewery": {
+      "ru": "Bakunin Brewery",
+      "en": "Bakunin Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург",
+      "en": "Saint Petersburg"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Баварский хеллес",
+      "en": "Bavarian helles"
+    },
+    "abv": 5,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав не опубликован в официальной карточке"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The official product page does not publish the full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Баварский хеллес из регулярной линейки петербургской пивоварни. Для этого стиля характерны мягкая солодовая основа и сдержанная хмелевая горечь; это ориентир для знакомства, а не отдельная дегустационная оценка.",
+      "en": "A Bavarian helles from the Saint Petersburg brewery’s regular range. A soft malt base and restrained hop bitterness are characteristic of the style and provide a guide to exploring it."
+    },
+    "aroma": {
+      "ru": "Хлебный солод и мягкий хмель · профиль стиля",
+      "en": "Bready malt and gentle hops · style profile"
+    },
+    "taste": {
+      "ru": "Мягкая солодовая полнота · профиль стиля",
+      "en": "Soft malt richness · style profile"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Колбаски",
+        "Картофель"
+      ],
+      "en": [
+        "Chicken",
+        "Sausages",
+        "Potatoes"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · бокал для лагера",
+      "en": "5–7 °C · lager glass"
+    },
+    "color": "#b69760",
+    "image": "/assets/beer-rus-extra-bakunin-yunost-cutout.webp",
+    "imageCredit": "https://drive.google.com/file/d/1JJkH8Eh934KiwHoOGw7ln0DwOuDl9w_l/view",
+    "sources": [
+      {
+        "label": "Bakunin · актуальная регулярная линейка / current regular range",
+        "url": "https://bakuninbrewery.com/regbeer"
+      },
+      {
+        "label": "Bakunin · Санкт-Петербург / Saint Petersburg production",
+        "url": "https://bakuninbrewery.com/wte"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-bakunin-anyweisse",
+    "name": {
+      "ru": "Bakunin Anyweisse",
+      "en": "Bakunin Anyweisse"
+    },
+    "brewery": {
+      "ru": "Bakunin Brewery",
+      "en": "Bakunin Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург",
+      "en": "Saint Petersburg"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Хефевайцен",
+      "en": "Hefeweizen"
+    },
+    "abv": 4.7,
+    "ingredients": {
+      "ru": [
+        "Типичная основа пшеничного стиля: вода, пшеничный и ячменный солод, хмель",
+        "Полный состав не опубликован в официальной карточке"
+      ],
+      "en": [
+        "Typical wheat-beer base: water, wheat and barley malt, hops",
+        "The official product page does not publish the full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Традиционный хефевайцен из регулярной линейки Bakunin. Пшеничная мягкость, банановые эфиры и гвоздичные оттенки — характерный профиль стиля, по которому удобно знакомиться с этим сортом.",
+      "en": "A traditional hefeweizen from Bakunin’s regular range. Soft wheat character, banana esters and clove notes form the style profile and offer a guide to exploring this beer."
+    },
+    "aroma": {
+      "ru": "Банан и гвоздика · профиль стиля",
+      "en": "Banana and clove · style profile"
+    },
+    "taste": {
+      "ru": "Мягкая пшеница и пряные эфиры · профиль стиля",
+      "en": "Soft wheat and spicy esters · style profile"
+    },
+    "food": {
+      "ru": [
+        "Птица",
+        "Запечённая рыба",
+        "Мягкий сыр"
+      ],
+      "en": [
+        "Poultry",
+        "Baked fish",
+        "Soft cheese"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · высокий пшеничный бокал",
+      "en": "6–8 °C · tall wheat-beer glass"
+    },
+    "color": "#8b92a6",
+    "image": "/assets/beer-rus-extra-bakunin-anyweisse-cutout.webp",
+    "imageCredit": "https://drive.google.com/file/d/1i3gA87iCcN8qypn1tnvWkq2YFwC_guJo/view",
+    "sources": [
+      {
+        "label": "Bakunin · актуальная регулярная линейка / current regular range",
+        "url": "https://bakuninbrewery.com/regbeer"
+      },
+      {
+        "label": "Bakunin · Санкт-Петербург / Saint Petersburg production",
+        "url": "https://bakuninbrewery.com/wte"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-bakunin-salty-dog",
+    "name": {
+      "ru": "Bakunin Salty Dog",
+      "en": "Bakunin Salty Dog"
+    },
+    "brewery": {
+      "ru": "Bakunin Brewery",
+      "en": "Bakunin Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург",
+      "en": "Saint Petersburg"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Гозе",
+      "en": "Gose"
+    },
+    "abv": 5,
+    "ingredients": {
+      "ru": [
+        "Раскрытые добавки: кориандр и соль",
+        "Типичная зерновая основа гозе; полный маркировочный состав не опубликован"
+      ],
+      "en": [
+        "Disclosed additions: coriander and salt",
+        "Typical gose grain base; complete label ingredients are not published"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Кислый эль в стиле гозе с кориандром и солью, произведённый методом kettle sour. Сдержанный хмелевой аромат уступает место пряности, кислотности и солоноватому финишу.",
+      "en": "A gose-style sour ale with coriander and salt, made using the kettle-sour method. Restrained hop aroma gives way to spice, acidity and a saline finish."
+    },
+    "aroma": {
+      "ru": "Пряность и сдержанный хмель",
+      "en": "Spice and restrained hops"
+    },
+    "taste": {
+      "ru": "Кисловатый, пряный, с солоноватым финишем",
+      "en": "Tart and spicy with a saline finish"
+    },
+    "food": {
+      "ru": [
+        "Морепродукты",
+        "Свежий сыр",
+        "Овощной салат"
+      ],
+      "en": [
+        "Seafood",
+        "Fresh cheese",
+        "Vegetable salad"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · тюльпан",
+      "en": "5–7 °C · tulip glass"
+    },
+    "color": "#6093ab",
+    "image": "/assets/beer-rus-extra-bakunin-salty-dog-cutout.webp",
+    "imageCredit": "https://drive.google.com/file/d/1zVF6Oot2pcGTTTQFEe6TzjPAis95cQfR/view",
+    "sources": [
+      {
+        "label": "Bakunin · актуальная регулярная линейка / current regular range",
+        "url": "https://bakuninbrewery.com/regbeer"
+      },
+      {
+        "label": "Bakunin · описание рецепта / recipe description",
+        "url": "https://bakuninbrewery.com/page2630370.html"
+      },
+      {
+        "label": "Bakunin · Санкт-Петербург / Saint Petersburg production",
+        "url": "https://bakuninbrewery.com/wte"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-bakunin-rubin",
+    "name": {
+      "ru": "Bakunin Рубин",
+      "en": "Bakunin Rubin"
+    },
+    "brewery": {
+      "ru": "Bakunin Brewery",
+      "en": "Bakunin Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург",
+      "en": "Saint Petersburg"
+    },
+    "style": "fruit",
+    "styleName": {
+      "ru": "Двойной вишнёвый эль",
+      "en": "Double cherry ale"
+    },
+    "abv": 6.9,
+    "ingredients": {
+      "ru": [
+        "Вишнёвый характер заявлен производителем; форма добавки не раскрыта",
+        "Солодовая основа эля; полный состав не опубликован"
+      ],
+      "en": [
+        "The producer states a cherry character; the addition’s form is not disclosed",
+        "Ale malt base; full ingredients are not published"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Двойной вишнёвый эль крепостью 6,9% из актуальной регулярной линейки Bakunin. Вишнёвый характер заявлен в названии стиля, но производитель не раскрывает в карточке точную форму фруктовой добавки.",
+      "en": "A 6.9% double cherry ale from Bakunin’s current regular range. Its cherry character is stated in the style name, while the product card does not disclose the exact form of the fruit addition."
+    },
+    "aroma": {
+      "ru": "Вишнёвый профиль сорта",
+      "en": "Cherry beer profile"
+    },
+    "taste": {
+      "ru": "Насыщенный вишнёвый характер · ориентир по стилю",
+      "en": "Rich cherry character · style guide"
+    },
+    "food": {
+      "ru": [
+        "Утка",
+        "Мягкий сыр",
+        "Шоколадный десерт"
+      ],
+      "en": [
+        "Duck",
+        "Soft cheese",
+        "Chocolate dessert"
+      ]
+    },
+    "serve": {
+      "ru": "7–9 °C · тюльпан",
+      "en": "7–9 °C · tulip glass"
+    },
+    "color": "#a14d56",
+    "image": "/assets/beer-rus-extra-bakunin-rubin-cutout.webp",
+    "imageCredit": "https://drive.google.com/file/d/1atjzRpoQJ-kwAjb4ooChkZECoByxccuC/view",
+    "sources": [
+      {
+        "label": "Bakunin · актуальная регулярная линейка / current regular range",
+        "url": "https://bakuninbrewery.com/regbeer"
+      },
+      {
+        "label": "Bakunin · Санкт-Петербург / Saint Petersburg production",
+        "url": "https://bakuninbrewery.com/wte"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-bakunin-chistyi",
+    "name": {
+      "ru": "Bakunin Чистый",
+      "en": "Bakunin Chistyi"
+    },
+    "brewery": {
+      "ru": "Bakunin Brewery",
+      "en": "Bakunin Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург",
+      "en": "Saint Petersburg"
+    },
+    "style": "nonalcoholic",
+    "styleName": {
+      "ru": "Безалкогольный пейл-эль",
+      "en": "Non-alcoholic pale ale"
+    },
+    "abv": 0.5,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав не опубликован в официальной карточке"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The official product page does not publish the full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Безалкогольный пейл-эль из регулярной линейки петербургской пивоварни с указанной крепостью 0,5%. Хмелевой и солодовый профиль светлого эля служит ориентиром для знакомства; полный рецепт производитель не публикует.",
+      "en": "A non-alcoholic pale ale from the Saint Petersburg brewery’s regular range, listed at 0.5% ABV. A pale ale’s hop and malt profile offers a guide to exploring it; the producer does not publish the complete recipe."
+    },
+    "aroma": {
+      "ru": "Хмелевой профиль светлого эля · профиль стиля",
+      "en": "Pale-ale hop profile · style guide"
+    },
+    "taste": {
+      "ru": "Лёгкая солодовая основа и хмель · профиль стиля",
+      "en": "Light malt base and hops · style guide"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Бургер",
+        "Салат"
+      ],
+      "en": [
+        "Chicken",
+        "Burger",
+        "Salad"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · бокал для эля",
+      "en": "5–7 °C · ale glass"
+    },
+    "color": "#878d9c",
+    "image": "/assets/beer-rus-extra-bakunin-chistyi-cutout.webp",
+    "imageCredit": "https://static.tildacdn.com/tild3864-3637-4531-b333-656338393062/reg_copy3.jpg",
+    "sources": [
+      {
+        "label": "Bakunin · актуальная регулярная линейка / current regular range",
+        "url": "https://bakuninbrewery.com/regbeer"
+      },
+      {
+        "label": "Bakunin · Санкт-Петербург / Saint Petersburg production",
+        "url": "https://bakuninbrewery.com/wte"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-black-ipa",
+    "name": {
+      "ru": "Jaws Чёрная Атомная Прачечная",
+      "en": "Jaws Black Atomic Laundry"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "ipa",
+    "styleName": {
+      "ru": "Чёрный IPA",
+      "en": "Black IPA"
+    },
+    "abv": 7,
+    "ingredients": {
+      "ru": [
+        "Солода: Pilsner, Special B, Caramel, Chocolate",
+        "Хмель: Citra, Mosaic, Cascade, Chinook",
+        "Приведена раскрытая солодовая и хмелевая засыпь, а не полный состав"
+      ],
+      "en": [
+        "Malts: Pilsner, Special B, Caramel, Chocolate",
+        "Hops: Citra, Mosaic, Cascade, Chinook",
+        "Disclosed malt and hop bill, not a complete ingredient list"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Тёмная версия «Атомной Прачечной» с интенсивным хмелевым характером. Четыре сорта хмеля сочетаются с тёмной солодовой засыпью, создавая контраст между цветом и узнаваемой горечью IPA.",
+      "en": "A dark version of Atomic Laundry with an intense hop character. Four hop varieties meet a dark malt bill, contrasting its colour with the familiar bitterness of an IPA."
+    },
+    "aroma": {
+      "ru": "Выраженная хмелевая ароматика",
+      "en": "Pronounced hop aroma"
+    },
+    "taste": {
+      "ru": "Мощная хмелевая горечь на тёмной солодовой основе",
+      "en": "Powerful hop bitterness on a dark malt base"
+    },
+    "food": {
+      "ru": [
+        "Говядина на гриле",
+        "Барбекю",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Grilled beef",
+        "Barbecue",
+        "Mature cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · тюльпан",
+      "en": "8–10 °C · tulip glass"
+    },
+    "color": "#464745",
+    "image": "/assets/beer-rus-extra-jaws-black-ipa-cutout.webp",
+    "imageCredit": "https://static.tildacdn.com/tild3634-6639-4838-a338-323465343130/src_35.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес производства / official product and production address",
+        "url": "https://jawsbeer.ru/chernaya-atomnaya-prachechnaya"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-red-ipa",
+    "name": {
+      "ru": "Jaws Красная Атомная Прачечная",
+      "en": "Jaws Red Atomic Laundry"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "ipa",
+    "styleName": {
+      "ru": "IPA с острым перцем",
+      "en": "Chilli IPA"
+    },
+    "abv": 7,
+    "ingredients": {
+      "ru": [
+        "Солода: Pale Ale, Melano, Brown Supreme",
+        "Хмель: Cascade, Centennial, Mosaic, Citra",
+        "Острый перец",
+        "Полный маркировочный состав — на этикетке"
+      ],
+      "en": [
+        "Malts: Pale Ale, Melano, Brown Supreme",
+        "Hops: Cascade, Centennial, Mosaic, Citra",
+        "Hot chilli pepper",
+        "Complete label ingredients: see the package"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Вариация IPA с добавлением острого перца. Знакомая хмелевая горечь «Атомной Прачечной» соединяется с пряной жгучестью чили.",
+      "en": "An IPA variation brewed with hot chilli pepper. Atomic Laundry’s familiar hop bitterness combines with the spicy heat of chilli."
+    },
+    "aroma": {
+      "ru": "Хмелевой и пряный характер",
+      "en": "Hoppy and spicy character"
+    },
+    "taste": {
+      "ru": "Хмелевая горечь и жгучесть перца",
+      "en": "Hop bitterness and chilli heat"
+    },
+    "food": {
+      "ru": [
+        "Бургер",
+        "Тако",
+        "Мясо на гриле"
+      ],
+      "en": [
+        "Burger",
+        "Tacos",
+        "Grilled meat"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · тюльпан",
+      "en": "8–10 °C · tulip glass"
+    },
+    "color": "#af4b48",
+    "image": "/assets/beer-rus-extra-jaws-red-ipa.png",
+    "imageCredit": "https://static.tildacdn.com/tild3736-3261-4166-b862-316662346566/src_34.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес производства / official product and production address",
+        "url": "https://jawsbeer.ru/krasnaya-atomnaya-prachechnaya"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-nitro",
+    "name": {
+      "ru": "Jaws Nitro",
+      "en": "Jaws Nitro"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "stout",
+    "styleName": {
+      "ru": "Азотный стаут",
+      "en": "Nitro stout"
+    },
+    "abv": 6,
+    "ingredients": {
+      "ru": [
+        "Солода: Pale Ale, Light Munich, Toasted Wheat, Gold Brown, Crystal, Chocolate Wheat, Black",
+        "Хмель: Columbus, Ahtanum",
+        "Азот используется при подаче; полный маркировочный состав — на упаковке"
+      ],
+      "en": [
+        "Malts: Pale Ale, Light Munich, Toasted Wheat, Gold Brown, Crystal, Chocolate Wheat, Black",
+        "Hops: Columbus, Ahtanum",
+        "Nitrogen is used for serving; complete label ingredients: see the package"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Стаут с семью солодами, рассчитанный на характерную азотную подачу. Кремовая пена и вкус шоколадного пудинга дополняют эффект каскада пузырьков в бокале.",
+      "en": "A seven-malt stout designed for a characteristic nitrogen pour. Creamy foam and a chocolate-pudding flavour accompany the cascade of bubbles in the glass."
+    },
+    "aroma": {
+      "ru": "Шоколадный десертный профиль",
+      "en": "Chocolate dessert profile"
+    },
+    "taste": {
+      "ru": "Шоколадный пудинг и кремовая текстура",
+      "en": "Chocolate pudding and creamy texture"
+    },
+    "food": {
+      "ru": [
+        "Шоколадный десерт",
+        "Жаркое",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Chocolate dessert",
+        "Roast meat",
+        "Mature cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · пинта; эффект азота зависит от формы выпуска",
+      "en": "8–10 °C · pint glass; nitrogen effect depends on the format"
+    },
+    "color": "#8a8173",
+    "image": "/assets/beer-rus-extra-jaws-nitro.png",
+    "imageCredit": "https://static.tildacdn.com/tild3466-6331-4133-b935-663237333439/noroot.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес производства / official product and production address",
+        "url": "https://jawsbeer.ru/jawsnitro"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-om",
+    "name": {
+      "ru": "Jaws Ом",
+      "en": "Jaws Om"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Пейл-эль Новой Англии",
+      "en": "New England pale ale"
+    },
+    "abv": 5.5,
+    "ingredients": {
+      "ru": [
+        "Солода: Pale Ale, White Classic",
+        "Хмель: Citra",
+        "Приведена раскрытая засыпь; полный состав — на этикетке"
+      ],
+      "en": [
+        "Malts: Pale Ale, White Classic",
+        "Hops: Citra",
+        "Disclosed brewing bill; complete ingredients: see the label"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Светлый эль Новой Англии, охмелённый Citra. Производитель подчёркивает сочное фруктовое послевкусие, которое раскрывается без сильной горечи.",
+      "en": "A New England pale ale hopped with Citra. The producer highlights a juicy, fruity finish that unfolds without strong bitterness."
+    },
+    "aroma": {
+      "ru": "Фруктовая хмелевая ароматика",
+      "en": "Fruity hop aroma"
+    },
+    "taste": {
+      "ru": "Сочный фруктовый финиш и мягкая горечь",
+      "en": "Juicy fruity finish and gentle bitterness"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Морепродукты",
+        "Лёгкий бургер"
+      ],
+      "en": [
+        "Chicken",
+        "Seafood",
+        "Light burger"
+      ]
+    },
+    "serve": {
+      "ru": "7–9 °C · тюльпан",
+      "en": "7–9 °C · tulip glass"
+    },
+    "color": "#bc9845",
+    "image": "/assets/beer-rus-extra-jaws-om-cutout.webp",
+    "imageCredit": "https://static.tildacdn.com/tild6161-3034-4339-a330-393036663939/bottle_033_Jaws_OM.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес производства / official product and production address",
+        "url": "https://jawsbeer.ru/om"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-jazz-mango",
+    "name": {
+      "ru": "Jaws Jazz & Juice Mango",
+      "en": "Jaws Jazz & Juice Mango"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "fruit",
+    "styleName": {
+      "ru": "Фруктовый IPA с манго",
+      "en": "Mango fruit IPA"
+    },
+    "abv": 6.5,
+    "ingredients": {
+      "ru": [
+        "Солода: Pale Ale, White Classic",
+        "Хмель: Citra, Galaxy, Idaho",
+        "Манго",
+        "Форма фруктовой добавки и полный состав — на этикетке"
+      ],
+      "en": [
+        "Malts: Pale Ale, White Classic",
+        "Hops: Citra, Galaxy, Idaho",
+        "Mango",
+        "Fruit-addition format and complete ingredients: see the label"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Фруктовый IPA, в котором манго сочетается с тремя ароматными хмелями. Спелый тропический характер и сочность уравновешены деликатной горечью.",
+      "en": "A fruit IPA combining mango with three aromatic hop varieties. Ripe tropical character and juiciness are balanced by delicate bitterness."
+    },
+    "aroma": {
+      "ru": "Спелое манго и тропические фрукты",
+      "en": "Ripe mango and tropical fruit"
+    },
+    "taste": {
+      "ru": "Сочный тропический вкус и мягкая горечь",
+      "en": "Juicy tropical flavour and gentle bitterness"
+    },
+    "food": {
+      "ru": [
+        "Тако с курицей",
+        "Креветки",
+        "Острые закуски"
+      ],
+      "en": [
+        "Chicken tacos",
+        "Prawns",
+        "Spicy snacks"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · тюльпан",
+      "en": "6–8 °C · tulip glass"
+    },
+    "color": "#cda151",
+    "image": "/assets/beer-rus-extra-jaws-jazz-mango-cutout.webp",
+    "imageCredit": "https://static.tildacdn.com/tild6337-6461-4661-b061-623962386563/bottle_05_Jaws_JazzJ.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес производства / official product and production address",
+        "url": "https://jawsbeer.ru/jazz-and-juice-mango"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-citraizen",
+    "name": {
+      "ru": "Jaws Citraizen",
+      "en": "Jaws Citraizen"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Охмелённый кристаллвайцен",
+      "en": "Hopped kristallweizen"
+    },
+    "abv": 6,
+    "ingredients": {
+      "ru": [
+        "Солода: Wheat, Pilsen, Crystal",
+        "Хмель: Citra, Perle",
+        "Приведена раскрытая засыпь; полный состав — на этикетке"
+      ],
+      "en": [
+        "Malts: Wheat, Pilsen, Crystal",
+        "Hops: Citra, Perle",
+        "Disclosed brewing bill; complete ingredients: see the label"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Кристаллвайцен с сочетанием баварского пшеничного характера и американского хмеля Citra. Цитрусовый аромат дополнен дрожжевыми банановыми оттенками и деликатной пряностью в послевкусии.",
+      "en": "A kristallweizen combining Bavarian wheat-beer character with American Citra hops. Citrus aroma is joined by yeast-derived banana notes and delicate spice in the finish."
+    },
+    "aroma": {
+      "ru": "Цитрус и банановые оттенки",
+      "en": "Citrus and banana notes"
+    },
+    "taste": {
+      "ru": "Лёгкий пшеничный вкус и тонкая пряность",
+      "en": "Light wheat flavour and subtle spice"
+    },
+    "food": {
+      "ru": [
+        "Рыба",
+        "Птица",
+        "Мягкий сыр"
+      ],
+      "en": [
+        "Fish",
+        "Poultry",
+        "Soft cheese"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · пшеничный бокал",
+      "en": "6–8 °C · wheat-beer glass"
+    },
+    "color": "#d08d4d",
+    "image": "/assets/beer-rus-extra-jaws-citraizen.png",
+    "imageCredit": "https://static.tildacdn.com/tild3031-3261-4333-b138-623330373236/bottle_05_Jaws_Cit.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес производства / official product and production address",
+        "url": "https://jawsbeer.ru/citraizen"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-hyper-ipa",
+    "name": {
+      "ru": "Jaws Hyper IPA",
+      "en": "Jaws Hyper IPA"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "ipa",
+    "styleName": {
+      "ru": "Двойной IPA",
+      "en": "Double IPA"
+    },
+    "abv": 8.5,
+    "ingredients": {
+      "ru": [
+        "Солода: Pilsner, Caramel",
+        "Хмель: Galaxy, Vic Secret, Idaho",
+        "Приведена раскрытая засыпь; полный состав — на этикетке"
+      ],
+      "en": [
+        "Malts: Pilsner, Caramel",
+        "Hops: Galaxy, Vic Secret, Idaho",
+        "Disclosed brewing bill; complete ingredients: see the label"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Двойной IPA на хмелях Galaxy, Vic Secret и Idaho. Смолистая горечь и древесные оттенки опираются на массивную солодовую основу.",
+      "en": "A double IPA using Galaxy, Vic Secret and Idaho hops. Resinous bitterness and woody notes are supported by a substantial malt base."
+    },
+    "aroma": {
+      "ru": "Смолистые и древесные оттенки",
+      "en": "Resinous and woody notes"
+    },
+    "taste": {
+      "ru": "Мощная смолистая горечь и плотное солодовое тело",
+      "en": "Powerful resinous bitterness and a full malt body"
+    },
+    "food": {
+      "ru": [
+        "Барбекю",
+        "Говядина",
+        "Выдержанный чеддер"
+      ],
+      "en": [
+        "Barbecue",
+        "Beef",
+        "Mature cheddar"
+      ]
+    },
+    "serve": {
+      "ru": "9–11 °C · небольшой тюльпан",
+      "en": "9–11 °C · small tulip glass"
+    },
+    "color": "#9cba44",
+    "image": "/assets/beer-rus-extra-jaws-hyper-ipa.png",
+    "imageCredit": "https://static.tildacdn.com/tild3039-3532-4432-b362-353965333261/Hyper_IPA.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес производства / official product and production address",
+        "url": "https://jawsbeer.ru/hyper-ipa"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-gorky-get-lost",
+    "name": {
+      "ru": "Горьковская Get Lost",
+      "en": "Gorkovskaya Get Lost"
+    },
+    "brewery": {
+      "ru": "Горьковская пивоварня",
+      "en": "Gorkovskaya Brewery"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Нижний Новгород",
+      "en": "Nizhny Novgorod"
+    },
+    "style": "fruit",
+    "styleName": {
+      "ru": "Имперский ягодный саур-эль",
+      "en": "Imperial berry sour ale"
+    },
+    "abv": 6.5,
+    "ingredients": {
+      "ru": [
+        "Раскрытые добавки: пюре малины, ежевики и чёрной смородины",
+        "Полный состав пивной основы не опубликован"
+      ],
+      "en": [
+        "Disclosed additions: raspberry, blackberry and blackcurrant purées",
+        "The full beer-base ingredients are not published"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Плотный имперский саур-эль из Нижнего Новгорода с пюре малины, ежевики и чёрной смородины. Производитель описывает сочетание насыщенной ягодной основы и освежающего кислого характера.",
+      "en": "A full-bodied imperial sour ale from Nizhny Novgorod with raspberry, blackberry and blackcurrant purées. The producer describes a rich berry base combined with a refreshing sour character."
+    },
+    "aroma": {
+      "ru": "Малина, ежевика и чёрная смородина · профиль добавок",
+      "en": "Raspberry, blackberry and blackcurrant · addition profile"
+    },
+    "taste": {
+      "ru": "Плотный ягодный вкус и освежающая кислотность",
+      "en": "Full berry flavour and refreshing acidity"
+    },
+    "food": {
+      "ru": [
+        "Мягкий сыр",
+        "Запечённая утка",
+        "Ягодный десерт"
+      ],
+      "en": [
+        "Soft cheese",
+        "Roast duck",
+        "Berry dessert"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · тюльпан",
+      "en": "6–8 °C · tulip glass"
+    },
+    "color": "#8e4a6a",
+    "image": "/assets/beer-rus-extra-gorky-get-lost.png",
+    "imageCredit": "https://static.tildacdn.com/tild3134-6235-4930-b661-376633303931/Add_label_to_beer_bo.png",
+    "sources": [
+      {
+        "label": "Горьковская · официальная витрина / official range",
+        "url": "https://gorkovskaya.ru/brewery"
+      },
+      {
+        "label": "Горьковская · карточка Get Lost / Get Lost product description",
+        "url": "https://gorkovskaya.ru/gastropub"
+      }
+    ],
+    "note": {
+      "ru": "Приведены раскрытые компоненты или типичная основа стиля, а не полный маркировочный состав. Сочетания с едой, температура и бокал — редакционные рекомендации.",
+      "en": "Ingredients show disclosed components or the typical style base, not a complete label declaration. Food pairings, temperature and glassware are editorial suggestions."
+    },
+    "imageType": "photo"
+  }
+]

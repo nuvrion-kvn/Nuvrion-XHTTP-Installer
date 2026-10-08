@@ -151,28 +151,28 @@ configure_firewall
             with self.assertRaises(ValueError):invoke('1')
             self.assertEqual((dest/'new.js').read_text(),'foreign')
 
-    def test_bundle_preflight_is_read_only_and_rejects_unowned_game_code(self):
+    def test_bundle_preflight_is_read_only_and_requires_complete_atlas(self):
         with tempfile.TemporaryDirectory() as td:
-            root=Path(td);own=root/'own';public=root/'public';public.mkdir();game=root/'game'
+            root=Path(td);own=root/'own';public=root/'public';public.mkdir()
             (public/'index.html').write_text('existing site')
-            archive=io.BytesIO()
-            with tarfile.open(fileobj=archive,mode='w:gz') as tar:
-                for name,data in [('pokehabitat/public/index.html',b'new'),('pokehabitat/server/server.mjs',b'new game')]:
-                    info=tarfile.TarInfo(name);info.size=len(data);tar.addfile(info,io.BytesIO(data))
-            def invoke():
+            def invoke(files):
+                archive=io.BytesIO()
+                with tarfile.open(fileobj=archive,mode='w:gz') as tar:
+                    for name,data in files:
+                        info=tarfile.TarInfo(name);info.size=len(data);tar.addfile(info,io.BytesIO(data))
                 output=io.StringIO()
-                with patch.dict(LIB,OWN=own),patch.object(sys,'argv',['helper','bundle-assets-preflight',str(public),str(game)]),\
+                with patch.dict(LIB,OWN=own),patch.object(sys,'argv',['helper','bundle-assets-preflight',str(public)]),\
                         patch.object(sys,'stdin',types.SimpleNamespace(buffer=io.BytesIO(archive.getvalue()))),contextlib.redirect_stdout(output):
                     LIB['run']()
                 return json.loads(output.getvalue())
-            self.assertEqual(invoke(),['index.html'])
-            self.assertFalse(own.exists());self.assertFalse(game.exists())
+            files=[('beer-atlas/public/index.html',b'new'),('beer-atlas/public/beers.json',b'[]')]
+            self.assertEqual(invoke(files),['index.html'])
+            self.assertFalse(own.exists())
             self.assertEqual((public/'index.html').read_text(),'existing site')
-            game.mkdir();(game/'server.mjs').write_text('foreign game')
-            with self.assertRaises(ValueError):invoke()
-            self.assertEqual((game/'server.mjs').read_text(),'foreign game')
+            for invalid in [files[:1],files+[files[0]],files+[('../escape',b'x')]]:
+                with self.assertRaises(ValueError):invoke(invalid)
+            self.assertEqual((public/'index.html').read_text(),'existing site')
 
-    @unittest.skipIf(os.name=='nt','Hardlink fixture')
     def test_confirmed_public_replacement_does_not_mutate_other_hardlinks(self):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td);source=root/'source';source.mkdir();(source/'index.html').write_text('new site')

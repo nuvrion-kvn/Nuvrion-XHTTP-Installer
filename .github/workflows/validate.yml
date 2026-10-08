@@ -11,16 +11,65 @@ permissions:
   contents: read
 
 jobs:
+  prepare-installer:
+    # A source-only PR may carry the payload marker while the full offline
+    # installer exceeds the connector's request limit. Build it on GitHub,
+    # commit only the two generated files, then validate that exact branch.
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Собрать автономный установщик в ветке изменения
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          python3 tools/build_xhttp.py
+          if ! git diff --quiet -- nuvrion-xhttp-install.sh SHA256SUMS; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add nuvrion-xhttp-install.sh SHA256SUMS
+            git commit -m 'Rebuild the verified offline installer and checksum'
+            git push origin "HEAD:refs/heads/$HEAD_BRANCH"
+          fi
+
   validate:
+    needs: prepare-installer
+    if: always() && (needs.prepare-installer.result == 'success' || needs.prepare-installer.result == 'skipped')
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref || github.ref }}
 
       - name: Проверка Bash и SHA-256
         run: |
           bash -n install.sh
           bash -n nuvrion-xhttp-install.sh
           sha256sum -c SHA256SUMS
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Проверка каталога, перевода, карточек и анимации
+        run: |
+          npm ci --prefix site --ignore-scripts
+          npm test --prefix site
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Проверка изображений и прозрачности
+        run: |
+          python3 -m pip install Pillow==11.3.0
+          python3 site/scripts/check-assets.py
 
       - name: Проверка Python и shell regression tests
         id: regression
@@ -56,6 +105,13 @@ jobs:
           python3 tools/build_xhttp.py
           cmp /tmp/xhttp.before nuvrion-xhttp-install.sh
           cmp /tmp/SHA256SUMS.before SHA256SUMS
+
+      - name: Настоящий nginx, TLS, MIME, ресурсы и защита маршрутов
+        env:
+          NUVRION_NGINX_DOCKER: nginx:1.30
+        run: |
+          docker pull nginx:1.30
+          python3 -m unittest discover -s tests -p 'test_atlas_nginx.py' -v
 
       - name: Установка проверенного ShellCheck 0.11.0
         run: |

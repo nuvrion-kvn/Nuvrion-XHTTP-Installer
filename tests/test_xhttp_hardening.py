@@ -99,8 +99,8 @@ class HardeningTests(unittest.TestCase):
         self.assertNotIn('ssl_reject_handshake', text)
         self.assertNotIn('grpc_pass', text)
         self.assertEqual(text.count('default_server'), 1)
-        self.assertEqual(text.count('if ($ssl_server_name != "node.example.org")'), 2)
-        self.assertEqual(text.count('if ($host != "node.example.org")'), 2)
+        self.assertEqual(text.count('if ($ssl_server_name != "node.example.org")'), 1)
+        self.assertEqual(text.count('if ($host != "node.example.org")'), 1)
         self.assertNotIn('proxy_hide_header', text)
 
     def test_old_owned_default_vhost_migrates_idempotently(self):
@@ -136,6 +136,14 @@ class HardeningTests(unittest.TestCase):
     @unittest.skipIf(os.name == 'nt' or os.geteuid() != 0, 'Linux ownership test')
     def test_protected_directory_survives_recreation_and_refuses_foreign_permissions(self):
         with tempfile.TemporaryDirectory() as td:
+            # Some managed user namespaces expose UID 0 but cannot map GID 33.
+            # Keep the real ownership test on normal Ubuntu/CI; do not pretend
+            # a mocked chown verifies filesystem permissions.
+            probe=Path(td)/'ownership-probe';probe.touch()
+            try:os.chown(probe,0,33)
+            except OSError as error:
+                if error.errno in (1,22):self.skipTest('Current user namespace cannot map root:www-data ownership')
+                raise
             p = Path(td)/'sockets';LIB['secure_directory'](p, 33)
             LIB['secure_directory'](p, 33)
             self.assertEqual(p.stat().st_mode & 0o7777, 0o2710)

@@ -1,0 +1,1896 @@
+[
+  {
+    "id": "ru-zhiguli",
+    "name": {
+      "ru": "Жигули Барное",
+      "en": "Zhiguli Barnoe"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Светлый лагер",
+      "en": "Pale lager"
+    },
+    "abv": 4.9,
+    "ingredients": {
+      "ru": [
+        "Вода из скважины глубиной 320 м",
+        "Солод",
+        "Жатецкий хмель",
+        "Другие компоненты и полная маркировка — на этикетке"
+      ],
+      "en": [
+        "Water from a 320 m deep well",
+        "Malt",
+        "Saaz hops",
+        "Other components and complete ingredients: see the label"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Лагер по рецепту московского ресторана «Жигули» 1968 года. Солод, жатецкий хмель и 21 день брожения создают полное тело с освежающей горчинкой.",
+      "en": "A lager based on the 1968 recipe of Moscow’s Zhiguli restaurant. Malt, Saaz hops and 21 days of fermentation give it a rounded body and refreshing bitterness."
+    },
+    "aroma": {
+      "ru": "Тонкий аромат хмеля",
+      "en": "Delicate hop aroma"
+    },
+    "taste": {
+      "ru": "Полный солодовый вкус и освежающая горечь",
+      "en": "Rounded malt flavour with refreshing bitterness"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Барбекю",
+        "Сыр"
+      ],
+      "en": [
+        "Chicken",
+        "Barbecue",
+        "Cheese"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · бокал для лагера",
+      "en": "6–8 °C · lager glass"
+    },
+    "color": "#b62522",
+    "image": "/assets/beer-rus-zhiguli-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2026-08-07_12-53-33__da50524e-9245-11f1-a019-7adc2c4a466d.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/16/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-zhiguli1968",
+    "name": {
+      "ru": "Жигули 1968",
+      "en": "Zhiguli 1968"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Светлый лагер",
+      "en": "Pale lager"
+    },
+    "abv": 4.5,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Золотистый лагер с мягким вкусом и коротким послевкусием. Длительная выдержка при отрицательной температуре помогает сформировать его спокойный, сбалансированный характер.",
+      "en": "A golden lager with a soft flavour and short finish. Extended conditioning below freezing helps develop its gentle, balanced character."
+    },
+    "aroma": {
+      "ru": "Нежный аромат с эфирными нотами",
+      "en": "Gentle aroma with ester notes"
+    },
+    "taste": {
+      "ru": "Мягкий, освежающий, с коротким послевкусием",
+      "en": "Soft and refreshing with a short finish"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Бургер",
+        "Салат"
+      ],
+      "en": [
+        "Chicken",
+        "Burger",
+        "Salad"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · бокал для лагера",
+      "en": "5–7 °C · lager glass"
+    },
+    "color": "#bd951d",
+    "image": "/assets/beer-rus-zhiguli1968-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2023-02-22_19-20-14__c9b08406-b2cc-11ed-b0a6-525400531e2e.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/215/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-zhiguli-dark",
+    "name": {
+      "ru": "Жигули Барное Бархатное",
+      "en": "Zhiguli Barnoe Velvet"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Тёмный лагер",
+      "en": "Dark lager"
+    },
+    "abv": 4.5,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Тёмный лагер в духе чешского Tmavý Ležák. Лёгкая сладость переходит в терпкое послевкусие с небольшой поджаренной нотой.",
+      "en": "A dark lager inspired by Czech Tmavý Ležák. Light sweetness gives way to a firm finish with a gentle roasted note."
+    },
+    "aroma": {
+      "ru": "Тёмный солод · профиль стиля",
+      "en": "Dark malt · style profile"
+    },
+    "taste": {
+      "ru": "Мягкий, насыщенный, слегка сладкий и поджаренный",
+      "en": "Soft, full-flavoured, lightly sweet and roasted"
+    },
+    "food": {
+      "ru": [
+        "Говядина",
+        "Жареные блюда",
+        "Сыр"
+      ],
+      "en": [
+        "Beef",
+        "Fried dishes",
+        "Cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · бокал для тёмного лагера",
+      "en": "8–10 °C · dark-lager glass"
+    },
+    "color": "#483125",
+    "image": "/assets/beer-rus-zhiguli-dark-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2026-06-19_16-36-19__da6891e8-6be3-11f1-a019-7adc2c4a466d.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/115/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Производитель указывает крепость не менее 4,5%. Полная маркировка состава — на этикетке; подача — редакционная рекомендация.",
+      "en": "The producer states at least 4.5% ABV. Check the label for complete ingredients; serving is an editorial suggestion."
+    }
+  },
+  {
+    "id": "ru-zhiguli-wheat",
+    "name": {
+      "ru": "Жигули Барное Пшеничное",
+      "en": "Zhiguli Barnoe Wheat"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Хефевайцен",
+      "en": "Hefeweizen"
+    },
+    "abv": 4.9,
+    "ingredients": {
+      "ru": [
+        "Типичная основа пшеничного стиля: вода, пшеничный и ячменный солод, хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical wheat-beer base: water, wheat and barley malt, hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Нефильтрованное пшеничное пиво верхового брожения. В его сбалансированном профиле солод важнее горечи, а послевкусие оставляет мягкую сладость.",
+      "en": "An unfiltered, top-fermented wheat beer. Its balanced profile emphasises malt over bitterness and ends with a gentle sweetness."
+    },
+    "aroma": {
+      "ru": "Чистый солодовый аромат",
+      "en": "Clean malt aroma"
+    },
+    "taste": {
+      "ru": "Освежающий, мягкий, с низкой горечью",
+      "en": "Refreshing and soft with low bitterness"
+    },
+    "food": {
+      "ru": [
+        "Барбекю",
+        "Жареные блюда",
+        "Бургер"
+      ],
+      "en": [
+        "Barbecue",
+        "Fried dishes",
+        "Burger"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · высокий пшеничный бокал",
+      "en": "6–8 °C · tall wheat-beer glass"
+    },
+    "color": "#c8a145",
+    "image": "/assets/beer-rus-zhiguli-wheat-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2026-07-13_11-41-43__ad1e8c86-7e96-11f1-a019-7adc2c4a466d.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/143/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-zhiguli-export",
+    "name": {
+      "ru": "Жигули Барное Export",
+      "en": "Zhiguli Barnoe Export"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Светлый лагер",
+      "en": "Pale lager"
+    },
+    "abv": 4.8,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Сбалансированный золотистый лагер с деликатными фруктовыми эфирами. Освежающий вкус заканчивается лёгкой терпкостью.",
+      "en": "A balanced golden lager with delicate fruity esters. Its refreshing flavour finishes with a light astringent touch."
+    },
+    "aroma": {
+      "ru": "Тонкие фруктовые эфиры",
+      "en": "Subtle fruity esters"
+    },
+    "taste": {
+      "ru": "Свежий и сбалансированный, слегка терпкий в конце",
+      "en": "Fresh and balanced with a lightly astringent finish"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Барбекю",
+        "Картофель"
+      ],
+      "en": [
+        "Chicken",
+        "Barbecue",
+        "Potatoes"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · бокал для лагера",
+      "en": "5–7 °C · lager glass"
+    },
+    "color": "#235b4f",
+    "image": "/assets/beer-rus-zhiguli-export-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2025-05-14_17-12-43__80b3de5c-30cd-11f0-bf16-525400531e2e.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/5/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-zhiguli-zero",
+    "name": {
+      "ru": "Жигули Барное Безалкогольное",
+      "en": "Zhiguli Barnoe Non-Alcoholic"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "nonalcoholic",
+    "styleName": {
+      "ru": "Безалкогольный лагер",
+      "en": "Non-alcoholic lager"
+    },
+    "abv": 0.5,
+    "ingredients": {
+      "ru": [
+        "Светлый и карамельный солод",
+        "Хмель: Tettnanger, Tradition, Hersbrucker, Golding, Jaryllo, Mandarina Bavaria, Cascade, Citra",
+        "Полная маркировка состава — на этикетке"
+      ],
+      "en": [
+        "Pale and caramel malts",
+        "Hops: Tettnanger, Tradition, Hersbrucker, Golding, Jaryllo, Mandarina Bavaria, Cascade, Citra",
+        "Complete ingredient declaration: see the label"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Безалкогольный сорт на светлом и карамельном солоде, приготовленный остановкой брожения. Восемь сортов хмеля придают ему тонкий аромат и мягкую горечь.",
+      "en": "A non-alcoholic beer using pale and caramel malts, made by stopping fermentation. Eight hop varieties bring a delicate aroma and gentle bitterness."
+    },
+    "aroma": {
+      "ru": "Тонкие хмелевые тона",
+      "en": "Delicate hop notes"
+    },
+    "taste": {
+      "ru": "Лёгкая солодовая сладость и деликатная горечь",
+      "en": "Light malt sweetness and delicate bitterness"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Морепродукты",
+        "Луковые кольца"
+      ],
+      "en": [
+        "Chicken",
+        "Seafood",
+        "Onion rings"
+      ]
+    },
+    "serve": {
+      "ru": "4–6 °C · бокал для лагера",
+      "en": "4–6 °C · lager glass"
+    },
+    "color": "#235780",
+    "image": "/assets/beer-rus-zhiguli-zero-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2026-06-19_16-40-29__6fb39176-6be4-11f1-a019-7adc2c4a466d.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/20/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-zhiguli-mango",
+    "name": {
+      "ru": "Жигули Барное Манго-Маракуйя",
+      "en": "Zhiguli Barnoe Mango–Passion Fruit"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "fruit",
+    "styleName": {
+      "ru": "Фруктовый пивной напиток",
+      "en": "Fruit beer drink"
+    },
+    "abv": 4.5,
+    "ingredients": {
+      "ru": [
+        "Пивная основа",
+        "Вкус манго и маракуйи",
+        "Производитель не приводит на карточке полный перечень ингредиентов"
+      ],
+      "en": [
+        "Beer base",
+        "Mango and passion-fruit flavour",
+        "The product page does not disclose the complete ingredient list"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Напиток на основе пива с тропическим характером. Манго и маракуйя во вкусе и аромате сочетаются с хмелевой горчинкой.",
+      "en": "A beer-based drink with a tropical character. Mango and passion-fruit flavour and aroma are balanced by hop bitterness."
+    },
+    "aroma": {
+      "ru": "Манго и маракуйя",
+      "en": "Mango and passion fruit"
+    },
+    "taste": {
+      "ru": "Сочный тропический вкус и хмелевая горчинка",
+      "en": "Juicy tropical flavour with hop bitterness"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Бургер",
+        "Салат"
+      ],
+      "en": [
+        "Chicken",
+        "Burger",
+        "Salad"
+      ]
+    },
+    "serve": {
+      "ru": "4–6 °C · тюльпан или бокал для лагера",
+      "en": "4–6 °C · tulip or lager glass"
+    },
+    "color": "#e1a635",
+    "image": "/assets/beer-rus-zhiguli-mango-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2026-06-19_16-40-54__7e800e00-6be4-11f1-a019-7adc2c4a466d.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/200/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-khamovniki-vienna",
+    "name": {
+      "ru": "Хамовники Венское",
+      "en": "Khamovniki Vienna"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Венский лагер",
+      "en": "Vienna lager"
+    },
+    "abv": 4.5,
+    "ingredients": {
+      "ru": [
+        "Солода: светлый, венский, CaraRed, карамельный",
+        "Хмель: Saphir и Tettnanger",
+        "Полная маркировка состава — на этикетке"
+      ],
+      "en": [
+        "Malts: pale, Vienna, CaraRed and caramel",
+        "Hops: Saphir and Tettnanger",
+        "Complete ingredient declaration: see the label"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Венский лагер с сочетанием четырёх солодов. Немецкие хмели Saphir и Tettnanger добавляют цветочный аромат и мягкую горечь.",
+      "en": "A Vienna lager blending four malts. German Saphir and Tettnanger hops add floral aroma and gentle bitterness."
+    },
+    "aroma": {
+      "ru": "Нежный цветочный аромат",
+      "en": "Delicate floral aroma"
+    },
+    "taste": {
+      "ru": "Солодовый, мягкий, с деликатной горечью",
+      "en": "Malt-led and soft with delicate bitterness"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Бургер",
+        "Сыр"
+      ],
+      "en": [
+        "Chicken",
+        "Burger",
+        "Cheese"
+      ]
+    },
+    "serve": {
+      "ru": "7–9 °C · бокал для лагера",
+      "en": "7–9 °C · lager glass"
+    },
+    "color": "#b75d35",
+    "image": "/assets/beer-rus-khamovniki-vienna-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2025-06-23_11-47-09__a629b0c0-500e-11f0-a999-525400531e2e.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/10/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-khamovniki-pils",
+    "name": {
+      "ru": "Хамовники Пильзенское",
+      "en": "Khamovniki Pilsner"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Немецкий пилснер",
+      "en": "German pilsner"
+    },
+    "abv": 4.8,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Прозрачный золотистый пилснер в немецком стиле. Выраженный аромат хмеля и сухой вкус делают его подходящим аперитивом.",
+      "en": "A clear golden pilsner brewed in the German style. A pronounced hop aroma and dry flavour make it suitable as an aperitif."
+    },
+    "aroma": {
+      "ru": "Яркий хмелевой аромат",
+      "en": "Pronounced hop aroma"
+    },
+    "taste": {
+      "ru": "Сухой, гармоничный, с заметной деликатной горечью",
+      "en": "Dry and balanced with distinct, delicate bitterness"
+    },
+    "food": {
+      "ru": [
+        "Рыба",
+        "Курица",
+        "Сыр"
+      ],
+      "en": [
+        "Fish",
+        "Chicken",
+        "Cheese"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · узкий бокал для пилснера",
+      "en": "5–7 °C · slender pilsner glass"
+    },
+    "color": "#8ba449",
+    "image": "/assets/beer-rus-khamovniki-pils-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2025-06-23_11-49-07__ec78cfde-500e-11f0-8cb5-525400531e2e.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/11/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-khamovniki-munich",
+    "name": {
+      "ru": "Хамовники Мюнхенское",
+      "en": "Khamovniki Munich"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Мэрцен",
+      "en": "Märzen"
+    },
+    "abv": 5.5,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Российская интерпретация баварского мэрцена, знакомого по Октоберфесту. Плотное тело сочетается с насыщенным вкусом и богатым цветочным ароматом.",
+      "en": "A Russian interpretation of Bavarian Märzen, the style associated with Oktoberfest. A full body meets rich flavour and a pronounced floral aroma."
+    },
+    "aroma": {
+      "ru": "Насыщенный цветочный аромат",
+      "en": "Rich floral aroma"
+    },
+    "taste": {
+      "ru": "Плотный, насыщенный, с выраженной солодовой основой",
+      "en": "Full-bodied and rich with a malt-led base"
+    },
+    "food": {
+      "ru": [
+        "Курица",
+        "Барбекю",
+        "Жареные блюда"
+      ],
+      "en": [
+        "Chicken",
+        "Barbecue",
+        "Fried dishes"
+      ]
+    },
+    "serve": {
+      "ru": "7–10 °C · кружка или лагерный бокал",
+      "en": "7–10 °C · mug or lager glass"
+    },
+    "color": "#b96837",
+    "image": "/assets/beer-rus-khamovniki-munich-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2024-04-11_14-40-42__53c9ba56-f7f8-11ee-b95e-525400531e2e.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/12/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-khamovniki-weiss",
+    "name": {
+      "ru": "Хамовники Баварское",
+      "en": "Khamovniki Bavarian"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Вайсбир",
+      "en": "Weissbier"
+    },
+    "abv": 4.8,
+    "ingredients": {
+      "ru": [
+        "Типичная основа пшеничного стиля: вода, пшеничный и ячменный солод, хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical wheat-beer base: water, wheat and barley malt, hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Пшеничный сорт с фруктовым вкусом и характерной пряной нотой. Мягкая полнота вкуса заканчивается лёгким карамельным оттенком.",
+      "en": "A wheat beer with a fruity flavour and characteristic spicy note. Its soft, rounded body ends with a light caramel touch."
+    },
+    "aroma": {
+      "ru": "Эфиры и гвоздика",
+      "en": "Esters and clove"
+    },
+    "taste": {
+      "ru": "Мягкий фруктовый вкус, лёгкая карамель в послевкусии",
+      "en": "Soft fruity flavour with light caramel in the finish"
+    },
+    "food": {
+      "ru": [
+        "Рыба",
+        "Морепродукты",
+        "Сыр"
+      ],
+      "en": [
+        "Fish",
+        "Seafood",
+        "Cheese"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · высокий пшеничный бокал",
+      "en": "6–8 °C · tall wheat-beer glass"
+    },
+    "color": "#d7bb67",
+    "image": "/assets/beer-rus-khamovniki-weiss-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2024-12-03_11-47-14__31cef8c0-b153-11ef-9fbf-525400531e2e.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/8/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-khamovniki-moscow",
+    "name": {
+      "ru": "Хамовники Московское",
+      "en": "Khamovniki Moscow"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Светлый лагер",
+      "en": "Pale lager"
+    },
+    "abv": 5,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Лагер холодной пастеризации с мягкой солодовой основой. Хлебный оттенок соединяет деликатную сладость и аккуратную горечь.",
+      "en": "A cold-pasteurised lager with a soft malt base. A bready note links delicate sweetness with restrained bitterness."
+    },
+    "aroma": {
+      "ru": "Лёгкая хлебная нота",
+      "en": "Light bready note"
+    },
+    "taste": {
+      "ru": "Мягкий солодовый профиль и благородная горечь",
+      "en": "Soft malt character and refined bitterness"
+    },
+    "food": {
+      "ru": [
+        "Говядина",
+        "Морепродукты",
+        "Бургер"
+      ],
+      "en": [
+        "Beef",
+        "Seafood",
+        "Burger"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · бокал для лагера",
+      "en": "5–7 °C · lager glass"
+    },
+    "color": "#7c9b6a",
+    "image": "/assets/beer-rus-khamovniki-moscow-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2026-05-28_16-16-09__6460e138-5a97-11f1-9e16-aaaa3b88b3e8.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/315/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-trekhgornoe-ale",
+    "name": {
+      "ru": "Трёхгорное Premium Ale",
+      "en": "Trekhgornoe Premium Ale"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Эль в стиле ESB",
+      "en": "ESB-style ale"
+    },
+    "abv": 4.9,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Янтарный эль верхового брожения, вдохновлённый Extra Special Bitter. Сорт сочетает богатый аромат и выразительный вкус.",
+      "en": "An amber top-fermented ale inspired by Extra Special Bitter. It combines a rich aroma with an expressive flavour."
+    },
+    "aroma": {
+      "ru": "Богатый аромат эля",
+      "en": "Rich ale aroma"
+    },
+    "taste": {
+      "ru": "Насыщенный янтарный эль с балансом солода и горечи",
+      "en": "Full-flavoured amber ale balancing malt and bitterness"
+    },
+    "food": {
+      "ru": [
+        "Говядина",
+        "Барбекю",
+        "Сыр"
+      ],
+      "en": [
+        "Beef",
+        "Barbecue",
+        "Cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · пинта",
+      "en": "8–10 °C · pint glass"
+    },
+    "color": "#cba445",
+    "image": "/assets/beer-rus-trekhgornoe-ale-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2023-11-09_18-51-46__e34370c8-7f17-11ee-879c-525400531e2e.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/279/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-trekhgornoe-blanche",
+    "name": {
+      "ru": "Трёхгорное Blanche",
+      "en": "Trekhgornoe Blanche"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Бланш",
+      "en": "Blanche"
+    },
+    "abv": 4.1,
+    "ingredients": {
+      "ru": [
+        "Типичная основа пшеничного стиля: вода, пшеничный и ячменный солод, хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical wheat-beer base: water, wheat and barley malt, hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Нефильтрованное пшеничное пиво верхового брожения в бельгийском стиле. Лёгкие оттенки апельсина и кориандра создают освежающий пряно-цитрусовый профиль.",
+      "en": "An unfiltered, top-fermented wheat beer in the Belgian style. Light orange and coriander notes give it a refreshing spicy-citrus profile."
+    },
+    "aroma": {
+      "ru": "Цитрусово-пряный профиль стиля",
+      "en": "Citrus-spice style profile"
+    },
+    "taste": {
+      "ru": "Лёгкий, с нотами апельсина и кориандра",
+      "en": "Light, with orange and coriander notes"
+    },
+    "food": {
+      "ru": [
+        "Рыба",
+        "Морепродукты",
+        "Салат"
+      ],
+      "en": [
+        "Fish",
+        "Seafood",
+        "Salad"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C · широкий бокал для бланша",
+      "en": "5–7 °C · wide blanche glass"
+    },
+    "color": "#adc9b0",
+    "image": "/assets/beer-rus-trekhgornoe-blanche-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2025-03-25_13-00-39__0146fcb0-0960-11f0-a3ec-525400531e2e.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/308/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-5ocean-ipa",
+    "name": {
+      "ru": "5 Океан IPA",
+      "en": "5 Ocean IPA"
+    },
+    "brewery": {
+      "ru": "Московская Пивоваренная Компания",
+      "en": "Moscow Brewing Company"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Мытищи, Московская область",
+      "en": "Mytishchi, Moscow Region"
+    },
+    "style": "ipa",
+    "styleName": {
+      "ru": "Индийский светлый эль",
+      "en": "India pale ale"
+    },
+    "abv": 4.5,
+    "ingredients": {
+      "ru": [
+        "Типичная основа стиля: вода, ячменный солод и хмель",
+        "Полный состав этой версии не опубликован на карточке производителя"
+      ],
+      "en": [
+        "Typical style base: water, barley malt and hops",
+        "The producer’s product page does not list this version’s full ingredients"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Хмелевая интерпретация IPA из российской линейки «5 Океан». Яркий аромат, сложный сбалансированный вкус и длительное послевкусие определяют характер сорта.",
+      "en": "A hop-led interpretation of IPA from Russia’s 5 Ocean range. A vivid aroma, complex balanced flavour and long finish define the beer."
+    },
+    "aroma": {
+      "ru": "Яркий аромат хмеля",
+      "en": "Vivid hop aroma"
+    },
+    "taste": {
+      "ru": "Сложный, сбалансированный, с длительным послевкусием",
+      "en": "Complex and balanced with a long finish"
+    },
+    "food": {
+      "ru": [
+        "Барбекю",
+        "Бургер",
+        "Салат"
+      ],
+      "en": [
+        "Barbecue",
+        "Burger",
+        "Salad"
+      ]
+    },
+    "serve": {
+      "ru": "7–10 °C · тюльпан",
+      "en": "7–10 °C · tulip glass"
+    },
+    "color": "#bc7250",
+    "image": "/assets/beer-rus-5ocean-ipa-cutout.webp",
+    "imageCredit": "https://mosbrew.ru/media/brand/w458_square/2019-08-16_11-25-15__5f6ed192-bfff-11e9-9dd8-a97d79eb3fbc.jpg",
+    "sources": [
+      {
+        "label": "Mosbrew · официальная карточка / official product page",
+        "url": "https://mosbrew.ru/brands/141/"
+      },
+      {
+        "label": "Mosbrew · место производства / brewery location",
+        "url": "https://mosbrew.ru/about/"
+      }
+    ],
+    "note": {
+      "ru": "Состав: приведены только раскрытые ингредиенты или типичная основа стиля, а не полная маркировка. Температура и бокал — редакционная рекомендация.",
+      "en": "Ingredients show disclosed components or the typical style base, not a full label. Serving temperature and glassware are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-baltika-3",
+    "name": {
+      "ru": "Балтика 3 Классическое",
+      "en": "Baltika 3 Classic"
+    },
+    "brewery": {
+      "ru": "Пивоваренная компания «Балтика»",
+      "en": "Baltika Breweries"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург · сеть заводов России",
+      "en": "Saint Petersburg · Russian brewery network"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Российский пилснер",
+      "en": "Russian pilsner"
+    },
+    "abv": 4.8,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный пивоваренный солод",
+        "Хмель",
+        "Хмелепродукты"
+      ],
+      "en": [
+        "Water",
+        "Brewing barley malt",
+        "Hops",
+        "Hop products"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Пилснер на российском ячменном солоде, выпускаемый с 1992 года. Насыщенный солодовый вкус поддерживают выраженная горечь и богатый хмелевой аромат.",
+      "en": "A pilsner using Russian barley malt, first released in 1992. Rich malt flavour is supported by pronounced bitterness and a full hop aroma."
+    },
+    "aroma": {
+      "ru": "Богатый хмелевой аромат",
+      "en": "Full hop aroma"
+    },
+    "taste": {
+      "ru": "Плотный, насыщенный, с приятной горчинкой",
+      "en": "Rich and rounded with pleasant bitterness"
+    },
+    "food": {
+      "ru": [
+        "Тушёное мясо",
+        "Домашняя кухня",
+        "Пряные блюда"
+      ],
+      "en": [
+        "Braised meat",
+        "Home-style dishes",
+        "Spicy dishes"
+      ]
+    },
+    "serve": {
+      "ru": "2–4 °C · узкий бокал для пилснера",
+      "en": "2–4 °C · slender pilsner glass"
+    },
+    "color": "#2e6f91",
+    "image": "/assets/beer-rus-baltika-3.png",
+    "imageCredit": "https://corporate.baltika.ru/wp-content/uploads/2026/06/baltika-3-klassicheskoe.png",
+    "sources": [
+      {
+        "label": "Балтика · официальная карточка / official product page",
+        "url": "https://corporate.baltika.ru/products/catalog/baltika/baltika-3-klassicheskoe/"
+      },
+      {
+        "label": "Балтика · заводы / brewery network",
+        "url": "https://corporate.baltika.ru/company/production/"
+      }
+    ],
+    "note": {
+      "ru": "«Балтика» выпускает пиво на нескольких заводах в России. Конкретное место производства партии указано на её упаковке; состав и крепость приведены для версии на официальном сайте.",
+      "en": "Baltika brews at several Russian plants. The packaging identifies the plant for each batch; ingredients and ABV refer to the version on the official website."
+    }
+  },
+  {
+    "id": "ru-baltika-7",
+    "name": {
+      "ru": "Балтика 7 Экспортное",
+      "en": "Baltika 7 Export"
+    },
+    "brewery": {
+      "ru": "Пивоваренная компания «Балтика»",
+      "en": "Baltika Breweries"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург · сеть заводов России",
+      "en": "Saint Petersburg · Russian brewery network"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Экспорт-дортмундер",
+      "en": "Dortmunder export"
+    },
+    "abv": 5.4,
+    "ingredients": {
+      "ru": [
+        "Очищенная питьевая вода",
+        "Ячменный пивоваренный солод",
+        "Хмель",
+        "Хмелепродукты"
+      ],
+      "en": [
+        "Purified drinking water",
+        "Brewing barley malt",
+        "Hops",
+        "Hop products"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Светлый экспортный лагер, представленный в 1994 году. Свежий солодовый вкус сочетается с лёгкой горечью и хмелевым ароматом.",
+      "en": "A pale export lager introduced in 1994. Fresh malt flavour is paired with light bitterness and a hop aroma."
+    },
+    "aroma": {
+      "ru": "Хмелевой аромат",
+      "en": "Hop aroma"
+    },
+    "taste": {
+      "ru": "Свежий солодовый вкус и лёгкая горчинка",
+      "en": "Fresh malt flavour and light bitterness"
+    },
+    "food": {
+      "ru": [
+        "Свинина",
+        "Картофель фри",
+        "Блюда с плавленым сыром"
+      ],
+      "en": [
+        "Pork",
+        "French fries",
+        "Melted-cheese dishes"
+      ]
+    },
+    "serve": {
+      "ru": "2–4 °C · бокал для лагера",
+      "en": "2–4 °C · lager glass"
+    },
+    "color": "#3d625f",
+    "image": "/assets/beer-rus-baltika-7.png",
+    "imageCredit": "https://corporate.baltika.ru/wp-content/uploads/2026/06/1-13.png",
+    "sources": [
+      {
+        "label": "Балтика · официальная карточка / official product page",
+        "url": "https://corporate.baltika.ru/products/catalog/baltika/baltika-7-eksportnoe/"
+      },
+      {
+        "label": "Балтика · заводы / brewery network",
+        "url": "https://corporate.baltika.ru/company/production/"
+      }
+    ],
+    "note": {
+      "ru": "«Балтика» выпускает пиво на нескольких заводах в России. Конкретное место производства партии указано на её упаковке; состав и крепость приведены для версии на официальном сайте.",
+      "en": "Baltika brews at several Russian plants. The packaging identifies the plant for each batch; ingredients and ABV refer to the version on the official website."
+    }
+  },
+  {
+    "id": "ru-baltika-9",
+    "name": {
+      "ru": "Балтика 9 Крепкое Легендарное",
+      "en": "Baltika 9 Strong Legendary"
+    },
+    "brewery": {
+      "ru": "Пивоваренная компания «Балтика»",
+      "en": "Baltika Breweries"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург · сеть заводов России",
+      "en": "Saint Petersburg · Russian brewery network"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Крепкий лагер",
+      "en": "Strong lager"
+    },
+    "abv": 8,
+    "ingredients": {
+      "ru": [
+        "Очищенная питьевая вода",
+        "Светлый ячменный пивоваренный солод",
+        "Карамельный ячменный пивоваренный солод",
+        "Хмелепродукты"
+      ],
+      "en": [
+        "Purified drinking water",
+        "Pale brewing barley malt",
+        "Caramel brewing barley malt",
+        "Hop products"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Крепкий светлый лагер, чья крепость достигается естественным брожением. Светлый и карамельный солод формируют мягкий насыщенный вкус с лёгкой горечью.",
+      "en": "A strong pale lager whose alcohol develops through natural fermentation. Pale and caramel malts create a soft, full flavour with light bitterness."
+    },
+    "aroma": {
+      "ru": "Солодовый профиль",
+      "en": "Malt-led profile"
+    },
+    "taste": {
+      "ru": "Мягкий, насыщенный, с лёгкой хмелевой горечью",
+      "en": "Soft and full-flavoured with light hop bitterness"
+    },
+    "food": {
+      "ru": [
+        "Жареные креветки",
+        "Сулугуни в кляре",
+        "Тартар из говядины"
+      ],
+      "en": [
+        "Fried prawns",
+        "Battered suluguni",
+        "Beef tartare"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · небольшой тюльпан, рекомендация редакции",
+      "en": "6–8 °C · small tulip, editorial suggestion"
+    },
+    "color": "#bd951d",
+    "image": "/assets/beer-rus-baltika-9.png",
+    "imageCredit": "https://corporate.baltika.ru/wp-content/uploads/2026/06/baltika_can_b9_front-4swjzr-1.png",
+    "sources": [
+      {
+        "label": "Балтика · официальная карточка / official product page",
+        "url": "https://corporate.baltika.ru/products/catalog/baltika/baltika-9-krepkoe-legendarnoe/"
+      },
+      {
+        "label": "Балтика · заводы / brewery network",
+        "url": "https://corporate.baltika.ru/company/production/"
+      }
+    ],
+    "note": {
+      "ru": "«Балтика» выпускает пиво на нескольких заводах в России. Конкретное место производства партии указано на её упаковке; состав и крепость приведены для версии на официальном сайте.",
+      "en": "Baltika brews at several Russian plants. The packaging identifies the plant for each batch; ingredients and ABV refer to the version on the official website."
+    }
+  },
+  {
+    "id": "ru-baltika-0",
+    "name": {
+      "ru": "Балтика 0 Безалкогольное",
+      "en": "Baltika 0 Non-Alcoholic"
+    },
+    "brewery": {
+      "ru": "Пивоваренная компания «Балтика»",
+      "en": "Baltika Breweries"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург · сеть заводов России",
+      "en": "Saint Petersburg · Russian brewery network"
+    },
+    "style": "nonalcoholic",
+    "styleName": {
+      "ru": "Безалкогольный пилснер",
+      "en": "Non-alcoholic pilsner"
+    },
+    "abv": 0.5,
+    "ingredients": {
+      "ru": [
+        "Очищенная питьевая вода",
+        "Светлый и карамельный ячменный пивоваренный солод",
+        "Пивоваренный ячмень",
+        "Хмелепродукты"
+      ],
+      "en": [
+        "Purified drinking water",
+        "Pale and caramel brewing barley malt",
+        "Brewing barley",
+        "Hop products"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Безалкогольная версия пилснера, выпускаемая с 2001 года. Специальная технология производства сохраняет пивной аромат и насыщенный вкус.",
+      "en": "A non-alcoholic pilsner introduced in 2001. A dedicated production process preserves a beer-like aroma and full flavour."
+    },
+    "aroma": {
+      "ru": "Аромат пилснера",
+      "en": "Pilsner aroma"
+    },
+    "taste": {
+      "ru": "Насыщенный вкус безалкогольного пилснера",
+      "en": "Full non-alcoholic pilsner flavour"
+    },
+    "food": {
+      "ru": [
+        "Лёгкие салаты",
+        "Мясо на гриле",
+        "Закуски"
+      ],
+      "en": [
+        "Light salads",
+        "Grilled meat",
+        "Snacks"
+      ]
+    },
+    "serve": {
+      "ru": "2–4 °C · бокал для пилснера",
+      "en": "2–4 °C · pilsner glass"
+    },
+    "color": "#439cb0",
+    "image": "/assets/beer-rus-baltika-0.png",
+    "imageCredit": "https://corporate.baltika.ru/wp-content/uploads/2026/05/frame-1036-1.png",
+    "sources": [
+      {
+        "label": "Балтика · официальная карточка / official product page",
+        "url": "https://corporate.baltika.ru/products/catalog/baltika/baltika-0-bezalkogolnoe/"
+      },
+      {
+        "label": "Балтика · заводы / brewery network",
+        "url": "https://corporate.baltika.ru/company/production/"
+      }
+    ],
+    "note": {
+      "ru": "«Балтика» выпускает пиво на нескольких заводах в России. Конкретное место производства партии указано на её упаковке; состав и крепость приведены для версии на официальном сайте.",
+      "en": "Baltika brews at several Russian plants. The packaging identifies the plant for each batch; ingredients and ABV refer to the version on the official website."
+    }
+  },
+  {
+    "id": "ru-baltika-6",
+    "name": {
+      "ru": "Балтика 6 Портер",
+      "en": "Baltika 6 Porter"
+    },
+    "brewery": {
+      "ru": "Пивоваренная компания «Балтика»",
+      "en": "Baltika Breweries"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург · сеть заводов России",
+      "en": "Saint Petersburg · Russian brewery network"
+    },
+    "style": "stout",
+    "styleName": {
+      "ru": "Балтийский портер",
+      "en": "Baltic porter"
+    },
+    "abv": 7,
+    "ingredients": {
+      "ru": [
+        "Очищенная питьевая вода",
+        "Светлый, карамельный и жжёный ячменный пивоваренный солод",
+        "Хмелепродукты"
+      ],
+      "en": [
+        "Purified drinking water",
+        "Pale, caramel and roasted brewing barley malt",
+        "Hop products"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Балтийский портер с многослойным тёмным солодовым профилем. Кофе, шоколад, сухофрукты, винные и карамельные оттенки раскрываются при более тёплой подаче.",
+      "en": "A Baltic porter with a layered dark-malt profile. Coffee, chocolate, dried-fruit, wine-like and caramel notes unfold with warmer serving."
+    },
+    "aroma": {
+      "ru": "Сложный тёмно-солодовый аромат",
+      "en": "Complex dark-malt aroma"
+    },
+    "taste": {
+      "ru": "Кофе, шоколад, сухофрукты, карамель и винные оттенки",
+      "en": "Coffee, chocolate, dried fruit, caramel and wine-like notes"
+    },
+    "food": {
+      "ru": [
+        "Шоколадный десерт",
+        "Бри или камамбер",
+        "Стейк"
+      ],
+      "en": [
+        "Chocolate dessert",
+        "Brie or Camembert",
+        "Steak"
+      ]
+    },
+    "serve": {
+      "ru": "8–12 °C · тюльпан или снифтер",
+      "en": "8–12 °C · tulip or snifter"
+    },
+    "color": "#6b4247",
+    "image": "/assets/beer-rus-baltika-6.png",
+    "imageCredit": "https://corporate.baltika.ru/wp-content/uploads/2026/06/1-15.png",
+    "sources": [
+      {
+        "label": "Балтика · официальная карточка / official product page",
+        "url": "https://corporate.baltika.ru/products/catalog/baltika/baltika-6-porter/"
+      },
+      {
+        "label": "Балтика · заводы / brewery network",
+        "url": "https://corporate.baltika.ru/company/production/"
+      }
+    ],
+    "note": {
+      "ru": "«Балтика» выпускает пиво на нескольких заводах в России. Конкретное место производства партии указано на её упаковке; состав и крепость приведены для версии на официальном сайте.",
+      "en": "Baltika brews at several Russian plants. The packaging identifies the plant for each batch; ingredients and ABV refer to the version on the official website."
+    }
+  },
+  {
+    "id": "ru-baltika-8",
+    "name": {
+      "ru": "Балтика 8 Пшеничное",
+      "en": "Baltika 8 Wheat"
+    },
+    "brewery": {
+      "ru": "Пивоваренная компания «Балтика»",
+      "en": "Baltika Breweries"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Санкт-Петербург · сеть заводов России",
+      "en": "Saint Petersburg · Russian brewery network"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Хефевайцен",
+      "en": "Hefeweizen"
+    },
+    "abv": 5,
+    "ingredients": {
+      "ru": [
+        "Очищенная питьевая вода",
+        "Пшеничный пивоваренный солод",
+        "Светлый и карамельный ячменный пивоваренный солод",
+        "Хмелепродукты"
+      ],
+      "en": [
+        "Purified drinking water",
+        "Brewing wheat malt",
+        "Pale and caramel brewing barley malt",
+        "Hop products"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Нефильтрованное пшеничное пиво в немецком стиле хефевайцен. Многогранный вкус сочетается с едва заметной горечью и мягкой бархатистой текстурой.",
+      "en": "An unfiltered wheat beer in the German hefeweizen style. A layered flavour is paired with barely noticeable bitterness and a soft, velvety texture."
+    },
+    "aroma": {
+      "ru": "Немецкий пшеничный профиль",
+      "en": "German wheat-beer profile"
+    },
+    "taste": {
+      "ru": "Мягкий и бархатистый, с очень лёгкой горечью",
+      "en": "Soft and velvety with very light bitterness"
+    },
+    "food": {
+      "ru": [
+        "Морепродукты",
+        "Птица",
+        "Свежие сыры"
+      ],
+      "en": [
+        "Seafood",
+        "Poultry",
+        "Fresh cheeses"
+      ]
+    },
+    "serve": {
+      "ru": "4–7 °C · пшеничный бокал; осторожно добавьте дрожжевой осадок",
+      "en": "4–7 °C · wheat glass; gently include the yeast sediment"
+    },
+    "color": "#c3b681",
+    "image": "/assets/beer-rus-baltika-8.png",
+    "imageCredit": "https://corporate.baltika.ru/wp-content/uploads/2026/06/1-14.png",
+    "sources": [
+      {
+        "label": "Балтика · официальная карточка / official product page",
+        "url": "https://corporate.baltika.ru/products/catalog/baltika/baltika-8-pshenichnoe/"
+      },
+      {
+        "label": "Балтика · заводы / brewery network",
+        "url": "https://corporate.baltika.ru/company/production/"
+      }
+    ],
+    "note": {
+      "ru": "«Балтика» выпускает пиво на нескольких заводах в России. Конкретное место производства партии указано на её упаковке; состав и крепость приведены для версии на официальном сайте.",
+      "en": "Baltika brews at several Russian plants. The packaging identifies the plant for each batch; ingredients and ABV refer to the version on the official website."
+    }
+  },
+  {
+    "id": "ru-jaws-ipa",
+    "name": {
+      "ru": "Jaws Атомная Прачечная",
+      "en": "Jaws Atomic Laundry"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "ipa",
+    "styleName": {
+      "ru": "Индийский светлый эль",
+      "en": "India pale ale"
+    },
+    "abv": 7,
+    "ingredients": {
+      "ru": [
+        "Солода: Pale Ale, Melano, Special B",
+        "Хмель: Cascade, Mosaic, Chinook, Citra, Centennial"
+      ],
+      "en": [
+        "Malts: Pale Ale, Melano, Special B",
+        "Hops: Cascade, Mosaic, Chinook, Citra, Centennial"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Один из узнаваемых российских IPA, появившийся в 2012 году. Пять американских хмелей создают мощный профиль тропических фруктов, цитрусов и хвои.",
+      "en": "A recognisable Russian IPA first brewed in 2012. Five American hop varieties create a powerful tropical-fruit, citrus and pine profile."
+    },
+    "aroma": {
+      "ru": "Тропические фрукты, цитрус и хвоя",
+      "en": "Tropical fruit, citrus and pine"
+    },
+    "taste": {
+      "ru": "Интенсивная хмелевая горечь и насыщенная солодовая основа",
+      "en": "Intense hop bitterness on a substantial malt base"
+    },
+    "food": {
+      "ru": [
+        "Острый бургер",
+        "Мясо на гриле",
+        "Выдержанный чеддер"
+      ],
+      "en": [
+        "Spicy burger",
+        "Grilled meat",
+        "Mature cheddar"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C · тюльпан",
+      "en": "8–10 °C · tulip glass"
+    },
+    "color": "#bd4137",
+    "image": "/assets/beer-rus-jaws-ipa.png",
+    "imageCredit": "https://static.tildacdn.com/tild6330-3264-4231-b439-303532313834/bottle_05_Jaws_IPA.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес / official product and production address",
+        "url": "https://jawsbeer.ru/atomnaya-prachechnaya"
+      }
+    ],
+    "note": {
+      "ru": "Указаны солода, зерно и хмель, раскрытые пивоварней; это не полный маркировочный состав. Сочетания с едой и подача — редакционные рекомендации.",
+      "en": "Malts, grains and hops are disclosed by the brewery; this is not a full label ingredient declaration. Food pairings and serving are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-weizen",
+    "name": {
+      "ru": "Jaws Weizen",
+      "en": "Jaws Weizen"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Хефевайцен",
+      "en": "Hefeweizen"
+    },
+    "abv": 5.6,
+    "ingredients": {
+      "ru": [
+        "Солода: Wheat blanc, Pilsner, Crystal",
+        "Хмель: Perle"
+      ],
+      "en": [
+        "Malts: Wheat blanc, Pilsner, Crystal",
+        "Hops: Perle"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Баварский вайсбир, с которого началась история Jaws. Пшеничная мягкость и карамельная сладость подчёркнуты гвоздично-фруктовым профилем.",
+      "en": "The Bavarian-style weissbier that began the Jaws story. Soft wheat character and caramel sweetness are framed by clove and fruity notes."
+    },
+    "aroma": {
+      "ru": "Гвоздика и фруктовые эфиры",
+      "en": "Clove and fruity esters"
+    },
+    "taste": {
+      "ru": "Бархатистая пшеница, тонкая карамельная сладость",
+      "en": "Velvety wheat character and subtle caramel sweetness"
+    },
+    "food": {
+      "ru": [
+        "Запечённая рыба",
+        "Птица",
+        "Мягкий сыр"
+      ],
+      "en": [
+        "Baked fish",
+        "Poultry",
+        "Soft cheese"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C · высокий пшеничный бокал",
+      "en": "6–8 °C · tall wheat-beer glass"
+    },
+    "color": "#c8a84f",
+    "image": "/assets/beer-rus-jaws-weizen.png",
+    "imageCredit": "https://static.tildacdn.com/tild6536-6661-4137-b634-333864373236/bottle_05_Jaws_Weize.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес / official product and production address",
+        "url": "https://jawsbeer.ru/jawsweizen"
+      }
+    ],
+    "note": {
+      "ru": "Указаны солода, зерно и хмель, раскрытые пивоварней; это не полный маркировочный состав. Сочетания с едой и подача — редакционные рекомендации.",
+      "en": "Malts, grains and hops are disclosed by the brewery; this is not a full label ingredient declaration. Food pairings and serving are editorial suggestions."
+    }
+  },
+  {
+    "id": "ru-jaws-stout",
+    "name": {
+      "ru": "Jaws Oatmeal Stout",
+      "en": "Jaws Oatmeal Stout"
+    },
+    "brewery": {
+      "ru": "Jaws Brewery · ООО «Эталон-Продукт»",
+      "en": "Jaws Brewery · Etalon-Produkt"
+    },
+    "country": "RU",
+    "city": {
+      "ru": "Белоярский, Свердловская область",
+      "en": "Beloyarsky, Sverdlovsk Region"
+    },
+    "style": "stout",
+    "styleName": {
+      "ru": "Овсяный стаут",
+      "en": "Oatmeal stout"
+    },
+    "abv": 5.2,
+    "ingredients": {
+      "ru": [
+        "Солода: Pale Ale, Munich, Crystal, Chocolat, Black, Special B",
+        "Жжёный ячмень и овёс",
+        "Хмель: Columbus"
+      ],
+      "en": [
+        "Malts: Pale Ale, Munich, Crystal, Chocolat, Black, Special B",
+        "Roasted barley and oats",
+        "Hops: Columbus"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Овсяный стаут с балансом нескольких тёмных солодов. Овёс придаёт мягкую текстуру, а шоколадные и кофейные тона делают вкус обволакивающим.",
+      "en": "An oatmeal stout balancing several dark malts. Oats add a soft texture, while chocolate and coffee notes create a rounded flavour."
+    },
+    "aroma": {
+      "ru": "Кофе и тёмный шоколад",
+      "en": "Coffee and dark chocolate"
+    },
+    "taste": {
+      "ru": "Мягкий, бархатный, кофейно-шоколадный",
+      "en": "Soft and velvety with coffee and chocolate"
+    },
+    "food": {
+      "ru": [
+        "Шоколадный брауни",
+        "Жаркое",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Chocolate brownie",
+        "Roast meat",
+        "Mature cheese"
+      ]
+    },
+    "serve": {
+      "ru": "10–12 °C · пинта или тюльпан",
+      "en": "10–12 °C · pint or tulip glass"
+    },
+    "color": "#64547b",
+    "image": "/assets/beer-rus-jaws-stout.png",
+    "imageCredit": "https://static.tildacdn.com/tild6165-3435-4635-b931-353663613732/bottle_05_Jaws_Stout.png",
+    "sources": [
+      {
+        "label": "Jaws · официальная карточка и адрес / official product and production address",
+        "url": "https://jawsbeer.ru/jaws-oatmeal-stout"
+      }
+    ],
+    "note": {
+      "ru": "Указаны солода, зерно и хмель, раскрытые пивоварней; это не полный маркировочный состав. Сочетания с едой и подача — редакционные рекомендации.",
+      "en": "Malts, grains and hops are disclosed by the brewery; this is not a full label ingredient declaration. Food pairings and serving are editorial suggestions."
+    }
+  }
+]

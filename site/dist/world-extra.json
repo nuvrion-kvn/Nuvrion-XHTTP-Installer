@@ -1,0 +1,1912 @@
+[
+  {
+    "id": "world-extra-augustiner",
+    "name": {
+      "ru": "Augustiner Lagerbier Hell",
+      "en": "Augustiner Lagerbier Hell"
+    },
+    "brewery": {
+      "ru": "Августинер-Брой",
+      "en": "Augustiner-Bräu"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Мюнхен",
+      "en": "Munich"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Мюнхенский хеллес",
+      "en": "Munich Helles"
+    },
+    "abv": 5.2,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Мюнхенский светлый лагер с чистым, свежим ароматом и тонкими цветочными оттенками хмеля. Сдержанная солодовая сладость и мягкая горечь дают ровный, освежающий профиль.",
+      "en": "A Munich pale lager with a clean, fresh aroma and delicate floral hops. Restrained malt sweetness and gentle bitterness create a balanced, refreshing profile."
+    },
+    "aroma": {
+      "ru": "Свежий солод, лёгкие цветочные ноты хмеля",
+      "en": "Fresh malt and subtle floral hops"
+    },
+    "taste": {
+      "ru": "Стройное тело, мягкий солод и бархатистая хмелевая горечь",
+      "en": "A light, balanced body with soft malt and velvety hop bitterness"
+    },
+    "food": {
+      "ru": [
+        "Баварские колбаски",
+        "Запечённая курица",
+        "Брецель"
+      ],
+      "en": [
+        "Bavarian sausages",
+        "Roast chicken",
+        "Pretzel"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C, высокий лагерный бокал или традиционный Willibecher",
+      "en": "6–8 °C in a tall lager glass or traditional Willibecher"
+    },
+    "color": "#d7aa44",
+    "image": "/assets/beer-world-extra-augustiner.webp",
+    "imageCredit": "https://www.augustiner-braeu.de/fileadmin/_processed_/c/c/csm_Augustiner-hell_86530f6ae4.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.augustiner-braeu.de/unser-bier/"
+      }
+    ],
+    "imageType": "photo"
+  },
+  {
+    "id": "world-extra-schneider",
+    "name": {
+      "ru": "Schneider Weisse TAP7 Original",
+      "en": "Schneider Weisse TAP7 Original"
+    },
+    "brewery": {
+      "ru": "Шнайдер Вайссе",
+      "en": "Schneider Weisse"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Кельхайм",
+      "en": "Kelheim"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Янтарный хефевайцен",
+      "en": "Amber Hefeweizen"
+    },
+    "abv": 5.4,
+    "ingredients": {
+      "ru": [
+        "Пшеничный солод",
+        "Ячменный солод",
+        "Хмель Hallertauer Tradition",
+        "Хмель Hallertauer Herkules",
+        "Дрожжи для открытого и бутылочного брожения"
+      ],
+      "en": [
+        "Wheat malt",
+        "Barley malt",
+        "Hallertauer Tradition hops",
+        "Hallertauer Herkules hops",
+        "Yeast for open and bottle fermentation"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Янтарное пшеничное пиво проходит открытое брожение и дображивает в бутылке. Производитель сохраняет естественную мутность: сорт не фильтруют и не пастеризуют.",
+      "en": "This amber wheat beer undergoes open fermentation and finishes fermenting in the bottle. Its natural haze is preserved because the beer is neither filtered nor pasteurised."
+    },
+    "aroma": {
+      "ru": "Пшеничный солод, дрожжевые фруктовые и пряные оттенки",
+      "en": "Wheat malt with fruity and spicy yeast notes"
+    },
+    "taste": {
+      "ru": "Выразительный, гармоничный солодовый вкус и мягкая горечь",
+      "en": "A rich, balanced malt character with gentle bitterness"
+    },
+    "food": {
+      "ru": [
+        "Свиная рулька",
+        "Грибы",
+        "Мягкий сыр"
+      ],
+      "en": [
+        "Pork knuckle",
+        "Mushrooms",
+        "Soft cheese"
+      ]
+    },
+    "serve": {
+      "ru": "7–9 °C, пшеничный бокал; дрожжевой осадок можно аккуратно добавить",
+      "en": "7–9 °C in a wheat beer glass; gently add the yeast sediment if desired"
+    },
+    "color": "#b76c35",
+    "image": "/assets/beer-world-extra-schneider.webp",
+    "imageCredit": "https://schneider-weisse.de/sites/default/files/2023-05/Schneider-Weisse-ProduktDuo-TAP07-2023-web.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://schneider-weisse.de/weissbier/mein-original"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-ayinger",
+    "name": {
+      "ru": "Ayinger Celebrator",
+      "en": "Ayinger Celebrator"
+    },
+    "brewery": {
+      "ru": "Частная пивоварня Айингер",
+      "en": "Ayinger Privatbrauerei"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Айинг",
+      "en": "Aying"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Тёмный доппельбок",
+      "en": "Dark Doppelbock"
+    },
+    "abv": 6.7,
+    "ingredients": {
+      "ru": [
+        "Солод: точные разновидности не раскрыты на странице сорта",
+        "Хмель, вода и дрожжи: базовые компоненты немецкого лагера"
+      ],
+      "en": [
+        "Malt: specific varieties are not disclosed on the product page",
+        "Hops, water and yeast: the base components of German lager"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Тёмный доппельбок низового брожения с глубоким цветом красного дерева и рубиновыми отблесками. Плотное тело и орехово-карамельный профиль делают его выразительным спутником десертов.",
+      "en": "A bottom-fermented dark doppelbock with a deep mahogany colour and ruby highlights. Its full body and nutty caramel character make it an expressive match for desserts."
+    },
+    "aroma": {
+      "ru": "Орехи, карамель и лёгкий оттенок кедра",
+      "en": "Nuts, caramel and a hint of cedar"
+    },
+    "taste": {
+      "ru": "Бархатистый солодовый вкус, полное тело и пряный финал",
+      "en": "Velvety malt, a full body and a spicy finish"
+    },
+    "food": {
+      "ru": [
+        "Тушёная говядина",
+        "Ореховый пирог",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Braised beef",
+        "Nut tart",
+        "Aged cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–12 °C, тюльпан или небольшой бокал на ножке",
+      "en": "8–12 °C in a tulip or small stemmed glass"
+    },
+    "color": "#603927",
+    "image": "/assets/beer-world-extra-ayinger.webp",
+    "imageCredit": "https://www.brauerei-ayinger.de/wp-content/uploads/2025/10/Ayinger-Celebrator.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://en.brauerei-ayinger.de/ayinger-bierspezialitaeten/ayinger-celebrator/"
+      }
+    ],
+    "imageType": "photo",
+    "note": {
+      "ru": "Точный состав этикетки не опубликован в карточке производителя; базовые компоненты указаны как характеристика стиля. В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The manufacturer product page does not publish a complete label; base ingredients are identified as a style characteristic. The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-schlenkerla",
+    "name": {
+      "ru": "Aecht Schlenkerla Rauchbier Märzen",
+      "en": "Aecht Schlenkerla Rauchbier Märzen"
+    },
+    "brewery": {
+      "ru": "Шленкерла, пивоварня Хеллер",
+      "en": "Schlenkerla, Heller-Bräu"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Бамберг",
+      "en": "Bamberg"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Копчёный мэрцен",
+      "en": "Smoked Märzen"
+    },
+    "abv": 5.1,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод, высушенный над буковым дымом",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Barley malt dried over beechwood smoke",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Бамбергский тёмный лагер получает дымный характер благодаря солоду из собственной коптильной сушилки. Копчёный аромат — результат обработки зерна, а не добавления мяса в пиво.",
+      "en": "This dark Bamberg lager obtains its smoky character from malt produced in the brewery’s own smoke kiln. The smoke aroma comes from the grain treatment, rather than meat added to the beer."
+    },
+    "aroma": {
+      "ru": "Буковый дым, поджаренный хлеб и солод",
+      "en": "Beechwood smoke, toasted bread and malt"
+    },
+    "taste": {
+      "ru": "Копчёный солод, округлое тело и сдержанная хмелевая горечь",
+      "en": "Smoked malt, a rounded body and restrained hop bitterness"
+    },
+    "food": {
+      "ru": [
+        "Копчёные колбаски",
+        "Жаркое",
+        "Овощи на гриле"
+      ],
+      "en": [
+        "Smoked sausages",
+        "Roast meat",
+        "Grilled vegetables"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C, кружка или лагерный бокал",
+      "en": "8–10 °C in a mug or lager glass"
+    },
+    "color": "#6a432a",
+    "image": "/assets/beer-world-extra-schlenkerla-cutout.webp",
+    "imageCredit": "https://shop.schlenkerla.de/media/image/product/3/md/aecht-schlenkerla-rauchbier-maerzen.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.schlenkerla.de/rauchbier/sorten/sortene.html"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-franziskaner",
+    "name": {
+      "ru": "Franziskaner Hefe-Weissbier Naturtrüb",
+      "en": "Franziskaner Hefe-Weissbier Naturtrüb"
+    },
+    "brewery": {
+      "ru": "Шпатен-Францисканер-Брой",
+      "en": "Spaten-Franziskaner-Bräu"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Мюнхен",
+      "en": "Munich"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Светлый хефевайцен",
+      "en": "Pale Hefeweizen"
+    },
+    "abv": 5.0,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Пшеничный и ячменный солод",
+        "Хмель",
+        "Собственные дрожжи верхового брожения"
+      ],
+      "en": [
+        "Water",
+        "Wheat and barley malt",
+        "Hops",
+        "The brewery’s own top-fermenting yeast"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Нефильтрованный баварский вайсбир медно-золотистого цвета с естественной дрожжевой мутностью. Выраженная карбонизация подчёркивает фруктовый, слегка пряный характер и мягко-сладкий финал.",
+      "en": "An unfiltered Bavarian wheat beer with a copper-gold colour and natural yeast haze. Lively carbonation highlights its fruity, gently spicy character and mildly sweet finish."
+    },
+    "aroma": {
+      "ru": "Банан, цитрусовые и мягкая дрожжевая пряность",
+      "en": "Banana, citrus and gentle yeast spice"
+    },
+    "taste": {
+      "ru": "Игристый, фруктовый, немного пряный, с мягким сладким послевкусием",
+      "en": "Sparkling and fruity with light spice and a gently sweet aftertaste"
+    },
+    "food": {
+      "ru": [
+        "Мясо на гриле",
+        "Рыба",
+        "Овощной салат"
+      ],
+      "en": [
+        "Grilled meat",
+        "Fish",
+        "Vegetable salad"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C, высокий пшеничный бокал",
+      "en": "6–8 °C in a tall wheat beer glass"
+    },
+    "color": "#dca645",
+    "image": "/assets/beer-world-extra-franziskaner.webp",
+    "imageCredit": "https://static.wixstatic.com/media/bcd0fc_733f06ac6b05487f8d71cda597386bed~mv2.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.franziskaner-weissbier.de/unsere-biere/hefe-weissbier-naturtr%C3%BCb"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-rochefort",
+    "name": {
+      "ru": "Trappistes Rochefort 10",
+      "en": "Trappistes Rochefort 10"
+    },
+    "brewery": {
+      "ru": "Пивоварня аббатства Сен-Реми",
+      "en": "Abbaye Notre-Dame de Saint-Rémy"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Рошфор",
+      "en": "Rochefort"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Тёмный траппистский крепкий эль",
+      "en": "Trappist Dark Strong Ale"
+    },
+    "abv": 11.3,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Сахар",
+        "Дрожжи",
+        "Хмель",
+        "Пряности"
+      ],
+      "en": [
+        "Water",
+        "Malted barley",
+        "Sugar",
+        "Yeast",
+        "Hops",
+        "Spices"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Крепкий тёмный траппистский эль из аббатства Сен-Реми в Рошфоре. Число 10 относится к исторической шкале плотности, а на карточке указана отдельная фактическая крепость 11,3 %.",
+      "en": "A strong, dark Trappist ale from Saint-Rémy Abbey in Rochefort. The number 10 belongs to a historic gravity scale; the actual alcohol content shown here is 11.3%."
+    },
+    "aroma": {
+      "ru": "Кофе, шоколад и пряные ноты",
+      "en": "Coffee, chocolate and spicy notes"
+    },
+    "taste": {
+      "ru": "Насыщенный, округлый, с шоколадно-солодовой глубиной",
+      "en": "Rich and rounded with chocolate and malt depth"
+    },
+    "food": {
+      "ru": [
+        "Выдержанный сыр",
+        "Тёмный шоколад",
+        "Тушёная дичь"
+      ],
+      "en": [
+        "Aged cheese",
+        "Dark chocolate",
+        "Braised game"
+      ]
+    },
+    "serve": {
+      "ru": "12–14 °C, широкий бокал на ножке; осадок оставляют по вкусу",
+      "en": "12–14 °C in a wide stemmed glass; leave the sediment according to preference"
+    },
+    "color": "#493026",
+    "image": "/assets/beer-world-extra-rochefort.webp",
+    "imageCredit": "https://www.trappistes-rochefort.com/wp-content/uploads/2024/06/rochefort_10-840x1680.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.trappistes-rochefort.com/en/beer/rochefort-10/"
+      }
+    ],
+    "imageType": "photo"
+  },
+  {
+    "id": "world-extra-orval",
+    "name": {
+      "ru": "Orval",
+      "en": "Orval"
+    },
+    "brewery": {
+      "ru": "Пивоварня Орваль",
+      "en": "Brasserie d’Orval"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Виллер-деван-Орваль",
+      "en": "Villers-devant-Orval"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Траппистский эль с сухим охмелением",
+      "en": "Dry-Hopped Trappist Ale"
+    },
+    "abv": 6.2,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Светлый и карамельный солод",
+        "Сахар",
+        "Хмель",
+        "Дрожжи, включая Brettanomyces"
+      ],
+      "en": [
+        "Water",
+        "Pale and caramel malt",
+        "Sugar",
+        "Hops",
+        "Yeast, including Brettanomyces"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Траппистский эль с сухим охмелением, несколькими стадиями брожения и выдержкой в бутылке. В молодом пиве заметнее свежий хмель, а с возрастом усиливается сложный дрожжевой характер и лёгкая кислинка.",
+      "en": "A Trappist ale made with dry hopping, multiple fermentation stages and bottle conditioning. Young beer shows fresh hops, while age develops a more complex yeast character and gentle acidity."
+    },
+    "aroma": {
+      "ru": "Фруктовые и хмелевые ноты, меняющиеся при выдержке",
+      "en": "Fruity and hoppy notes that evolve with age"
+    },
+    "taste": {
+      "ru": "Сухой, горьковатый, сложный; выдержка добавляет лёгкую кислотность",
+      "en": "Dry, bitter and complex; maturation introduces gentle acidity"
+    },
+    "food": {
+      "ru": [
+        "Сыр с мытой коркой",
+        "Запечённая птица",
+        "Грибной пирог"
+      ],
+      "en": [
+        "Washed-rind cheese",
+        "Roast poultry",
+        "Mushroom pie"
+      ]
+    },
+    "serve": {
+      "ru": "10–15 °C, бокал Orval; наливать медленно, оставив около 1 см пива с осадком",
+      "en": "10–15 °C in an Orval glass; pour slowly and leave about 1 cm of beer with the sediment"
+    },
+    "color": "#c18c42",
+    "image": "/assets/beer-world-extra-orval.webp",
+    "imageCredit": "https://www.orval.be/en/rimage/pivot_square_768/image/720/70ec384a78b5b5ce50ecbc252d6e60e9",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.orval.be/en/page/485-how-orval-beer-is-made"
+      }
+    ],
+    "imageType": "photo",
+    "note": {
+      "ru": "Крепость 6,2 % указана для стандартного сорта; бутылочное дображивание изменяет характер пива со временем.",
+      "en": "6.2% is the standard product figure; bottle conditioning changes the beer’s character over time."
+    }
+  },
+  {
+    "id": "world-extra-karmeliet",
+    "name": {
+      "ru": "Tripel Karmeliet",
+      "en": "Tripel Karmeliet"
+    },
+    "brewery": {
+      "ru": "Пивоварня Бостелс",
+      "en": "Brouwerij Bosteels"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Бюггенхаут",
+      "en": "Buggenhout"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Бельгийский трипель из трёх злаков",
+      "en": "Three-Grain Belgian Tripel"
+    },
+    "abv": 8.4,
+    "ingredients": {
+      "ru": [
+        "Ячмень",
+        "Пшеница",
+        "Овёс",
+        "Полный список дополнительных компонентов не раскрыт на странице сорта"
+      ],
+      "en": [
+        "Barley",
+        "Wheat",
+        "Oats",
+        "The product page does not disclose all additional components"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Бельгийский трипель объединяет три зерновые культуры: ячмень даёт тело, пшеница — свежесть, овёс — шелковистую текстуру. Светлый эль раскрывается цитрусовыми, ванильными и пряными оттенками.",
+      "en": "This Belgian tripel combines three grains: barley provides body, wheat freshness and oats a silky texture. The pale ale reveals citrus, vanilla and spicy notes."
+    },
+    "aroma": {
+      "ru": "Цитрус, ваниль, цветы и пряные оттенки",
+      "en": "Citrus, vanilla, flowers and spice"
+    },
+    "taste": {
+      "ru": "Мягкая солодовая сладость, шелковистое тело и освежающий пряный финал",
+      "en": "Gentle malt sweetness, a silky body and a refreshing spicy finish"
+    },
+    "food": {
+      "ru": [
+        "Морепродукты",
+        "Курица в сливочном соусе",
+        "Мягкий сыр"
+      ],
+      "en": [
+        "Seafood",
+        "Chicken in cream sauce",
+        "Soft cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C, широкий тюльпан с местом для пены",
+      "en": "8–10 °C in a wide tulip with room for the head"
+    },
+    "color": "#d8b46a",
+    "image": "/assets/beer-world-extra-karmeliet.webp",
+    "imageCredit": "https://static.wixstatic.com/media/bff35e_05149aac8e834a09bb40ea557981d624~mv2.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.tripelkarmeliet.com/our-beer"
+      },
+      {
+        "label": "Форматы и крепость / Formats and strength",
+        "url": "https://www.tripelkarmeliet.com/faq"
+      }
+    ],
+    "imageType": "photo",
+    "note": {
+      "ru": "У бутылочного сорта крепость 8,4 %; официальный FAQ указывает 8,0 % для версии в банке. Проверяйте формат на этикетке. В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The bottled beer is 8.4%; the official FAQ lists 8.0% for the canned version. Check the package label. The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-chouffe",
+    "name": {
+      "ru": "La Chouffe",
+      "en": "La Chouffe"
+    },
+    "brewery": {
+      "ru": "Пивоварня д’Ашуфф",
+      "en": "Brasserie d’Achouffe"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Ашуфф",
+      "en": "Achouffe"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Бельгийский крепкий светлый эль",
+      "en": "Belgian Strong Blond Ale"
+    },
+    "abv": 8.0,
+    "ingredients": {
+      "ru": [
+        "Солодовая основа",
+        "Хмель",
+        "Кориандр",
+        "Дрожжи"
+      ],
+      "en": [
+        "Malt base",
+        "Hops",
+        "Coriander",
+        "Yeast"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Светлый бельгийский эль из Арденн, узнаваемый по гному на этикетке. Цитрусовая свежесть и кориандр сочетаются с мягким солодовым телом и лёгкой хмелевой горечью.",
+      "en": "A blond Belgian ale from the Ardennes, recognisable by the gnome on its label. Citrus freshness and coriander combine with a soft malt body and gentle hop bitterness."
+    },
+    "aroma": {
+      "ru": "Цитрусовые, кориандр и фруктовые дрожжевые оттенки",
+      "en": "Citrus, coriander and fruity yeast notes"
+    },
+    "taste": {
+      "ru": "Округлый, слегка сладкий, с цитрусово-пряным окончанием",
+      "en": "Rounded and gently sweet with a citrus-spice finish"
+    },
+    "food": {
+      "ru": [
+        "Мидии",
+        "Птица",
+        "Мягкий козий сыр"
+      ],
+      "en": [
+        "Mussels",
+        "Poultry",
+        "Soft goat cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C, тюльпан; наливать медленно из-за дображивания",
+      "en": "8–10 °C in a tulip; pour slowly because the beer is conditioned"
+    },
+    "color": "#d0a33e",
+    "image": "/assets/beer-world-extra-chouffe.webp",
+    "imageCredit": "https://shop.chouffe.com/media/catalog/product/cache/12505e9180a3d4c797229d619788717e/L/a/La_Chouffe_33cl_0066.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://shop.chouffe.com/en/801stk"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-westmalle",
+    "name": {
+      "ru": "Westmalle Tripel",
+      "en": "Westmalle Tripel"
+    },
+    "brewery": {
+      "ru": "Пивоварня аббатства Вестмалле",
+      "en": "Westmalle Abbey Brewery"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Вестмалле",
+      "en": "Westmalle"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Траппистский трипель",
+      "en": "Trappist Tripel"
+    },
+    "abv": 9.5,
+    "ingredients": {
+      "ru": [
+        "Вода из глубокого водоносного слоя",
+        "Ячменный солод",
+        "Европейский хмель",
+        "Сахар",
+        "Собственные дрожжи"
+      ],
+      "en": [
+        "Deep-aquifer water",
+        "Barley malt",
+        "European hops",
+        "Sugar",
+        "The brewery’s own yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Золотистый траппистский трипель верхового брожения с дображиванием в бутылке. Аромат спелого банана и тонкие хмелевые ноты переходят в мягкое сливочное тело и продолжительный сухой финал.",
+      "en": "A golden, top-fermented Trappist tripel with secondary fermentation in the bottle. Ripe banana and nuanced hops lead into a soft, creamy body and a long, dry finish."
+    },
+    "aroma": {
+      "ru": "Спелый банан и тонкий хмелевой букет",
+      "en": "Ripe banana and a nuanced hop bouquet"
+    },
+    "taste": {
+      "ru": "Мягкий и сливочный, фруктово-горький, с долгим сухим послевкусием",
+      "en": "Soft and creamy, fruitily bitter, with a long dry aftertaste"
+    },
+    "food": {
+      "ru": [
+        "Запечённая рыба",
+        "Птица",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Baked fish",
+        "Poultry",
+        "Aged cheese"
+      ]
+    },
+    "serve": {
+      "ru": "8–12 °C, бокал на ножке; оставьте место для пенной шапки",
+      "en": "8–12 °C in a stemmed glass; leave room for the head"
+    },
+    "color": "#d8b04f",
+    "image": "/assets/beer-world-extra-westmalle.webp",
+    "imageCredit": "https://www.trappistwestmalle.be/wp-content/uploads/2023/03/Westmalle-Tripel-978x1024-1.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.trappistwestmalle.be/en/trappist-beer/westmalle-tripel/"
+      }
+    ],
+    "imageType": "product"
+  },
+  {
+    "id": "world-extra-delirium",
+    "name": {
+      "ru": "Delirium Tremens",
+      "en": "Delirium Tremens"
+    },
+    "brewery": {
+      "ru": "Пивоварня Хёйге",
+      "en": "Brouwerij Huyghe"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Мелле",
+      "en": "Melle"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Бельгийский крепкий светлый эль",
+      "en": "Belgian Strong Blond Ale"
+    },
+    "abv": 8.5,
+    "ingredients": {
+      "ru": [
+        "Солодовая основа: точный состав не раскрыт в карточке",
+        "Хмель и дрожжи: компоненты пивного брожения"
+      ],
+      "en": [
+        "Malt base: the detailed recipe is not disclosed in the product card",
+        "Hops and yeast: components used in beer fermentation"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Крепкий светлый эль с розовым слоном на узнаваемой бутылке. Регулярная мелкая карбонизация поддерживает устойчивую пену, а округлый вкус завершается выраженной сухой горечью.",
+      "en": "A strong pale ale with a pink elephant on its recognisable bottle. Fine, steady carbonation supports a lasting head, while the rounded palate finishes with pronounced dry bitterness."
+    },
+    "aroma": {
+      "ru": "Лёгкий солод, пряность и тёплые алкогольные оттенки",
+      "en": "Light malt, spice and warming alcohol notes"
+    },
+    "taste": {
+      "ru": "Округлый вкус с согревающим ощущением и долгим сухим горьким финалом",
+      "en": "Rounded and warming with a long, dry bitter finish"
+    },
+    "food": {
+      "ru": [
+        "Острый сыр",
+        "Запечённая птица",
+        "Свиное жаркое"
+      ],
+      "en": [
+        "Sharp cheese",
+        "Roast poultry",
+        "Roast pork"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C, фирменный бокал или тюльпан",
+      "en": "8–10 °C in the brewery’s glass or a tulip"
+    },
+    "color": "#d4bb77",
+    "image": "/assets/beer-world-extra-delirium.webp",
+    "imageCredit": "https://www.delirium.be/themes/custom/delirium/assets/img/beers/beer_delirium_tremens.png?v=1",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.delirium.be/en/beers/delirium-tremens"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Производитель не публикует полный состав в карточке; упоминание базовых компонентов не заменяет этикетку. В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The brewery does not publish a full recipe in the product card; the base components do not replace the label. The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-brooklyn",
+    "name": {
+      "ru": "Brooklyn Lager",
+      "en": "Brooklyn Lager"
+    },
+    "brewery": {
+      "ru": "Бруклинская пивоварня",
+      "en": "Brooklyn Brewery"
+    },
+    "country": "US",
+    "city": {
+      "ru": "Нью-Йорк, Бруклин",
+      "en": "New York, Brooklyn"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Американский янтарный лагер",
+      "en": "American Amber Lager"
+    },
+    "abv": 5.2,
+    "ingredients": {
+      "ru": [
+        "Солодовая основа: полный список не раскрыт",
+        "Хмель Cascade",
+        "Хмель Hallertau",
+        "Хмель Mittelfrüh"
+      ],
+      "en": [
+        "Malt base: the full list is not disclosed",
+        "Cascade hops",
+        "Hallertau hops",
+        "Mittelfrüh hops"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Янтарный американский лагер сочетает карамельно-поджаренные солодовые оттенки с выразительным хмелем. Сухое охмеление даёт грейпфрутовый акцент, сохраняя гладкий лагерный характер.",
+      "en": "An American amber lager that balances toasty caramel malt with expressive hops. Dry hopping brings a grapefruit accent while preserving a smooth lager character."
+    },
+    "aroma": {
+      "ru": "Грейпфрут, хмель и поджаренная карамель",
+      "en": "Grapefruit, hops and toasted caramel"
+    },
+    "taste": {
+      "ru": "Солодовая округлость, тосты и яркая цитрусовая горечь",
+      "en": "Rounded malt, toast and bright citrus bitterness"
+    },
+    "food": {
+      "ru": [
+        "Бургер",
+        "Пицца",
+        "Жареные грибы"
+      ],
+      "en": [
+        "Burger",
+        "Pizza",
+        "Fried mushrooms"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C, лагерный бокал или американская пинта",
+      "en": "6–8 °C in a lager glass or American pint"
+    },
+    "color": "#b27337",
+    "image": "/assets/beer-world-extra-brooklyn.webp",
+    "imageCredit": "https://brooklynbrewery.com/wp-content/uploads/2019/08/BrooklynBrewery_Bar_Products_592_US_Lager.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://brooklynbrewery.com/brooklyn-beers/year-round/brooklyn-lager/"
+      }
+    ],
+    "imageType": "photo",
+    "note": {
+      "ru": "Указаны происхождение марки в Бруклине и американская версия 5,2 %. Для экспортных партий место варки уточняйте на этикетке. В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The card shows the brand’s Brooklyn origin and the US 5.2% version. Check export labels for the actual brewing site. The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-liefmans",
+    "name": {
+      "ru": "Liefmans Fruitesse",
+      "en": "Liefmans Fruitesse"
+    },
+    "brewery": {
+      "ru": "Пивоварня Лифманс",
+      "en": "Brouwerij Liefmans"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Ауденарде",
+      "en": "Oudenaarde"
+    },
+    "style": "fruit",
+    "styleName": {
+      "ru": "Бельгийское фруктовое пиво",
+      "en": "Belgian Fruit Beer"
+    },
+    "abv": 3.8,
+    "ingredients": {
+      "ru": [
+        "Пивная основа: полный состав не опубликован на странице сорта",
+        "Фруктовый профиль: клубника, малина, вишня, бузина и черника"
+      ],
+      "en": [
+        "Beer base: a full ingredients label is not published on the product page",
+        "Fruit profile: strawberry, raspberry, cherry, elderberry and blueberry"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Светло-красное фруктовое пиво с интенсивным ягодным профилем и живой карбонизацией. Производитель предлагает фирменную подачу On The Rocks — охлаждённое пиво в бокале со льдом.",
+      "en": "A light-red fruit beer with an intense berry profile and lively carbonation. The brewery recommends its signature On The Rocks serve: chilled beer poured over ice."
+    },
+    "aroma": {
+      "ru": "Спелые красные ягоды и вишня",
+      "en": "Ripe red berries and cherry"
+    },
+    "taste": {
+      "ru": "Фруктово-сладкий, освежающий, с лёгкой кислинкой",
+      "en": "Sweetly fruity and refreshing with gentle acidity"
+    },
+    "food": {
+      "ru": [
+        "Чизкейк",
+        "Ягодный крамбл",
+        "Мягкий сыр"
+      ],
+      "en": [
+        "Cheesecake",
+        "Berry crumble",
+        "Soft cheese"
+      ]
+    },
+    "serve": {
+      "ru": "Хорошо охладить и подать в бокале со льдом",
+      "en": "Chill well and serve in a glass over ice"
+    },
+    "color": "#b14454",
+    "image": "/assets/beer-world-extra-liefmans.webp",
+    "imageCredit": "https://www.liefmans.com/uploads/images/Producten/_productBottle/liefmans-fruitesse-75cl-bottle.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://shop.liefmans.be/en/beer/921nstk-1"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Перечисленные фрукты отражают вкусовой профиль производителя; точный состав добавок, сахара и пивной основы проверяйте на бутылке. В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The listed fruits reflect the brewery’s flavour profile; check the bottle for the exact additions, sugar and beer-base recipe. The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-stiegl",
+    "name": {
+      "ru": "Stiegl Goldbräu",
+      "en": "Stiegl Goldbräu"
+    },
+    "brewery": {
+      "ru": "Пивоварня Штигль",
+      "en": "Stieglbrauerei zu Salzburg"
+    },
+    "country": "AT",
+    "city": {
+      "ru": "Зальцбург",
+      "en": "Salzburg"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Австрийский мэрцен",
+      "en": "Austrian Märzen"
+    },
+    "abv": 5.0,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Золотистый австрийский лагер низового брожения с белой устойчивой пеной. Мягкий солодовый характер сочетает свежесть и полноту вкуса, характерную для австрийского мэрцена.",
+      "en": "A golden Austrian bottom-fermented lager with a lasting white head. Its gentle malt character combines freshness with the rounded flavour of Austrian Märzen."
+    },
+    "aroma": {
+      "ru": "Свежие злаки и мягкий солод",
+      "en": "Fresh grain and gentle malt"
+    },
+    "taste": {
+      "ru": "Полный, тонко-солодовый и сбалансированный",
+      "en": "Full-flavoured, delicately malty and balanced"
+    },
+    "food": {
+      "ru": [
+        "Шницель",
+        "Жаркое",
+        "Эмменталь"
+      ],
+      "en": [
+        "Schnitzel",
+        "Roast meat",
+        "Emmental"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C, фирменный лагерный бокал",
+      "en": "6–8 °C in a lager glass"
+    },
+    "color": "#d7a946",
+    "image": "/assets/beer-world-extra-stiegl-cutout.webp",
+    "imageCredit": "https://www.stiegl.at/wp-content/uploads/2022/01/produktgruppe-gb.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.stiegl.at/produkt/stiegl-goldbraeu/"
+      }
+    ],
+    "imageType": "product"
+  },
+  {
+    "id": "world-extra-superbock",
+    "name": {
+      "ru": "Super Bock Original",
+      "en": "Super Bock Original"
+    },
+    "brewery": {
+      "ru": "Супер Бок Груп",
+      "en": "Super Bock Group"
+    },
+    "country": "PT",
+    "city": {
+      "ru": "Леса-ду-Балиу, Матозиньюш",
+      "en": "Leça do Balio, Matosinhos"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Португальский светлый лагер",
+      "en": "Portuguese Pale Lager"
+    },
+    "abv": 5.2,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Несоложёная кукуруза и ячмень",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Unmalted maize and barley",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Португальский светлый лагер золотистого цвета с умеренным телом и устойчивой белой пеной. Солодовая сладость уравновешивается фруктовой горечью и коротким сухим финалом.",
+      "en": "A Portuguese pale lager with a bright golden colour, moderate body and lasting white head. Malt sweetness is balanced by fruity bitterness and a short, dry finish."
+    },
+    "aroma": {
+      "ru": "Солод и злаки, травяные и цитрусовые оттенки",
+      "en": "Malt and grain with herbal and citrus hints"
+    },
+    "taste": {
+      "ru": "Лёгкий и освежающий, со сбалансированной сладостью и горечью",
+      "en": "Light and refreshing with balanced sweetness and bitterness"
+    },
+    "food": {
+      "ru": [
+        "Рыба",
+        "Крокеты",
+        "Сэндвич франсезинья"
+      ],
+      "en": [
+        "Fish",
+        "Croquettes",
+        "Francesinha sandwich"
+      ]
+    },
+    "serve": {
+      "ru": "5–8 °C, лагерный бокал",
+      "en": "5–8 °C in a lager glass"
+    },
+    "color": "#d8aa46",
+    "image": "/assets/beer-world-extra-superbock.webp",
+    "imageCredit": "https://superbockgroup.com/wp-content/uploads/2023/03/super_bk_original-1500x1080.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.superbock.pt/en/our-beers/super-bock-original"
+      },
+      {
+        "label": "Спецификация / Product specification",
+        "url": "https://superbockgroup.com/wp-content/uploads/2023/03/sb-original-en.pdf"
+      }
+    ],
+    "imageType": "product"
+  },
+  {
+    "id": "world-extra-einstok",
+    "name": {
+      "ru": "Einstök Icelandic White Ale",
+      "en": "Einstök Icelandic White Ale"
+    },
+    "brewery": {
+      "ru": "Эйнстёк Эльгерд",
+      "en": "Einstök Ölgerð"
+    },
+    "country": "IS",
+    "city": {
+      "ru": "Акюрейри",
+      "en": "Akureyri"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Исландский витбир",
+      "en": "Icelandic Witbier"
+    },
+    "abv": 5.2,
+    "ingredients": {
+      "ru": [
+        "Исландская вода",
+        "Пшеничный солод",
+        "Пильзнерский солод",
+        "Овёс",
+        "Баварский благородный хмель",
+        "Кориандр",
+        "Апельсиновая цедра"
+      ],
+      "en": [
+        "Icelandic water",
+        "Wheat malt",
+        "Pilsner malt",
+        "Oats",
+        "Bavarian noble hops",
+        "Coriander",
+        "Orange peel"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Исландский эль в бельгийском пшеничном стиле варят с кориандром и апельсиновой цедрой. Овёс смягчает текстуру, а чистая вода и цитрусово-пряный профиль создают освежающий финал.",
+      "en": "An Icelandic ale in the Belgian wheat tradition, brewed with coriander and orange peel. Oats soften the texture, while pure water and a citrus-spice character create a refreshing finish."
+    },
+    "aroma": {
+      "ru": "Апельсиновая цедра, кориандр и пшеничный солод",
+      "en": "Orange peel, coriander and wheat malt"
+    },
+    "taste": {
+      "ru": "Чистое начало, гладкая текстура, цитрус и пряности в финале",
+      "en": "A clean start, smooth texture and a citrus-spice finish"
+    },
+    "food": {
+      "ru": [
+        "Морепродукты",
+        "Птица",
+        "Пряные азиатские блюда"
+      ],
+      "en": [
+        "Seafood",
+        "Poultry",
+        "Spicy Asian dishes"
+      ]
+    },
+    "serve": {
+      "ru": "5–8 °C, пшеничный бокал или тюльпан",
+      "en": "5–8 °C in a wheat beer glass or tulip"
+    },
+    "color": "#91bac8",
+    "image": "/assets/beer-world-extra-einstok-cutout.webp",
+    "imageCredit": "https://einstokbeer.com/wp-content/uploads/2017/04/white-ale-blaut_clip.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://einstokbeer.com/our-brews/icelandic-white-ale/"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "В составе перечислены раскрытые производителем компоненты, а не полная этикетка.",
+      "en": "The ingredients list covers components disclosed by the brewery, rather than a complete label."
+    }
+  },
+  {
+    "id": "world-extra-asahi",
+    "name": {
+      "ru": "Asahi Super Dry",
+      "en": "Asahi Super Dry"
+    },
+    "brewery": {
+      "ru": "Асахи",
+      "en": "Asahi Breweries"
+    },
+    "country": "JP",
+    "city": {
+      "ru": "Япония, происхождение марки",
+      "en": "Japan, brand origin"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Японский сухой лагер",
+      "en": "Japanese Dry Lager"
+    },
+    "abv": 5.0,
+    "ingredients": {
+      "ru": [
+        "Ячменный солод",
+        "Хмель",
+        "Кукурузный крахмал"
+      ],
+      "en": [
+        "Barley malt",
+        "Hops",
+        "Corn starch"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Японский лагер в стиле Karakuchi с сухим, чистым завершением вкуса. Карточка описывает версию 5,0 %, представленную на официальном немецком сайте марки.",
+      "en": "A Japanese lager in the Karakuchi tradition with a dry, clean finish. This card describes the 5.0% version presented on the brand’s official German website."
+    },
+    "aroma": {
+      "ru": "Лёгкий зерновой солод и деликатный хмель",
+      "en": "Light cereal malt and delicate hops"
+    },
+    "taste": {
+      "ru": "Сухой, освежающий, с коротким чистым послевкусием",
+      "en": "Dry and refreshing with a short, clean aftertaste"
+    },
+    "food": {
+      "ru": [
+        "Суши",
+        "Темпура",
+        "Курица карааге"
+      ],
+      "en": [
+        "Sushi",
+        "Tempura",
+        "Karaage chicken"
+      ]
+    },
+    "serve": {
+      "ru": "3–5 °C, высокий лагерный бокал",
+      "en": "3–5 °C in a tall lager glass"
+    },
+    "color": "#b7c0c5",
+    "image": "/assets/beer-world-extra-asahi-cutout.webp",
+    "imageCredit": "https://www.asahideutschland.de/assets/images/8/Asahi_Flasche033l_Condensation-45332085.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.asahideutschland.de/unsere-marken/asahi"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Приведены ключевые ингредиенты, опубликованные для немецкого рынка, а не полная этикетка. Бренд родом из Японии; фактическую страну розлива уточняйте на упаковке.",
+      "en": "Key ingredients published for the German market are listed, rather than a complete label. The brand originated in Japan; check the pack for the actual country of production."
+    }
+  },
+  {
+    "id": "world-extra-kirin",
+    "name": {
+      "ru": "Kirin Ichiban",
+      "en": "Kirin Ichiban"
+    },
+    "brewery": {
+      "ru": "Кирин Брюэри",
+      "en": "Kirin Brewery"
+    },
+    "country": "JP",
+    "city": {
+      "ru": "Япония, несколько пивоварен",
+      "en": "Japan, multiple breweries"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Японский цельносолодовый лагер",
+      "en": "Japanese All-Malt Lager"
+    },
+    "abv": 5.0,
+    "ingredients": {
+      "ru": [
+        "Солод",
+        "Хмель"
+      ],
+      "en": [
+        "Malt",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Лагер из 100 % солода варят по технологии Ichiban Shibori, используя первое сусло. Производитель описывает результат как мягкий и насыщенный солодовый вкус без грубой терпкости.",
+      "en": "This all-malt lager uses the Ichiban Shibori method, selecting the first wort. The brewery describes a smooth, rich malt flavour without harsh astringency."
+    },
+    "aroma": {
+      "ru": "Мягкий солодовый аромат",
+      "en": "Gentle malt aroma"
+    },
+    "taste": {
+      "ru": "Гладкий, насыщенный солодовый профиль и чистое завершение",
+      "en": "Smooth, rich malt character and a clean finish"
+    },
+    "food": {
+      "ru": [
+        "Сашими",
+        "Якитори",
+        "Рисовые блюда"
+      ],
+      "en": [
+        "Sashimi",
+        "Yakitori",
+        "Rice dishes"
+      ]
+    },
+    "serve": {
+      "ru": "4–6 °C, чистый лагерный бокал",
+      "en": "4–6 °C in a clean lager glass"
+    },
+    "color": "#d3ba73",
+    "image": "/assets/beer-world-extra-kirin.webp",
+    "imageCredit": "https://www.kirinichiban.com/assets/product/img/kv_image_sp.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.kirinichiban.com/product/"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.kirin.co.jp/alcohol/beer/ichiban/"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Характеристики японской версии. Японская декларация сырья перечисляет солод и хмель; вода и дрожжи не перечислены в ней. Для других рынков место производства может отличаться.",
+      "en": "Specifications refer to the Japanese version. Its Japanese raw-material declaration lists malt and hops; water and yeast are not listed in that declaration. Production location can differ for other markets."
+    }
+  },
+  {
+    "id": "world-extra-tsingtao",
+    "name": {
+      "ru": "Tsingtao Premium Lager",
+      "en": "Tsingtao Premium Lager"
+    },
+    "brewery": {
+      "ru": "Циндаоская пивоварня",
+      "en": "Tsingtao Brewery"
+    },
+    "country": "CN",
+    "city": {
+      "ru": "Циндао, происхождение марки",
+      "en": "Qingdao, brand origin"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Китайский светлый лагер",
+      "en": "Chinese Pale Lager"
+    },
+    "abv": 4.7,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Рис",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Rice",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Светлый китайский лагер марки из портового города Циндао. Лёгкое тело, зерновой профиль и свежий финал делают его спокойным сопровождением к насыщенным блюдам.",
+      "en": "A pale Chinese lager from the brand founded in the port city of Qingdao. Its light body, cereal character and fresh finish provide an easy match for richly flavoured dishes."
+    },
+    "aroma": {
+      "ru": "Лёгкий солод и злаки",
+      "en": "Light malt and grain"
+    },
+    "taste": {
+      "ru": "Лёгкий, чистый и освежающий, с умеренной горечью",
+      "en": "Light, clean and refreshing with moderate bitterness"
+    },
+    "food": {
+      "ru": [
+        "Димсам",
+        "Жареная лапша",
+        "Острые овощи"
+      ],
+      "en": [
+        "Dim sum",
+        "Stir-fried noodles",
+        "Spicy vegetables"
+      ]
+    },
+    "serve": {
+      "ru": "4–6 °C, лагерный бокал",
+      "en": "4–6 °C in a lager glass"
+    },
+    "color": "#4d8b68",
+    "image": "/assets/beer-world-extra-tsingtao.webp",
+    "imageCredit": "https://iprorwxhjjirlj5o.leadongcdn.com/cloud/mnBpjKppRliSkjoojllmk/TSINGTAO-LAGER1-640-640.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.tsingtao.com/lager.html"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.tsingtaouk.com/pages/brand-story"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.lecbeverages.com/product/tsingtao-beer-4-7-24x330ml-nrb"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Крепость Classic Lager подтверждена производителем; состав экспортной версии опубликован официальным британским представителем. Сверяйте конкретную упаковку.",
+      "en": "The producer confirms the strength of Classic Lager; the export recipe is published by its official UK representative. Check the specific pack."
+    }
+  },
+  {
+    "id": "world-extra-singha",
+    "name": {
+      "ru": "Singha",
+      "en": "Singha"
+    },
+    "brewery": {
+      "ru": "Бун Рот Брюэри",
+      "en": "Boon Rawd Brewery"
+    },
+    "country": "TH",
+    "city": {
+      "ru": "Бангкок, происхождение марки",
+      "en": "Bangkok, brand origin"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Тайский светлый лагер",
+      "en": "Thai Pale Lager"
+    },
+    "abv": 5.0,
+    "ingredients": {
+      "ru": [
+        "Ячменный солод"
+      ],
+      "en": [
+        "Barley malt"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Тайский светлый лагер с золотым львом Singha на этикетке. Ячменный солод формирует мягкую основу, а хмель и карбонизация поддерживают освежающий характер.",
+      "en": "A Thai pale lager with the golden Singha lion on its label. Barley malt creates a soft base while hops and carbonation maintain a refreshing character."
+    },
+    "aroma": {
+      "ru": "Злаки, мягкий солод и лёгкие хмелевые ноты",
+      "en": "Grain, gentle malt and light hop notes"
+    },
+    "taste": {
+      "ru": "Мягкий зерновой вкус, свежесть и умеренная горечь",
+      "en": "Soft cereal flavour, freshness and moderate bitterness"
+    },
+    "food": {
+      "ru": [
+        "Тайское карри",
+        "Пад-тай",
+        "Морепродукты"
+      ],
+      "en": [
+        "Thai curry",
+        "Pad Thai",
+        "Seafood"
+      ]
+    },
+    "serve": {
+      "ru": "3–5 °C, охлаждённый лагерный бокал",
+      "en": "3–5 °C in a chilled lager glass"
+    },
+    "color": "#d2b674",
+    "image": "/assets/beer-world-extra-singha.webp",
+    "imageCredit": "https://www.singha-beer.jp/_wp/wp-content/uploads/2022/04/Singha220420.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.singha-beer.jp/products"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.singhabeverage.co.th/en/home"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Производитель подтверждает 100% ячменный солод, но эта карточка не воспроизводит полный состав этикетки. Крепость 5% подтверждена японским сайтом марки.",
+      "en": "The producer confirms 100% barley malt, but this card does not reproduce a complete ingredient label. The brand’s Japanese site confirms 5% ABV."
+    }
+  },
+  {
+    "id": "world-extra-carlsberg",
+    "name": {
+      "ru": "Carlsberg Danish Pilsner",
+      "en": "Carlsberg Danish Pilsner"
+    },
+    "brewery": {
+      "ru": "Карлсберг",
+      "en": "Carlsberg"
+    },
+    "country": "DK",
+    "city": {
+      "ru": "Копенгаген, происхождение марки",
+      "en": "Copenhagen, brand origin"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Датский пильзнер",
+      "en": "Danish Pilsner"
+    },
+    "abv": 5.0,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Ячмень",
+        "Хмель",
+        "Хмелевое масло"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Barley",
+        "Hops",
+        "Hop oil"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Датский пильзнер с балансом солодовой мягкости и хмелевой свежести. Здесь показана международная версия 5,0 %, а рецепт и крепость конкретного рынка нужно сверять с упаковкой.",
+      "en": "A Danish pilsner balancing gentle malt with hop freshness. This card shows the international 5.0% version; check the package for the recipe and strength sold in a particular market."
+    },
+    "aroma": {
+      "ru": "Зерновой солод и свежие хмелевые ноты",
+      "en": "Cereal malt and fresh hop notes"
+    },
+    "taste": {
+      "ru": "Сбалансированный, мягкий, с освежающей горечью",
+      "en": "Balanced and soft with refreshing bitterness"
+    },
+    "food": {
+      "ru": [
+        "Рыба",
+        "Сэндвичи",
+        "Курица на гриле"
+      ],
+      "en": [
+        "Fish",
+        "Sandwiches",
+        "Grilled chicken"
+      ]
+    },
+    "serve": {
+      "ru": "4–6 °C, лагерный бокал",
+      "en": "4–6 °C in a lager glass"
+    },
+    "color": "#568a62",
+    "image": "/assets/beer-world-extra-carlsberg-cutout.webp",
+    "imageCredit": "https://www.carlsberg.com/media/3txhrmiz/carlsberg-pilsner-beer-thumbnail.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://carlsbergcanada.com/products/carlsberg/carlsberg-danish-pilsner/"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.carlsberg.com/en/our-beer/danish-pilsner/"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Состав и крепость относятся к версии, опубликованной Carlsberg Canada. Бренд родом из Дании; крепость, состав и фактическое место производства могут зависеть от рынка.",
+      "en": "Recipe and strength refer to the version published by Carlsberg Canada. The brand originated in Denmark; strength, recipe and actual production location can depend on the market."
+    }
+  },
+  {
+    "id": "world-extra-estrella",
+    "name": {
+      "ru": "Estrella Damm",
+      "en": "Estrella Damm"
+    },
+    "brewery": {
+      "ru": "Дамм",
+      "en": "Damm"
+    },
+    "country": "ES",
+    "city": {
+      "ru": "Барселона, происхождение марки",
+      "en": "Barcelona, brand origin"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Средиземноморский светлый лагер",
+      "en": "Mediterranean Pale Lager"
+    },
+    "abv": 5.4,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Рис",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Rice",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Светлый испанский лагер с солодово-зерновым профилем и умеренной хмелевой горечью. В рецепте сочетаются ячменный солод и рис, придающие пиву лёгкость и чистое завершение.",
+      "en": "A pale Spanish lager with a malt-and-grain character and moderate hop bitterness. The recipe combines barley malt and rice for a light body and clean finish."
+    },
+    "aroma": {
+      "ru": "Злаки, лёгкий солод и мягкий хмель",
+      "en": "Grain, light malt and gentle hops"
+    },
+    "taste": {
+      "ru": "Лёгкий, сбалансированный, с чистым освежающим окончанием",
+      "en": "Light and balanced with a clean, refreshing finish"
+    },
+    "food": {
+      "ru": [
+        "Тапас",
+        "Паэлья",
+        "Морепродукты"
+      ],
+      "en": [
+        "Tapas",
+        "Paella",
+        "Seafood"
+      ]
+    },
+    "serve": {
+      "ru": "4–6 °C, тонкостенный лагерный бокал",
+      "en": "4–6 °C in a thin-walled lager glass"
+    },
+    "color": "#c75143",
+    "image": "/assets/beer-world-extra-estrella-cutout.webp",
+    "imageCredit": "https://www.damm.com/sites/default/files/config-pages/beer_information_image_bottle/estrella-damm_0.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.damm.com/en/beers/estrella-damm?accessgranted=yes"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://shop.damm.com/es/beer/estrella-damm-abrefacil/23858"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Крепость и состав относятся к испанской версии; экспортные версии могут отличаться. Производитель также описывает собственный штамм дрожжей как часть технологии.",
+      "en": "Strength and recipe refer to the Spanish version; export versions can differ. The producer also describes its own yeast strain as part of the brewing process."
+    }
+  },
+  {
+    "id": "world-extra-samuel",
+    "name": {
+      "ru": "Samuel Adams Boston Lager",
+      "en": "Samuel Adams Boston Lager"
+    },
+    "brewery": {
+      "ru": "Бостонская пивная компания",
+      "en": "The Boston Beer Company"
+    },
+    "country": "US",
+    "city": {
+      "ru": "Бостон, происхождение марки",
+      "en": "Boston, brand origin"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Венский янтарный лагер",
+      "en": "Vienna Amber Lager"
+    },
+    "abv": 5.0,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Хмель",
+        "Дрожжи"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Hops",
+        "Yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Американский янтарный лагер с выраженным солодовым телом и ароматическим хмелем. Карамельные и хлебные оттенки уравновешены суховатым завершением и характерной лагерной чистотой.",
+      "en": "An American amber lager with a pronounced malt body and aromatic hops. Caramel and bready notes are balanced by a drier finish and a clean lager character."
+    },
+    "aroma": {
+      "ru": "Карамельный солод, хлеб и хмель",
+      "en": "Caramel malt, bread and hops"
+    },
+    "taste": {
+      "ru": "Солодовый, округлый, с хмелевым балансом",
+      "en": "Malty and rounded with balancing hops"
+    },
+    "food": {
+      "ru": [
+        "Бургер",
+        "Стейк",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Burger",
+        "Steak",
+        "Aged cheese"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C, лагерный бокал или пинта",
+      "en": "6–8 °C in a lager glass or pint"
+    },
+    "color": "#ae6d3b",
+    "image": "/assets/beer-world-extra-samuel.webp",
+    "imageCredit": "https://www.bostonbeer.com/-/media/images/news/news-images/boston-beer/boston-lager-remastered.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.samueladams.com/our-beers/every-day-beers/boston-lager"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.bostonbeer.com/news/2024/08/samuel-adams-dominates-world-beer-awards"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.samueladams.com/faq"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.bostonbeer.com/news/2023/01/samuel-adams-introduces-new-brighter-take-on-flagship-boston-lager"
+      }
+    ],
+    "imageType": "photo",
+    "note": {
+      "ru": "Производитель перечисляет эти четыре основы для своего пива. С 2023 года версия Remastered использует изменённый процесс варки при сохранении рецептуры; на фото эта упаковка. Фактическую пивоварню уточняйте на этикетке.",
+      "en": "The producer lists these four brewing ingredients for its beers. Since 2023, the Remastered version uses an updated brewing process with the recipe retained; the image shows that pack. Check the label for the actual brewery."
+    }
+  },
+  {
+    "id": "world-extra-peroni",
+    "name": {
+      "ru": "Peroni Nastro Azzurro",
+      "en": "Peroni Nastro Azzurro"
+    },
+    "brewery": {
+      "ru": "Бирра Перони",
+      "en": "Birra Peroni"
+    },
+    "country": "IT",
+    "city": {
+      "ru": "Италия, несколько пивоварен",
+      "en": "Italy, multiple breweries"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Итальянский пильзнер",
+      "en": "Italian Pilsner"
+    },
+    "abv": 5.0,
+    "ingredients": {
+      "ru": [
+        "Ячменный солод",
+        "Итальянская кукуруза Nostrano dell’Isola",
+        "Хмель"
+      ],
+      "en": [
+        "Barley malt",
+        "Italian Nostrano dell’Isola maize",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Итальянский светлый лагер с сухим освежающим характером и сбалансированным ароматом. Кукуруза Nostrano, выращенная для марки в Италии, помогает сохранить лёгкую текстуру и сдержанную сладость.",
+      "en": "An Italian pale lager with a dry, refreshing character and balanced aroma. Nostrano maize grown for the brand in Italy helps maintain a light texture and restrained sweetness."
+    },
+    "aroma": {
+      "ru": "Деликатный солод и лёгкие хмелевые ноты",
+      "en": "Delicate malt and light hop notes"
+    },
+    "taste": {
+      "ru": "Сухой и свежий, с лёгким телом и умеренной сладостью",
+      "en": "Dry and fresh with a light body and restrained sweetness"
+    },
+    "food": {
+      "ru": [
+        "Пицца",
+        "Морепродукты",
+        "Лёгкая паста"
+      ],
+      "en": [
+        "Pizza",
+        "Seafood",
+        "Light pasta"
+      ]
+    },
+    "serve": {
+      "ru": "3–5 °C, высокий узкий бокал",
+      "en": "3–5 °C in a tall, narrow glass"
+    },
+    "color": "#78988b",
+    "image": "/assets/beer-world-extra-peroni.webp",
+    "imageCredit": "https://www.asahideutschland.de/assets/images/e/PNA_330ml-Bottle_Condensation_FRONT_Frei-0c0050fa.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.birraperoni.it/en/prodotto/nastro-azzurro/"
+      },
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.asahideutschland.de/unsere-marken/peroni"
+      }
+    ],
+    "imageType": "product",
+    "note": {
+      "ru": "Крепость 5% относится к актуальной итальянской версии. Приведены ключевые ингредиенты из описания бренда; полную декларацию уточняйте на этикетке.",
+      "en": "5% ABV refers to the current Italian version. Key ingredients from the brand description are listed; consult the label for the complete declaration."
+    }
+  }
+]
