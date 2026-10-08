@@ -1,0 +1,28 @@
+/* Generated from DESIGN.md by scripts/generate.py */
+:root {
+  --color-background: #17110c;
+  --color-panel: #2d2119;
+  --color-raised: #433025;
+  --color-line: #68503a;
+  --color-text: #f5ebdc;
+  --color-muted: #c2af96;
+  --color-primary: #e5bd7c;
+  --color-gold: #e5bd7c;
+  --color-success: #c6cea4;
+  --color-image-stage: #e5d5b9;
+  --color-scrollbar: #9d8263;
+  --color-glass: rgba(50, 35, 23, 0.10);
+  --color-glass-strong: rgba(43, 30, 21, 0.42);
+  --color-glass-border: rgba(247, 213, 164, 0.22);
+  --color-glass-highlight: rgba(255, 238, 209, 0.15);
+  --color-glass-image: rgba(245, 220, 182, 0.12);
+  --radius-default: 18px;
+  --radius-control: 12px;
+  --radius-pill: 999px;
+  --space-page-max: 1520px;
+  --space-gutter: 48px;
+  --space-section-gap: 80px;
+  --font-display: Lora, Georgia, serif;
+  --font-body: Nunito Sans, Arial, sans-serif;
+  --font-utility: Manrope, Arial, sans-serif;
+}

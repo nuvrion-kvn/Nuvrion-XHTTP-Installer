@@ -1,0 +1,1908 @@
+[
+  {
+    "id": "world-guinness",
+    "name": {
+      "ru": "Guinness Draught",
+      "en": "Guinness Draught"
+    },
+    "brewery": {
+      "ru": "Guinness",
+      "en": "Guinness"
+    },
+    "country": "IE",
+    "city": {
+      "ru": "Дублин",
+      "en": "Dublin"
+    },
+    "style": "stout",
+    "styleName": {
+      "ru": "Ирландский сухой стаут",
+      "en": "Irish dry stout"
+    },
+    "abv": 4.2,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Ячмень",
+        "Жареный ячмень",
+        "Хмель",
+        "Азот",
+        "Дрожжи"
+      ],
+      "en": [
+        "Water",
+        "Malted barley",
+        "Barley",
+        "Roasted barley",
+        "Hops",
+        "Nitrogen",
+        "Yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Знаменитый ирландский стаут с плотной сливочной пеной. За почти чёрным цветом скрывается глубокий рубиновый оттенок и мягкий баланс жареного зерна, сладости и горечи.",
+      "en": "The iconic Irish stout with a dense, creamy head. Its almost-black appearance hides a deep ruby colour and a smooth balance of roasted grain, sweetness and bitterness."
+    },
+    "aroma": {
+      "ru": "Жареный кофе и шоколад",
+      "en": "Roasted coffee and chocolate"
+    },
+    "taste": {
+      "ru": "Мягкий, с жареными нотами и сбалансированной горечью",
+      "en": "Smooth, roasted and balanced with bitterness"
+    },
+    "food": {
+      "ru": [
+        "Устрицы",
+        "Тушёная говядина",
+        "Выдержанный сыр"
+      ],
+      "en": [
+        "Oysters",
+        "Beef stew",
+        "Aged cheese"
+      ]
+    },
+    "serve": {
+      "ru": "В чистом пинтовом бокале; после налива дайте пене осесть",
+      "en": "Use a clean pint glass and let the surge settle"
+    },
+    "color": "#534d3d",
+    "image": "/assets/beer-world-guinness.webp",
+    "imageCredit": "https://images.ctfassets.net/8nq3bs98o7cv/1eEpQzghEgdxnmbiwmPmx0/424f735877a9eaa12954ebaf458a8ad1/guinness-draft.jpeg?fm=webp&w=800&q=85",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.guinness.com/en/beers/guinness-draught"
+      }
+    ],
+    "imageType": "photo"
+  },
+  {
+    "id": "world-guinness-zero",
+    "name": {
+      "ru": "Guinness 0.0",
+      "en": "Guinness 0.0"
+    },
+    "brewery": {
+      "ru": "Guinness",
+      "en": "Guinness"
+    },
+    "country": "IE",
+    "city": {
+      "ru": "Дублин",
+      "en": "Dublin"
+    },
+    "style": "nonalcoholic",
+    "styleName": {
+      "ru": "Безалкогольный стаут",
+      "en": "Alcohol-free stout"
+    },
+    "abv": 0,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Ячмень",
+        "Жареный ячмень",
+        "Фруктоза",
+        "Натуральные ароматизаторы",
+        "Хмель",
+        "Дрожжи"
+      ],
+      "en": [
+        "Water",
+        "Malted barley",
+        "Barley",
+        "Roasted barley",
+        "Fructose",
+        "Natural flavourings",
+        "Hops",
+        "Yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Безалкогольная версия стаута из St James’s Gate. После варки алкоголь удаляют холодной фильтрацией, сохраняя характер жареного солода и сливочную пену.",
+      "en": "An alcohol-free stout from St James’s Gate. Cold filtration removes the alcohol after brewing while preserving roasted malt character and creamy foam."
+    },
+    "aroma": {
+      "ru": "Кофе и шоколад",
+      "en": "Coffee and chocolate"
+    },
+    "taste": {
+      "ru": "Жареный, мягкий, с равновесием сладости и горечи",
+      "en": "Roasted and smooth with balanced sweetness and bitterness"
+    },
+    "food": {
+      "ru": [
+        "Тушёные грибы",
+        "Сыр",
+        "Шоколадный десерт"
+      ],
+      "en": [
+        "Braised mushrooms",
+        "Cheese",
+        "Chocolate dessert"
+      ]
+    },
+    "serve": {
+      "ru": "Охладите и налейте в пинтовый бокал",
+      "en": "Chill and pour into a pint glass"
+    },
+    "color": "#335481",
+    "image": "/assets/beer-world-guinness-zero.webp",
+    "imageCredit": "https://images.ctfassets.net/8nq3bs98o7cv/4MLfC8U8s7I89N6weYXrnA/aa04b6c38a5ad8577adb3ab773fb7361/Guinness_Europe_0.0_Gb_Brand_Bank_Assets_1680697_Banner_2_2400x2400_Blank?fm=webp&w=800&q=85",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.guinness.com/en/beers/guinness-zero"
+      }
+    ],
+    "imageType": "photo"
+  },
+  {
+    "id": "world-guinness-fes",
+    "name": {
+      "ru": "Guinness Foreign Extra Stout",
+      "en": "Guinness Foreign Extra Stout"
+    },
+    "brewery": {
+      "ru": "Guinness",
+      "en": "Guinness"
+    },
+    "country": "IE",
+    "city": {
+      "ru": "Дублин, происхождение марки",
+      "en": "Dublin, brand origin"
+    },
+    "style": "stout",
+    "styleName": {
+      "ru": "Экспортный стаут",
+      "en": "Foreign extra stout"
+    },
+    "abv": 7.5,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Ячмень",
+        "Жареный ячмень",
+        "Хмель",
+        "Дрожжи"
+      ],
+      "en": [
+        "Water",
+        "Malted barley",
+        "Barley",
+        "Roasted barley",
+        "Hops",
+        "Yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Насыщенный экспортный стаут, выросший из рецепта для дальних морских путешествий. Его характер определяют крепость, жареное зерно и интенсивные тёмные ароматы.",
+      "en": "A full-flavoured export stout descended from a beer made for long sea voyages. Its strength, roasted grain and intense dark aromas define its character."
+    },
+    "aroma": {
+      "ru": "Тёмный шоколад, карамель, сухофрукты",
+      "en": "Dark chocolate, caramel and dried fruit"
+    },
+    "taste": {
+      "ru": "Полный, кофейный, с мягкой сладостью",
+      "en": "Full-bodied, coffee-led with subtle sweetness"
+    },
+    "food": {
+      "ru": [
+        "Жареное мясо",
+        "Острые блюда",
+        "Тёмный шоколад"
+      ],
+      "en": [
+        "Grilled meat",
+        "Spicy dishes",
+        "Dark chocolate"
+      ]
+    },
+    "serve": {
+      "ru": "Дайте немного согреться в бокале для тёмного эля",
+      "en": "Allow to warm slightly in a dark-ale glass"
+    },
+    "color": "#73613d",
+    "image": "/assets/beer-world-guinness-fes.webp",
+    "imageCredit": "https://images.ctfassets.net/8nq3bs98o7cv/6OKy3mAvcqZ59NfmvJGMA8/dc29e4473a9486e75acea1026e924b72/Guinness.com_Assets_Landscape_Fes_Bottle_Kv_Small?fm=webp&w=800&q=85",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.guinness.com/en/beers/guinness-foreign-extra-stout"
+      }
+    ],
+    "note": {
+      "ru": "Указана версия 7,5% с международного сайта. Guinness производится в разных странах; место варки и крепость конкретной партии смотрите на этикетке.",
+      "en": "This is the 7.5% version on the international website. Guinness is brewed in multiple countries; check the label for the batch’s brewery and ABV."
+    },
+    "imageType": "photo"
+  },
+  {
+    "id": "world-paulaner",
+    "name": {
+      "ru": "Paulaner Hefe-Weißbier Naturtrüb",
+      "en": "Paulaner Hefe-Weißbier Naturtrüb"
+    },
+    "brewery": {
+      "ru": "Paulaner Brauerei",
+      "en": "Paulaner Brewery"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Мюнхен",
+      "en": "Munich"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Баварский хефевайцен",
+      "en": "Bavarian hefeweizen"
+    },
+    "abv": 5.5,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Пшеничный солод",
+        "Ячменный солод",
+        "Дрожжи",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Wheat malt",
+        "Barley malt",
+        "Yeast",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Нефильтрованное пшеничное пиво с золотистой дымкой и пышной пеной. Фруктовые оттенки возникают благодаря брожению и уравновешивают мягкий солодовый вкус.",
+      "en": "A naturally cloudy wheat beer with a golden haze and generous head. Fermentation-driven fruit notes balance a mellow malt character."
+    },
+    "aroma": {
+      "ru": "Банан, дрожжи, лёгкие тропические оттенки",
+      "en": "Banana, yeast and gentle tropical hints"
+    },
+    "taste": {
+      "ru": "Мягкий и игристый, со сладостью и умеренной горечью",
+      "en": "Mellow and sparkling with sweetness and restrained bitterness"
+    },
+    "food": {
+      "ru": [
+        "Белые колбаски",
+        "Брецель",
+        "Птица"
+      ],
+      "en": [
+        "White sausages",
+        "Pretzel",
+        "Poultry"
+      ]
+    },
+    "serve": {
+      "ru": "В высоком пшеничном бокале; аккуратно распределите дрожжевой осадок",
+      "en": "Use a tall wheat-beer glass and gently mix the yeast sediment"
+    },
+    "color": "#d0a244",
+    "image": "/assets/beer-world-paulaner.webp",
+    "imageCredit": "https://cdn.paulaner.de/media/pages/de/produkte/weissbiere/hefe-weissbier-naturtrueb/modules/hefe-weissbier-intro-23-05-2022/47f818e2d0-1761744406/bottle-nat-1000x1550-hwbn.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.paulaner.de/produkte/weissbiere/hefe-weissbier-naturtrueb"
+      }
+    ],
+    "imageType": "product"
+  },
+  {
+    "id": "world-paulaner-hell",
+    "name": {
+      "ru": "Paulaner Münchner Hell",
+      "en": "Paulaner Münchner Hell"
+    },
+    "brewery": {
+      "ru": "Paulaner Brauerei",
+      "en": "Paulaner Brewery"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Мюнхен",
+      "en": "Munich"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Мюнхенский хеллес",
+      "en": "Munich helles"
+    },
+    "abv": 4.9,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Классический светлый мюнхенский лагер с прозрачным золотистым цветом. Солоду отведена ведущая роль, а хмель лишь деликатно завершает вкус.",
+      "en": "A classic pale Munich lager with a clear golden appearance. Malt leads the flavour, while hops give it a delicate finish."
+    },
+    "aroma": {
+      "ru": "Светлый солод и лёгкие травяные оттенки",
+      "en": "Pale malt and gentle herbal hints"
+    },
+    "taste": {
+      "ru": "Мягкий, солодовый, со слабой сладостью",
+      "en": "Mild and malty with a touch of sweetness"
+    },
+    "food": {
+      "ru": [
+        "Баварские колбаски",
+        "Брецель",
+        "Жареная птица"
+      ],
+      "en": [
+        "Bavarian sausages",
+        "Pretzel",
+        "Roast poultry"
+      ]
+    },
+    "serve": {
+      "ru": "Подавайте охлаждённым в кружке или бокале для лагера",
+      "en": "Serve chilled in a stein or lager glass"
+    },
+    "color": "#dab457",
+    "image": "/assets/beer-world-paulaner-hell.webp",
+    "imageCredit": "https://cdn.paulaner.de/media/pages/de/produkte/hellbiere/muenchner-hell/modules/munchner-hell-intro-new-2024/a926cef464-1761744406/bottle-euro.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.paulaner.de/produkte/hellbiere/muenchner-hell"
+      }
+    ],
+    "imageType": "product"
+  },
+  {
+    "id": "world-paulaner-zero",
+    "name": {
+      "ru": "Paulaner Weißbier 0.0%",
+      "en": "Paulaner Weißbier 0.0%"
+    },
+    "brewery": {
+      "ru": "Paulaner Brauerei",
+      "en": "Paulaner Brewery"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Мюнхен",
+      "en": "Munich"
+    },
+    "style": "nonalcoholic",
+    "styleName": {
+      "ru": "Безалкогольное пшеничное",
+      "en": "Alcohol-free wheat beer"
+    },
+    "abv": 0,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Пшеничный солод",
+        "Ячменный солод",
+        "Углекислый газ брожения",
+        "Дрожжи",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Wheat malt",
+        "Barley malt",
+        "Fermentation carbon dioxide",
+        "Yeast",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Пшеничная версия с заявленной крепостью 0,0%. Пиво сначала варят и выдерживают традиционным способом, затем бережно удаляют алкоголь.",
+      "en": "A wheat beer with a declared 0.0% ABV. It is brewed and matured traditionally before the alcohol is gently removed."
+    },
+    "aroma": {
+      "ru": "Фруктовые пшеничные и солодовые ноты",
+      "en": "Fruity wheat-beer and malt notes"
+    },
+    "taste": {
+      "ru": "Мягкий, освежающий, слегка сладкий",
+      "en": "Mellow, refreshing and lightly sweet"
+    },
+    "food": {
+      "ru": [
+        "Салат",
+        "Птица",
+        "Брецель"
+      ],
+      "en": [
+        "Salad",
+        "Poultry",
+        "Pretzel"
+      ]
+    },
+    "serve": {
+      "ru": "Охладите и подавайте в пшеничном бокале",
+      "en": "Chill and serve in a wheat-beer glass"
+    },
+    "color": "#5874a8",
+    "image": "/assets/beer-world-paulaner-zero.webp",
+    "imageCredit": "https://cdn.paulaner.de/media/pages/de/produkte/weissbiere/weissbier00/modules/weissbier-00-intro/486fd35ec1-1761744406/bottle-nat-1000x1550-wb00.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.paulaner.de/produkte/weissbiere/weissbier00"
+      }
+    ],
+    "imageType": "product"
+  },
+  {
+    "id": "world-weihenstephaner",
+    "name": {
+      "ru": "Weihenstephaner Hefeweißbier",
+      "en": "Weihenstephaner Hefeweißbier"
+    },
+    "brewery": {
+      "ru": "Баварская государственная пивоварня Weihenstephan",
+      "en": "Bavarian State Brewery Weihenstephan"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Фрайзинг",
+      "en": "Freising"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Хефевайцен",
+      "en": "Hefeweizen"
+    },
+    "abv": 5.4,
+    "ingredients": {
+      "ru": [
+        "Пшеничный и ячменный солод — основа стиля",
+        "Хмель и дрожжи — характер пшеничного пива"
+      ],
+      "en": [
+        "Wheat and barley malt — the style’s grain base",
+        "Hops and yeast — wheat-beer character"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Классический мутный вайцен государственной баварской пивоварни. Банановые и гвоздичные оттенки соединяются с лёгкой кремовой текстурой.",
+      "en": "A classic cloudy wheat beer from Bavaria’s state brewery. Banana and clove notes meet a light, creamy texture."
+    },
+    "aroma": {
+      "ru": "Банан и гвоздика",
+      "en": "Banana and clove"
+    },
+    "taste": {
+      "ru": "Фруктовый, солодовый, мягко кремовый",
+      "en": "Fruity, malty and gently creamy"
+    },
+    "food": {
+      "ru": [
+        "Обазда",
+        "Брецель",
+        "Птица"
+      ],
+      "en": [
+        "Obazda cheese spread",
+        "Pretzel",
+        "Poultry"
+      ]
+    },
+    "serve": {
+      "ru": "6–8 °C, высокий пшеничный бокал",
+      "en": "6–8 °C, tall wheat-beer glass"
+    },
+    "color": "#b99458",
+    "image": "/assets/beer-world-weihenstephaner.webp",
+    "imageCredit": "https://www.weihenstephaner.de/strapi/uploads/HWB_49be808fd1.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.weihenstephaner.de/en/our-beers/wheat-beer"
+      }
+    ],
+    "note": {
+      "ru": "Компоненты приведены как характеристика стиля: полного состава на странице продукта нет. Проверяйте этикетку; содержит зерновые с глютеном.",
+      "en": "Components describe the style: the product page does not publish a complete ingredient list. Check the label; contains gluten-bearing grains."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-vitus",
+    "name": {
+      "ru": "Weihenstephaner Vitus",
+      "en": "Weihenstephaner Vitus"
+    },
+    "brewery": {
+      "ru": "Баварская государственная пивоварня Weihenstephan",
+      "en": "Bavarian State Brewery Weihenstephan"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Фрайзинг",
+      "en": "Freising"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Пшеничный бок",
+      "en": "Weizenbock"
+    },
+    "abv": 7.7,
+    "ingredients": {
+      "ru": [
+        "Пшеничная солодовая основа — характеристика стиля",
+        "Дрожжи верхового брожения — характеристика стиля"
+      ],
+      "en": [
+        "Wheat malt base — a characteristic of the style",
+        "Top-fermenting yeast — a characteristic of the style"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Светлый крепкий пшеничный бок с длительной выдержкой. Несмотря на высокую крепость, в центре его профиля остаются фруктовые ноты и живая карбонизация.",
+      "en": "A pale, strong wheat bock with extended maturation. Fruity notes and lively carbonation remain central to its profile despite its higher strength."
+    },
+    "aroma": {
+      "ru": "Курага, цитрус и дрожжи",
+      "en": "Dried apricot, citrus and yeast"
+    },
+    "taste": {
+      "ru": "Полный, с гвоздикой и банановым оттенком",
+      "en": "Full-bodied with cloves and a hint of banana"
+    },
+    "food": {
+      "ru": [
+        "Пшеничное парфе",
+        "Выдержанный сыр",
+        "Жареная птица"
+      ],
+      "en": [
+        "Wheat-bock parfait",
+        "Aged cheese",
+        "Roast poultry"
+      ]
+    },
+    "serve": {
+      "ru": "8–10 °C, пшеничный бокал",
+      "en": "8–10 °C, wheat-beer glass"
+    },
+    "color": "#d2b252",
+    "image": "/assets/beer-world-vitus.webp",
+    "imageCredit": "https://www.weihenstephaner.de/strapi/uploads/Vitus_ec070d9910.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.weihenstephaner.de/en/our-beers/vitus-1"
+      }
+    ],
+    "note": {
+      "ru": "Указана характеристика рецептурной основы стиля, а не полный состав. На странице продукта полного перечня ингредиентов нет; проверяйте упаковку.",
+      "en": "This describes the style’s recipe base rather than the complete ingredients. The product page does not provide a full list; check the package."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-duvel",
+    "name": {
+      "ru": "Duvel",
+      "en": "Duvel"
+    },
+    "brewery": {
+      "ru": "Duvel Moortgat",
+      "en": "Duvel Moortgat"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Бреендонк",
+      "en": "Breendonk"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Бельгийский крепкий золотой эль",
+      "en": "Belgian strong golden ale"
+    },
+    "abv": 8.5,
+    "ingredients": {
+      "ru": [
+        "Родниковая вода",
+        "Ячменный солод",
+        "Хмель Saaz-Saaz и Styrian Golding",
+        "Дрожжи",
+        "Сахар для повторного брожения"
+      ],
+      "en": [
+        "Spring water",
+        "Barley malt",
+        "Saaz-Saaz and Styrian Golding hops",
+        "Yeast",
+        "Sugar for refermentation"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Крепкий золотистый бельгийский эль с повторным брожением в бутылке. Длительное созревание даёт сухой характер, тонкую газацию и высокую устойчивую пену.",
+      "en": "A strong golden Belgian ale refermented in the bottle. Long maturation gives it a dry character, delicate effervescence and a tall, persistent head."
+    },
+    "aroma": {
+      "ru": "Лёгкие фрукты и ароматный хмель",
+      "en": "Light fruit and aromatic hops"
+    },
+    "taste": {
+      "ru": "Сухой, хмелевой, с мягкой горчинкой",
+      "en": "Dry and hoppy with a gently bitter finish"
+    },
+    "food": {
+      "ru": [
+        "Морепродукты",
+        "Мягкий сыр",
+        "Белая рыба"
+      ],
+      "en": [
+        "Seafood",
+        "Soft cheese",
+        "White fish"
+      ]
+    },
+    "serve": {
+      "ru": "5 °C, фирменный тюльпановидный бокал",
+      "en": "5 °C, a tulip-shaped Duvel glass"
+    },
+    "color": "#d8c599",
+    "image": "/assets/beer-world-duvel.webp",
+    "imageCredit": "https://www.duvel.com/files/contentBuilder/_660x750_crop_center-center_82_line/Duvel_Social_Rebranding_WebsiteStills_DuvelClassic_International_transparant_v3.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.duvel.com/en/the-beer/duvel"
+      }
+    ],
+    "imageType": "product"
+  },
+  {
+    "id": "world-chimay-blue",
+    "name": {
+      "ru": "Chimay Blue",
+      "en": "Chimay Blue"
+    },
+    "brewery": {
+      "ru": "Bières de Chimay",
+      "en": "Bières de Chimay"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Аббатство Скурмон, Шиме",
+      "en": "Scourmont Abbey, Chimay"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Крепкий тёмный траппистский эль",
+      "en": "Strong dark Trappist ale"
+    },
+    "abv": 9,
+    "ingredients": {
+      "ru": [
+        "Вода аббатства",
+        "Ячменный солод",
+        "Хмель",
+        "Дрожжи",
+        "Сахар для дображивания"
+      ],
+      "en": [
+        "Abbey water",
+        "Barley malt",
+        "Hops",
+        "Yeast",
+        "Refermentation sugar"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Крепкий тёмный траппистский эль, известный как Grande Réserve в большой бутылке. Созревание развивает его фруктовый и пряный характер.",
+      "en": "A strong dark Trappist ale known as Grande Réserve in large bottles. Maturation develops its fruity and spicy character."
+    },
+    "aroma": {
+      "ru": "Фрукты, шоколад, пряности",
+      "en": "Fruit, chocolate and spice"
+    },
+    "taste": {
+      "ru": "Глубокий, согревающий, солодовый",
+      "en": "Deep, warming and malty"
+    },
+    "food": {
+      "ru": [
+        "Сыр Chimay",
+        "Тушёное мясо"
+      ],
+      "en": [
+        "Chimay cheese",
+        "Braised meat"
+      ]
+    },
+    "serve": {
+      "ru": "Подавайте в широком бокале, слегка охлаждённым",
+      "en": "Serve lightly chilled in a wide chalice"
+    },
+    "color": "#345d93",
+    "image": "/assets/beer-world-chimay-blue.webp",
+    "imageCredit": "https://chimay.com/wp-content/uploads/2020/07/bleue.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://chimay.com/en/beers/chimay-blue/"
+      }
+    ],
+    "note": {
+      "ru": "Указаны опубликованные производителем основные компоненты, а не полный состав с этикетки. Полный перечень и аллергены проверяйте на упаковке.",
+      "en": "These are the main components disclosed by the brewer, rather than a complete label ingredient list. Check the package for the full list and allergens."
+    },
+    "imageType": "photo"
+  },
+  {
+    "id": "world-chimay-red",
+    "name": {
+      "ru": "Chimay Red",
+      "en": "Chimay Red"
+    },
+    "brewery": {
+      "ru": "Bières de Chimay",
+      "en": "Bières de Chimay"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Аббатство Скурмон, Шиме",
+      "en": "Scourmont Abbey, Chimay"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Траппистский дуббель",
+      "en": "Trappist dubbel"
+    },
+    "abv": 7,
+    "ingredients": {
+      "ru": [
+        "Вода аббатства",
+        "Ячменный солод",
+        "Хмель",
+        "Дрожжи",
+        "Сахар для дображивания"
+      ],
+      "en": [
+        "Abbey water",
+        "Barley malt",
+        "Hops",
+        "Yeast",
+        "Refermentation sugar"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Старейший сорт Chimay, впервые сваренный в 1862 году. Медно-коричневый эль соединяет спелые фрукты и мягкую солодовую сладость.",
+      "en": "The oldest Chimay beer, first brewed in 1862. This copper-brown ale combines ripe fruit with mellow malt sweetness."
+    },
+    "aroma": {
+      "ru": "Апельсин, персик, абрикос",
+      "en": "Orange, peach and apricot"
+    },
+    "taste": {
+      "ru": "Ириска, бисквит, мягкая горечь",
+      "en": "Toffee, biscuit and gentle bitterness"
+    },
+    "food": {
+      "ru": [
+        "Сыр Grand Chimay",
+        "Жареная птица"
+      ],
+      "en": [
+        "Grand Chimay cheese",
+        "Roast poultry"
+      ]
+    },
+    "serve": {
+      "ru": "10–12 °C, широкий бокал",
+      "en": "10–12 °C, a wide chalice"
+    },
+    "color": "#9e4140",
+    "image": "/assets/beer-world-chimay-red.webp",
+    "imageCredit": "https://chimay.com/wp-content/uploads/2020/10/rouge.jpg",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://chimay.com/en/beers/chimay-red/"
+      }
+    ],
+    "note": {
+      "ru": "Указаны опубликованные производителем основные компоненты, а не полный состав с этикетки. Полный перечень и аллергены проверяйте на упаковке.",
+      "en": "These are the main components disclosed by the brewer, rather than a complete label ingredient list. Check the package for the full list and allergens."
+    },
+    "imageType": "photo"
+  },
+  {
+    "id": "world-hoegaarden",
+    "name": {
+      "ru": "Hoegaarden Original",
+      "en": "Hoegaarden Original"
+    },
+    "brewery": {
+      "ru": "Hoegaarden",
+      "en": "Hoegaarden"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Хугарден, происхождение марки",
+      "en": "Hoegaarden, brand origin"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Бельгийский витбир",
+      "en": "Belgian witbier"
+    },
+    "abv": 4.9,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Пшеница",
+        "Хмель",
+        "Кориандр",
+        "Сушёная апельсиновая цедра",
+        "Дрожжи"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Wheat",
+        "Hops",
+        "Coriander",
+        "Dried orange peel",
+        "Yeast"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Бельгийское пшеничное пиво с молочной дымкой и цитрусово-пряным характером. Традиционный налив возвращает дрожжевой осадок в бокал и делает текстуру однородной.",
+      "en": "A Belgian wheat beer with a pale haze and a citrus-spice character. Its traditional pour returns the yeast sediment to the glass for an even texture."
+    },
+    "aroma": {
+      "ru": "Цитрус и кориандр",
+      "en": "Citrus and coriander"
+    },
+    "taste": {
+      "ru": "Мягкий пшеничный, освежающий и пряный",
+      "en": "Soft wheat character, refreshing and spicy"
+    },
+    "food": {
+      "ru": [
+        "Белая рыба",
+        "Салат с цитрусом",
+        "Тофу"
+      ],
+      "en": [
+        "White fish",
+        "Citrus salad",
+        "Tofu"
+      ]
+    },
+    "serve": {
+      "ru": "Налейте две трети, взболтайте осадок и долейте",
+      "en": "Pour two thirds, swirl the sediment and top off"
+    },
+    "color": "#b9b89d",
+    "image": "/assets/beer-world-hoegaarden.webp",
+    "imageCredit": "https://static.wixstatic.com/media/115cd1_95db193347fc4dbf9c258ecf29f32206~mv2.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.hoegaarden.com/beer"
+      },
+      {
+        "label": "Процесс варки / Brewing process",
+        "url": "https://www.hoegaarden.com/brewing"
+      }
+    ],
+    "note": {
+      "ru": "Ключевые компоненты характеризуют оригинальный витбир и не заменяют полный состав. Производство и рецепт для разных рынков могут отличаться; смотрите этикетку.",
+      "en": "Key components describe the original witbier and are not a complete ingredient list. Production location and market recipes may vary; check the label."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-leffe",
+    "name": {
+      "ru": "Leffe Blonde",
+      "en": "Leffe Blonde"
+    },
+    "brewery": {
+      "ru": "Leffe / AB InBev",
+      "en": "Leffe / AB InBev"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Бельгия, несколько пивоварен",
+      "en": "Belgium, multiple breweries"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Светлый аббатский эль",
+      "en": "Blonde abbey ale"
+    },
+    "abv": 6.6,
+    "ingredients": {
+      "ru": [
+        "Солодовая основа — подтверждена описанием продукта",
+        "Хмель и дрожжи — характеристика стиля"
+      ],
+      "en": [
+        "Malt base — confirmed in the product description",
+        "Hops and yeast — characteristics of the style"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Светлый аббатский эль с мягкой солодовой сладостью. Цветочные и пряные оттенки дополняют характерную лёгкую горечь.",
+      "en": "A blonde abbey ale with gentle malt sweetness. Floral and spicy notes complement its characteristic mild bitterness."
+    },
+    "aroma": {
+      "ru": "Цветы, ваниль, гвоздика",
+      "en": "Floral notes, vanilla and clove"
+    },
+    "taste": {
+      "ru": "Солодовый, слегка сладкий, с мягкой горечью",
+      "en": "Malty and slightly sweet with gentle bitterness"
+    },
+    "food": {
+      "ru": [
+        "Аббатский сыр",
+        "Жареные блюда",
+        "Морские гребешки"
+      ],
+      "en": [
+        "Abbey cheese",
+        "Fried dishes",
+        "Scallops"
+      ]
+    },
+    "serve": {
+      "ru": "5 °C, аббатский бокал",
+      "en": "5 °C, abbey-style chalice"
+    },
+    "color": "#d9b572",
+    "image": "/assets/beer-world-leffe-cutout.webp",
+    "imageCredit": "https://static.wixstatic.com/media/b5a293_8d5893a709a94663a738835dce8e41e0~mv2.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.leffe.com/products/41"
+      }
+    ],
+    "note": {
+      "ru": "Указана бельгийская версия 6,6%. На странице нет полного состава; ваниль и гвоздика здесь описывают аромат, а не подтверждённые добавки. На других рынках крепость может отличаться.",
+      "en": "This is the Belgian 6.6% version. The page does not list complete ingredients; vanilla and clove describe aroma rather than confirmed additives. ABV can differ between markets."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-budvar",
+    "name": {
+      "ru": "Budweiser Budvar Original",
+      "en": "Budweiser Budvar Original"
+    },
+    "brewery": {
+      "ru": "Budějovický Budvar",
+      "en": "Budějovický Budvar"
+    },
+    "country": "CZ",
+    "city": {
+      "ru": "Ческе-Будеёвице",
+      "en": "České Budějovice"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Чешский светлый лагер",
+      "en": "Czech pale lager"
+    },
+    "abv": 5,
+    "ingredients": {
+      "ru": [
+        "Вода артезианского источника",
+        "Моравский ячменный солод",
+        "Цельные шишки хмеля Saaz",
+        "Лагерные дрожжи"
+      ],
+      "en": [
+        "Artesian water",
+        "Moravian barley malt",
+        "Whole-cone Saaz hops",
+        "Lager yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Полнотелый чешский лагер с длительным холодным созреванием. Моравский солод и жатецкий хмель создают мягкий золотистый профиль с выраженной зерновой глубиной.",
+      "en": "A full-bodied Czech lager with prolonged cold maturation. Moravian malt and Žatec hops create a soft golden profile with pronounced grain depth."
+    },
+    "aroma": {
+      "ru": "Солод и ароматный чешский хмель",
+      "en": "Malt and aromatic Czech hops"
+    },
+    "taste": {
+      "ru": "Полный, солодовый, с чистой хмелевой горечью",
+      "en": "Full and malty with clean hop bitterness"
+    },
+    "food": {
+      "ru": [
+        "Свинина",
+        "Кнедлики",
+        "Твёрдый сыр"
+      ],
+      "en": [
+        "Pork",
+        "Dumplings",
+        "Hard cheese"
+      ]
+    },
+    "serve": {
+      "ru": "Подавайте охлаждённым в бокале для лагера",
+      "en": "Serve chilled in a lager glass"
+    },
+    "color": "#b0463c",
+    "image": "/assets/beer-world-budvar.webp",
+    "imageCredit": "https://czechvar.com/wp-content/uploads/sites/2/2019/09/Budvar_can_CV_05_droplets-single.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://budweiserbudvar.com/uk/product/budvar-original/"
+      }
+    ],
+    "note": {
+      "ru": "На изображении упаковка Czechvar — название Budweiser Budvar для некоторых экспортных рынков. Место производства оригинального пива — Ческе-Будеёвице.",
+      "en": "The image shows Czechvar packaging, the name used for Budweiser Budvar in some export markets. The original beer is brewed in České Budějovice."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-pilsner",
+    "name": {
+      "ru": "Pilsner Urquell",
+      "en": "Pilsner Urquell"
+    },
+    "brewery": {
+      "ru": "Plzeňský Prazdroj",
+      "en": "Plzeňský Prazdroj"
+    },
+    "country": "CZ",
+    "city": {
+      "ru": "Пльзень",
+      "en": "Plzeň"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Чешский пилснер",
+      "en": "Czech pilsner"
+    },
+    "abv": 4.4,
+    "ingredients": {
+      "ru": [
+        "Мягкая вода Пльзеня",
+        "Моравский ячменный солод",
+        "Хмель Saaz",
+        "Дрожжи H-strain"
+      ],
+      "en": [
+        "Soft Plzeň water",
+        "Moravian barley malt",
+        "Saaz hops",
+        "H-strain yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Оригинальный золотистый пилснер из Пльзеня. Карамельные солодовые оттенки встречаются с пряной горечью жатецкого хмеля и округлой текстурой.",
+      "en": "The original golden pilsner from Plzeň. Caramel malt hints meet spicy Saaz-hop bitterness and a rounded texture."
+    },
+    "aroma": {
+      "ru": "Зерно и пряный хмель",
+      "en": "Grain and spicy hops"
+    },
+    "taste": {
+      "ru": "Солодовый, с отчётливой хмелевой горечью",
+      "en": "Malty with distinct hop bitterness"
+    },
+    "food": {
+      "ru": [
+        "Шницель",
+        "Свинина",
+        "Твёрдый сыр"
+      ],
+      "en": [
+        "Schnitzel",
+        "Pork",
+        "Hard cheese"
+      ]
+    },
+    "serve": {
+      "ru": "5–7 °C, в чистом бокале с плотной влажной пеной",
+      "en": "5–7 °C, in a clean glass with a dense, wet head"
+    },
+    "color": "#50744d",
+    "image": "/assets/beer-world-pilsner.webp",
+    "imageCredit": "https://data.pilsnerurquell.com/images/XqkOch-zkmprXg5LrkIW07F_j-VjzDEN61EZ0pvy0Eg/fit/1200/99999/no/0/aHR0cHM6Ly9hc2FoaS5zMy1jZW50cmFsLnZzaG9zdGluZy5jbG91ZC9waWxzbmVyLXN0b3JhZ2UvNTI4Y2ViNWYtNjEyZC00ZmUyLTkzODYtM2ZiOWQ4NjhkYTkyLnBuZw.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.pilsnerurquell.com/"
+      },
+      {
+        "label": "Данные производителя / Manufacturer product sheet",
+        "url": "https://www.prazdroj.cz/cospospohzeg/uploads/2021/01/Informace-o-cepovanych-produktech-Plzenskeho-Prazdroje-a.s..pdf"
+      },
+      {
+        "label": "Подача / Serving",
+        "url": "https://www.pilsnerurquell.com/de/stories/die-perfekte-trinktemperatur-fuer-pilsner-urquell/page%3D3/"
+      },
+      {
+        "label": "Упаковка / Packaging",
+        "url": "https://www.pilsnerurquell.com/packaging/"
+      }
+    ],
+    "imageType": "product"
+  },
+  {
+    "id": "world-heineken",
+    "name": {
+      "ru": "Heineken Original",
+      "en": "Heineken Original"
+    },
+    "brewery": {
+      "ru": "Heineken",
+      "en": "Heineken"
+    },
+    "country": "NL",
+    "city": {
+      "ru": "Зутервауде, Нидерланды",
+      "en": "Zoeterwoude, Netherlands"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Светлый лагер",
+      "en": "Pale lager"
+    },
+    "abv": 5,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Экстракт хмеля",
+        "Дрожжи Heineken A-Yeast"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Hop extract",
+        "Heineken A-Yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Знакомый светлый лагер с чистым профилем и узнаваемой зелёной бутылкой. Фирменная культура A-Yeast отвечает за лёгкие фруктовые оттенки.",
+      "en": "A familiar pale lager with a clean profile and distinctive green bottle. The proprietary A-Yeast culture produces gentle fruity notes."
+    },
+    "aroma": {
+      "ru": "Солод и деликатные фрукты",
+      "en": "Malt and delicate fruit"
+    },
+    "taste": {
+      "ru": "Чистый, умеренно горький, слегка фруктовый",
+      "en": "Clean, moderately bitter and lightly fruity"
+    },
+    "food": {
+      "ru": [
+        "Пицца",
+        "Бургеры",
+        "Жареная рыба"
+      ],
+      "en": [
+        "Pizza",
+        "Burgers",
+        "Fried fish"
+      ]
+    },
+    "serve": {
+      "ru": "Подавайте хорошо охлаждённым в бокале для лагера",
+      "en": "Serve well chilled in a lager glass"
+    },
+    "color": "#347b4b",
+    "image": "/assets/beer-world-heineken.webp",
+    "imageCredit": "https://www.heineken.com/media/iene2ygx/heineken-original-bottle.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.heineken.com/global/en/faq"
+      }
+    ],
+    "note": {
+      "ru": "Нидерланды указаны как страна происхождения; Heineken варят также по лицензии в разных странах. Точное место производства вашей партии приведено на упаковке.",
+      "en": "The Netherlands is the country of origin; Heineken is also brewed under licence in multiple countries. The package identifies the brewery for your batch."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-heineken-zero",
+    "name": {
+      "ru": "Heineken 0.0",
+      "en": "Heineken 0.0"
+    },
+    "brewery": {
+      "ru": "Heineken",
+      "en": "Heineken"
+    },
+    "country": "NL",
+    "city": {
+      "ru": "Нидерланды, происхождение марки",
+      "en": "Netherlands, brand origin"
+    },
+    "style": "nonalcoholic",
+    "styleName": {
+      "ru": "Безалкогольный лагер",
+      "en": "Alcohol-free lager"
+    },
+    "abv": 0,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Экстракты хмеля",
+        "Дрожжи A-Yeast",
+        "Натуральные ароматизаторы"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Hop extracts",
+        "A-Yeast",
+        "Natural flavourings"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Безалкогольный лагер с отдельной рецептурой и мягким солодовым телом. Алкоголь удаляют вакуумной дистилляцией, затем балансируют вкус натуральными ароматизаторами.",
+      "en": "An alcohol-free lager with its own recipe and soft malty body. Vacuum distillation removes alcohol before natural flavourings balance the taste."
+    },
+    "aroma": {
+      "ru": "Лёгкие фруктовые и солодовые ноты",
+      "en": "Gentle fruity and malt notes"
+    },
+    "taste": {
+      "ru": "Мягкий солод, освежающий фруктовый оттенок",
+      "en": "Soft malt with refreshing fruit notes"
+    },
+    "food": {
+      "ru": [
+        "Пицца",
+        "Салат",
+        "Лёгкие закуски"
+      ],
+      "en": [
+        "Pizza",
+        "Salad",
+        "Light snacks"
+      ]
+    },
+    "serve": {
+      "ru": "Подавайте охлаждённым",
+      "en": "Serve chilled"
+    },
+    "color": "#3d668f",
+    "image": "/assets/beer-world-heineken-zero.webp",
+    "imageCredit": "https://www.heineken.com/media/jjee3wih/heineken-00-bottle.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.heineken.com/global/en/our-products/heineken-0-0"
+      }
+    ],
+    "note": {
+      "ru": "Маркировка 0,0%; производитель указывает остаточное содержание алкоголя менее 0,03%. Производство для разных рынков может различаться.",
+      "en": "Labelled 0.0%; the manufacturer states residual alcohol below 0.03%. Production location can differ by market."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-corona",
+    "name": {
+      "ru": "Corona Extra",
+      "en": "Corona Extra"
+    },
+    "brewery": {
+      "ru": "Grupo Modelo / Constellation Brands",
+      "en": "Grupo Modelo / Constellation Brands"
+    },
+    "country": "MX",
+    "city": {
+      "ru": "Мексика, несколько пивоварен",
+      "en": "Mexico, multiple breweries"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Мексиканский светлый лагер",
+      "en": "Mexican pale lager"
+    },
+    "abv": 4.6,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Несоложёные злаки",
+        "Хмель"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Non-malted cereals",
+        "Hops"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Лёгкий мексиканский лагер с прозрачным золотистым цветом. Его профиль строится на чистом балансе солода и хмеля, а долька лайма остаётся способом подачи.",
+      "en": "A light Mexican lager with a clear golden appearance. It offers a clean balance of malt and hops, while a lime wedge remains a serving choice."
+    },
+    "aroma": {
+      "ru": "Фрукты, мёд, солод",
+      "en": "Fruit, honey and malt"
+    },
+    "taste": {
+      "ru": "Чистый, ровный, умеренно хмелевой",
+      "en": "Clean, balanced and moderately hoppy"
+    },
+    "food": {
+      "ru": [
+        "Тако",
+        "Рыба",
+        "Курица"
+      ],
+      "en": [
+        "Tacos",
+        "Fish",
+        "Chicken"
+      ]
+    },
+    "serve": {
+      "ru": "Хорошо охладите; лайм добавляют по желанию",
+      "en": "Chill well; lime is optional"
+    },
+    "color": "#d5c077",
+    "image": "/assets/beer-world-corona.webp",
+    "imageCredit": "https://www.coronausa.com/cdn/shop/files/corona-extra-menu_300x.png?v=1614355250",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.coronausa.com/pages/corona-extra"
+      }
+    ],
+    "note": {
+      "ru": "Указаны крепость и состав версии для рынка США. На этикетках других рынков данные могут отличаться; лайм не входит в приведённый состав.",
+      "en": "ABV and ingredients are for the US-market version. Other markets may differ; lime is not part of the listed ingredients."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-punk",
+    "name": {
+      "ru": "BrewDog Punk IPA",
+      "en": "BrewDog Punk IPA"
+    },
+    "brewery": {
+      "ru": "BrewDog",
+      "en": "BrewDog"
+    },
+    "country": "GB",
+    "city": {
+      "ru": "Эллон, Шотландия",
+      "en": "Ellon, Scotland"
+    },
+    "style": "ipa",
+    "styleName": {
+      "ru": "Американский IPA",
+      "en": "American IPA"
+    },
+    "abv": 5.4,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Хмель",
+        "Дрожжи"
+      ],
+      "en": [
+        "Water",
+        "Malted barley",
+        "Hops",
+        "Yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Флагманский IPA шотландской BrewDog с ярким хмелевым характером. Актуальная рецептура сочетает несколько сортов хмеля со светлой солодовой основой.",
+      "en": "BrewDog’s flagship IPA with a bright hop-led character. Its current recipe combines multiple hop varieties with a pale malt base."
+    },
+    "aroma": {
+      "ru": "Цитрусовый и тропический хмель",
+      "en": "Citrus and tropical hops"
+    },
+    "taste": {
+      "ru": "Яркий, хмелевой, с выраженной горечью",
+      "en": "Bright and hoppy with distinct bitterness"
+    },
+    "food": {
+      "ru": [
+        "Бургеры",
+        "Острая курица",
+        "Тако"
+      ],
+      "en": [
+        "Burgers",
+        "Spicy chicken",
+        "Tacos"
+      ]
+    },
+    "serve": {
+      "ru": "Подавайте охлаждённым в бокале для IPA",
+      "en": "Serve chilled in an IPA glass"
+    },
+    "color": "#57a8b7",
+    "image": "/assets/beer-world-punk-cutout.webp",
+    "imageCredit": "https://cdn.shopify.com/s/files/1/0822/7281/3382/files/Punk_-_PDP_Product_Card.png?v=1787673710",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://brewdog.com/products/punk-ipa"
+      }
+    ],
+    "note": {
+      "ru": "На актуальной странице производителя указано 5,4%. Более старые или региональные партии Punk IPA могут иметь другую крепость; сверяйте этикетку.",
+      "en": "The current producer page states 5.4%. Older or regional Punk IPA batches may have different ABV; check the label."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-sierra",
+    "name": {
+      "ru": "Sierra Nevada Pale Ale",
+      "en": "Sierra Nevada Pale Ale"
+    },
+    "brewery": {
+      "ru": "Sierra Nevada Brewing Co.",
+      "en": "Sierra Nevada Brewing Co."
+    },
+    "country": "US",
+    "city": {
+      "ru": "Чико, Калифорния; Миллс-Ривер, Северная Каролина",
+      "en": "Chico, California; Mills River, North Carolina"
+    },
+    "style": "ale",
+    "styleName": {
+      "ru": "Американский пейл-эль",
+      "en": "American pale ale"
+    },
+    "abv": 5.6,
+    "ingredients": {
+      "ru": [
+        "Карамельный солод",
+        "Светлый двухрядный ячменный солод",
+        "Хмель Cascade",
+        "Элевые дрожжи"
+      ],
+      "en": [
+        "Caramelized malt",
+        "Two-row pale barley malt",
+        "Cascade hops",
+        "Ale yeast"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Американский пейл-эль, ставший важной частью истории крафтового пивоварения. Аромат Cascade соединяет сосну и цитрус, а карамельный солод поддерживает хмелевую горечь.",
+      "en": "An American pale ale that helped shape craft brewing history. Cascade brings pine and citrus while caramel malt supports the hop bitterness."
+    },
+    "aroma": {
+      "ru": "Сосна и цитрусовые",
+      "en": "Pine and citrus"
+    },
+    "taste": {
+      "ru": "Хмелевой, с мягким карамельным солодом",
+      "en": "Hop-forward with smooth caramel malt"
+    },
+    "food": {
+      "ru": [
+        "Бургеры",
+        "Барбекю",
+        "Чеддер"
+      ],
+      "en": [
+        "Burgers",
+        "Barbecue",
+        "Cheddar"
+      ]
+    },
+    "serve": {
+      "ru": "В бокале для пейл-эля, слегка охлаждённым",
+      "en": "Serve lightly chilled in a pale-ale glass"
+    },
+    "color": "#789357",
+    "image": "/assets/beer-world-sierra.webp",
+    "imageCredit": "https://webadmin.sierranevada.com/wp-content/uploads/2022/10/PaleAle_12ozCan.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://sierranevada.com/beer/pale-ale/"
+      }
+    ],
+    "note": {
+      "ru": "Указаны опубликованные производителем основные компоненты, а не полный состав с этикетки. Полный перечень и аллергены проверяйте на упаковке.",
+      "en": "These are the main components disclosed by the brewer, rather than a complete label ingredient list. Check the package for the full list and allergens."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-lindemans",
+    "name": {
+      "ru": "Lindemans Kriek",
+      "en": "Lindemans Kriek"
+    },
+    "brewery": {
+      "ru": "Brouwerij Lindemans",
+      "en": "Lindemans Brewery"
+    },
+    "country": "BE",
+    "city": {
+      "ru": "Влезенбек",
+      "en": "Vlezenbeek"
+    },
+    "style": "fruit",
+    "styleName": {
+      "ru": "Вишнёвый фруктовый ламбик",
+      "en": "Cherry fruit lambic"
+    },
+    "abv": 3.5,
+    "ingredients": {
+      "ru": [
+        "Ламбик — пивная основа",
+        "Вишня — фруктовый компонент"
+      ],
+      "en": [
+        "Lambic — the beer base",
+        "Cherries — the fruit component"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Фруктовый ламбик ярко-красного цвета с розовой пеной. Купаж ламбика и вишни даёт характерный баланс сладости и кислинки.",
+      "en": "A brilliant red fruit lambic crowned with pink foam. A blend of lambic and cherries creates its characteristic sweet-and-sour balance."
+    },
+    "aroma": {
+      "ru": "Свежая вишня и лёгкий миндальный оттенок",
+      "en": "Fresh cherries and delicate almond hints"
+    },
+    "taste": {
+      "ru": "Вишнёвый, сладко-кислый, округлый",
+      "en": "Cherry-led, sweet-and-sour and rounded"
+    },
+    "food": {
+      "ru": [
+        "Козий сыр",
+        "Ванильное мороженое",
+        "Чизкейк"
+      ],
+      "en": [
+        "Goat cheese",
+        "Vanilla ice cream",
+        "Cheesecake"
+      ]
+    },
+    "serve": {
+      "ru": "2–4 °C, бокал для фруктового пива",
+      "en": "2–4 °C, fruit-beer glass"
+    },
+    "color": "#a34550",
+    "image": "/assets/beer-world-lindemans.webp",
+    "imageCredit": "https://lindemans.be/cdn/shop/files/Frame_-_EU_Kriek_25cl.png?v=1767876040",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://lindemans.be/pages/lindemans-kriek"
+      }
+    ],
+    "note": {
+      "ru": "Указаны опубликованные производителем основные компоненты, а не полный состав с этикетки. Полный перечень и аллергены проверяйте на упаковке.",
+      "en": "These are the main components disclosed by the brewer, rather than a complete label ingredient list. Check the package for the full list and allergens."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-sapporo",
+    "name": {
+      "ru": "Sapporo Premium Beer",
+      "en": "Sapporo Premium Beer"
+    },
+    "brewery": {
+      "ru": "Sapporo Breweries",
+      "en": "Sapporo Breweries"
+    },
+    "country": "JP",
+    "city": {
+      "ru": "Саппоро, происхождение марки",
+      "en": "Sapporo, brand origin"
+    },
+    "style": "lager",
+    "styleName": {
+      "ru": "Японский светлый лагер",
+      "en": "Japanese pale lager"
+    },
+    "abv": 4.9,
+    "ingredients": {
+      "ru": [
+        "Отборное зерновое сырьё — описание производителя",
+        "Хмель — описание производителя"
+      ],
+      "en": [
+        "Selected grain ingredients — producer description",
+        "Hops — producer description"
+      ]
+    },
+    "ingredientsVerified": false,
+    "description": {
+      "ru": "Лагер японской марки с ровным освежающим профилем. Сдержанный вкус и чистое завершение делают его универсальным партнёром для еды.",
+      "en": "A Japanese-brand lager with a crisp, refreshing profile. Its restrained flavour and clean finish make it a versatile food companion."
+    },
+    "aroma": {
+      "ru": "Деликатный зерновой профиль",
+      "en": "Delicate grain character"
+    },
+    "taste": {
+      "ru": "Чистый, освежающий, с сухим завершением",
+      "en": "Crisp and refreshing with a clean finish"
+    },
+    "food": {
+      "ru": [
+        "Суши",
+        "Темпура",
+        "Гриль"
+      ],
+      "en": [
+        "Sushi",
+        "Tempura",
+        "Grilled food"
+      ]
+    },
+    "serve": {
+      "ru": "Подавайте хорошо охлаждённым",
+      "en": "Serve well chilled"
+    },
+    "color": "#9ba5aa",
+    "image": "/assets/beer-world-sapporo.webp",
+    "imageCredit": "https://www.sapporobeer.com/sites/default/files/styles/large/public/2023-10/product-premiumbeer22oz.png?itok=mI5hEJrV",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.sapporobeer.com/our-beers/sapporo-premium-beer"
+      }
+    ],
+    "note": {
+      "ru": "Карточка описывает версию для рынка США, 4,9%. Sapporo сообщает о производстве этой версии в США, Канаде и Вьетнаме. Саппоро — происхождение марки; полного состава на странице нет.",
+      "en": "This entry describes the US-market 4.9% version. Sapporo states it is brewed in the US, Canada and Vietnam. Sapporo is the brand origin; the page has no complete ingredient list."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-blanc",
+    "name": {
+      "ru": "1664 Blanc",
+      "en": "1664 Blanc"
+    },
+    "brewery": {
+      "ru": "Kronenbourg / Carlsberg Group",
+      "en": "Kronenbourg / Carlsberg Group"
+    },
+    "country": "FR",
+    "city": {
+      "ru": "Оберне, Франция; производство зависит от рынка",
+      "en": "Obernai, France; production varies by market"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Французское пшеничное",
+      "en": "French wheat beer"
+    },
+    "abv": 5,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Ячменный солод",
+        "Пшеница",
+        "Глюкозный сироп",
+        "Ароматическая карамель",
+        "Ароматизаторы",
+        "Экстракт хмеля",
+        "Акациевая камедь E414",
+        "Апельсиновая цедра",
+        "Кориандр"
+      ],
+      "en": [
+        "Water",
+        "Barley malt",
+        "Wheat",
+        "Glucose syrup",
+        "Aromatic caramel",
+        "Flavourings",
+        "Hop extract",
+        "Acacia gum E414",
+        "Orange peel",
+        "Coriander"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Пшеничное пиво французского происхождения с жемчужной золотистой дымкой. Цитрус, пряности и фруктовые оттенки формируют многослойный освежающий профиль.",
+      "en": "A French-origin wheat beer with a pearlescent golden haze. Citrus, spice and fruit notes create a layered, refreshing profile."
+    },
+    "aroma": {
+      "ru": "Цитрус, абрикос и персик",
+      "en": "Citrus, apricot and peach"
+    },
+    "taste": {
+      "ru": "Цитрусовый, мягко пряный, с кремовой текстурой",
+      "en": "Citrusy and gently spicy with a creamy texture"
+    },
+    "food": {
+      "ru": [
+        "Морепродукты",
+        "Салат",
+        "Мягкие сыры"
+      ],
+      "en": [
+        "Seafood",
+        "Salad",
+        "Soft cheeses"
+      ]
+    },
+    "serve": {
+      "ru": "Охладите и налейте в высокий бокал",
+      "en": "Chill and pour into a tall glass"
+    },
+    "color": "#6d94ba",
+    "image": "/assets/beer-world-blanc.webp",
+    "imageCredit": "https://www.1664blanc.com/media/1eupvxsc/1664_sapphire_blanc_combo_glass_cocarde_only_330ml_bottle_cap_wet_lr_rgb-1.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://www.1664blanc.com/en/product-range/1664-blanc/"
+      }
+    ],
+    "note": {
+      "ru": "Рецептура 5% с международной страницы производителя. Марка разработана во Франции, но производится на разных площадках; точное место смотрите на упаковке.",
+      "en": "The 5% recipe is from the international producer page. The brand was developed in France but is produced at different sites; check the package for the brewery."
+    },
+    "imageType": "product"
+  },
+  {
+    "id": "world-erdinger",
+    "name": {
+      "ru": "Erdinger Weißbier",
+      "en": "Erdinger Weißbier"
+    },
+    "brewery": {
+      "ru": "Privatbrauerei Erdinger Weißbräu",
+      "en": "Privatbrauerei Erdinger Weißbräu"
+    },
+    "country": "DE",
+    "city": {
+      "ru": "Эрдинг",
+      "en": "Erding"
+    },
+    "style": "wheat",
+    "styleName": {
+      "ru": "Баварское пшеничное",
+      "en": "Bavarian wheat beer"
+    },
+    "abv": 5.3,
+    "ingredients": {
+      "ru": [
+        "Вода",
+        "Пшеничный солод",
+        "Ячменный солод",
+        "Хмель",
+        "Дрожжи"
+      ],
+      "en": [
+        "Water",
+        "Wheat malt",
+        "Barley malt",
+        "Hops",
+        "Yeast"
+      ]
+    },
+    "ingredientsVerified": true,
+    "description": {
+      "ru": "Классическое баварское пшеничное с повторным созреванием в бутылке. Собственная дрожжевая культура формирует фруктовый характер и живую газацию.",
+      "en": "A classic Bavarian wheat beer matured a second time in the bottle. Its proprietary yeast culture creates fruity character and lively carbonation."
+    },
+    "aroma": {
+      "ru": "Солод, дрожжи и лёгкие цветочные ноты",
+      "en": "Malt, yeast and delicate floral notes"
+    },
+    "taste": {
+      "ru": "Мягко пряный, слегка сладкий и умеренно хмелевой",
+      "en": "Gently spicy, slightly sweet and mildly hoppy"
+    },
+    "food": {
+      "ru": [
+        "Белые колбаски",
+        "Брецель",
+        "Птица"
+      ],
+      "en": [
+        "White sausages",
+        "Pretzel",
+        "Poultry"
+      ]
+    },
+    "serve": {
+      "ru": "В высоком пшеничном бокале с дрожжевым осадком",
+      "en": "Serve in a tall wheat-beer glass with the yeast sediment"
+    },
+    "color": "#d7b57a",
+    "image": "/assets/beer-world-erdinger.webp",
+    "imageCredit": "https://erdinger.de/images/en-EN/beers/weissbier/s2_bottle_lg-2022_INT.png",
+    "sources": [
+      {
+        "label": "Официальный сайт / Official website",
+        "url": "https://erdinger.de/en-UK/beers/wheatbeer"
+      }
+    ],
+    "imageType": "product"
+  }
+]

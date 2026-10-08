@@ -41,11 +41,11 @@
 <text x="86" y="851" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Node private key: root-only output</text>
 <rect x="517" y="716" width="405" height="164" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
 <rect x="517" y="730" width="4" height="136" rx="2" fill="#416eab"/>
-<text x="537" y="747" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">systemd · API сайта декой</text>
-<text x="537" y="776" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Непривилегированный nuvrion-game</text>
-<text x="537" y="801" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">/run/…/game.sock · mode 0660</text>
-<text x="537" y="826" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Nginx получает /run/… :ro mount</text>
-<text x="537" y="851" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">SQLite: StateDirectory mode 0700</text>
+<text x="537" y="747" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Статический Атлас пива</text>
+<text x="537" y="776" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">96 сортов · русский / английский</text>
+<text x="537" y="801" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Карточки, фото и шрифты локальные</text>
+<text x="537" y="826" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Nginx обслуживает файлы напрямую</text>
+<text x="537" y="851" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Поиск и избранное в браузере</text>
 <rect x="968" y="716" width="406" height="164" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
 <rect x="968" y="730" width="4" height="136" rx="2" fill="#287d72"/>
 <text x="988" y="747" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Диагностика / lifecycle</text>

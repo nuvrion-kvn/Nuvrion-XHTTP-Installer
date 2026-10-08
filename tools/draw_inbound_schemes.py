@@ -105,7 +105,7 @@ def reality():
     d.card('routing', 48, 1104, 600, 126, 'Xray routing → Internet',
            ['DIRECT → разрешённый целевой ресурс.',
             'BLOCK → запрещённые профилем назначения.'])
-    d.card('decoy', 744, 1104, 648, 126, 'PokéHabitat · ответ на HTTPS /',
+    d.card('decoy', 744, 1104, 648, 126, 'Атлас пива · ответ на HTTPS /',
            ['По домену ноды скан видит сайт и HTTP 200.',
             'HTML / JS / assets + локальный API игры.'], 'web')
     d.card('reality-camouflage', 48, 1288, 648, 172, 'Маскировка для DPI',
@@ -144,7 +144,7 @@ def xhttp():
             'proxy_pass → Unix socket xrxh.socket.',
             'HTTP/1.1 локально · buffering off.'])
     d.card('https-response', 744, 1070, 648, 146, 'Ответ сайта или API',
-           ['/ → PokéHabitat · HTTP 200.',
+           ['/ → Атлас пива · HTTP 200.',
             'Чужой SNI / Host на API → HTTP 404.',
             'XHTTP path без сессии: возможен HTTP 400.'], 'web')
     d.arrow('M372 1216V1276')

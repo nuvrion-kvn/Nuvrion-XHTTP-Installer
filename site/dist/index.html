@@ -2,16 +2,411 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Исследуй мир покемонов: среды обитания, способности, эволюции и анимации атак. Explore Pokémon habitats, abilities, evolutions and animated moves." />
-    <meta name="theme-color" content="#2e604b" />
-    <title>PokéHabitat — Клуб любителей покемонов</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <script type="module" crossorigin src="/assets/index-CAzU3Xf8.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-C7FvZLl7.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#17110c" />
+    <meta
+      name="description"
+      content="Атлас пива — интерактивный каталог российского и зарубежного пива. Состав, крепость, производители и вкусовые особенности на русском и английском."
+    />
+    <title>Атлас пива</title>
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="/assets/nunito-sans-cyrillic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/tokens.css" />
+    <link
+      rel="preload"
+      href="/assets/lora-cyrillic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.mjs"></script>
   </head>
-  <body class="antialiased">
-    <div id="root"></div>
-    <noscript>Для просмотра атласа и игры включите JavaScript. Enable JavaScript to explore the atlas and play.</noscript>
+  <body>
+    <div id="topography-bg" class="topography-bg" aria-hidden="true"></div>
+    <div class="motion-control">
+      <button type="button" id="motion-toggle" aria-pressed="false">
+        <span data-icon="pause"></span
+        ><span id="motion-label">Пауза анимации</span>
+      </button>
+    </div>
+    <a class="skip-link" href="#catalog" data-i18n="skip">Перейти к каталогу</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a
+          href="#"
+          class="brand"
+          aria-label="Атлас пива — на главную"
+          id="brand-link"
+        >
+          <span class="brand-mark" aria-hidden="true"
+            ><svg viewBox="0 0 32 36">
+              <path d="M7 10h18v19a5 5 0 0 1-5 5h-8a5 5 0 0 1-5-5V10Z" />
+              <path
+                d="M25 14h3a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-3M11 15v12m5-12v12m5-12v12"
+              />
+              <path
+                d="M6 10a4 4 0 0 1 0-8 5 5 0 0 1 9 1 4 4 0 0 1 7 1 3 3 0 0 1 4 6Z"
+              /></svg
+          ></span>
+          <span id="brand-name"
+            ><span class="brand-line">АТЛАС</span>
+            <span class="brand-line">ПИВА</span></span
+          >
+          <span class="brand-caption" data-i18n="brandCaption"
+            >Россия и мир</span
+          >
+        </a>
+        <nav class="top-nav" aria-label="Основная навигация" id="top-nav">
+          <a href="#catalog" data-i18n="catalog">Каталог</a>
+          <a href="#styles" data-i18n="styles">Стили пива</a>
+          <button
+            type="button"
+            class="nav-button"
+            id="about-button"
+            data-i18n="about"
+          >
+            О проекте
+          </button>
+        </nav>
+        <div class="header-actions">
+          <button
+            type="button"
+            id="favorites-top"
+            class="header-favorite"
+            aria-pressed="false"
+          >
+            <span class="heart-icon" data-icon="heart"></span
+            ><span class="fav-top-label" data-i18n="favorites">Избранное</span
+            ><span id="fav-count">0</span>
+          </button>
+          <div class="locale-switch" role="group" aria-label="Язык / Language">
+            <button type="button" data-locale="ru" aria-pressed="true">
+              RU
+            </button>
+            <span aria-hidden="true">/</span>
+            <button type="button" data-locale="en" aria-pressed="false">
+              EN
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="hero container" aria-labelledby="hero-title">
+        <div class="hero-art" aria-hidden="true">
+          <img
+            src="/assets/hero-beer.webp"
+            alt=""
+            width="1672"
+            height="941"
+            fetchpriority="high"
+          />
+        </div>
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="little-line"></span
+            ><span data-i18n="heroEyebrow"
+              >Россия и весь мир в одном каталоге</span
+            >
+          </div>
+          <h1 id="hero-title">
+            <span data-i18n="heroLine1">У каждого пива</span
+            ><span class="mint-line" data-i18n="heroLine2">свой характер</span>
+          </h1>
+          <p data-i18n="heroDescription">
+            От знакомого лагера до бельгийского эля. Узнайте, что в бокале:
+            состав, крепость, вкус и история места, где его сварили.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#catalog"
+              ><span data-i18n="explore">Открыть каталог</span
+              ><span data-icon="arrow"></span></a
+            ><a class="hero-guide-link" href="#styles"
+              ><span data-i18n="understand">Разобраться в стилях</span
+              ><span data-icon="arrowDown"></span
+            ></a>
+          </div>
+          <div class="hero-meta">
+            <span
+              ><span class="meta-dot"></span><span id="hero-total">96</span>
+              <span data-i18n="beerCountLabel">сортов в коллекции</span></span
+            ><span data-i18n="heroMeta">Без рейтингов — только характер</span>
+          </div>
+        </div>
+        <div class="hero-caption">
+          <span class="glass-outline" data-icon="glass"></span
+          ><span data-i18n="heroCaption">Лагер · Пшеничное · IPA · Стаут</span>
+        </div>
+      </section>
+      <div class="world-strip">
+        <div class="container strip-inner">
+          <span data-i18n="stripLabel">Пиво без границ</span>
+          <div class="strip-viewport" tabindex="0">
+            <div id="country-strip">
+              <div class="strip-copy">
+                <span>Россия</span><span>Германия</span><span>Бельгия</span
+                ><span>Чехия</span><span>Ирландия</span
+                ><span>Великобритания</span><span>США</span><span>Япония</span>
+              </div>
+            </div>
+          </div>
+          <span class="strip-end">18+</span>
+        </div>
+      </div>
+      <section
+        class="catalog-section container"
+        id="catalog"
+        aria-labelledby="catalog-title"
+      >
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow" data-i18n="catalogEyebrow">
+              Найдите свой вкус
+            </div>
+            <h2 id="catalog-title" data-i18n="catalogTitle">
+              Пивная коллекция
+            </h2>
+          </div>
+          <div class="collection-note">
+            <span data-icon="layers"></span
+            ><span data-i18n="collectionHint"
+              >Откройте карточку, чтобы узнать больше</span
+            >
+          </div>
+        </div>
+        <div class="catalog-toolbar">
+          <div
+            class="origin-tabs"
+            role="group"
+            aria-label="Происхождение"
+            id="origin-group"
+          >
+            <button type="button" data-origin="all" aria-pressed="true">
+              <span data-i18n="allBeers">Всё пиво</span
+              ><span id="all-count" class="tab-count">96</span></button
+            ><button
+              type="button"
+              data-origin="russia"
+              aria-pressed="false"
+              data-i18n="russian"
+            >
+              Российское</button
+            ><button
+              type="button"
+              data-origin="world"
+              aria-pressed="false"
+              data-i18n="international"
+            >
+              Зарубежное
+            </button>
+          </div>
+          <div class="search-field">
+            <span data-icon="search"></span
+            ><label for="beer-search" class="sr-only" data-i18n="searchLabel"
+              >Поиск пива</label
+            ><input
+              id="beer-search"
+              type="search"
+              placeholder="Название, пивоварня или вкус"
+              autocomplete="off"
+            /><button
+              type="button"
+              id="clear-search"
+              class="icon-button"
+              aria-label="Очистить поиск"
+              hidden
+            >
+              <span data-icon="close"></span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="style-filters"
+          role="group"
+          aria-label="Стиль пива"
+          id="style-filters"
+        ></div>
+        <div class="filter-row">
+          <div class="selects">
+            <div class="select-wrap">
+              <label for="country-select" class="sr-only" data-i18n="country"
+                >Страна</label
+              ><select id="country-select"></select>
+            </div>
+            <div class="select-wrap">
+              <label for="strength-select" class="sr-only" data-i18n="strength"
+                >Крепость</label
+              ><select id="strength-select"></select>
+            </div>
+            <button
+              id="reset-filters"
+              type="button"
+              class="reset-button"
+              hidden
+            >
+              <span data-icon="close"></span
+              ><span data-i18n="reset">Сбросить</span>
+            </button>
+          </div>
+          <div class="sort-wrap">
+            <label for="sort-select" data-i18n="sort">Порядок</label
+            ><select id="sort-select"></select>
+          </div>
+        </div>
+        <div class="results-line">
+          <span id="results-count" role="status" aria-live="polite"
+            >Загружаем коллекцию</span
+          ><button
+            id="favorites-filter"
+            type="button"
+            class="favorites-filter"
+            aria-pressed="false"
+          >
+            <span data-icon="heart"></span
+            ><span data-i18n="onlyFavorites">Только избранное</span>
+          </button>
+        </div>
+        <div id="beer-grid" class="beer-grid" aria-busy="true">
+          <div class="loading-state">
+            <span class="spinner"></span>
+            <p data-i18n="loading">Загружаем коллекцию</p>
+          </div>
+        </div>
+        <div class="load-more-wrap">
+          <button type="button" id="load-more" class="button outline" hidden>
+            <span data-i18n="loadMore">Показать ещё</span
+            ><span data-icon="plus"></span></button
+          ><span id="shown-count"></span>
+        </div>
+      </section>
+      <section
+        class="style-section container"
+        id="styles"
+        aria-labelledby="style-title"
+      >
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow" data-i18n="guideEyebrow">
+              Небольшой гид перед выбором
+            </div>
+            <h2 id="style-title" data-i18n="guideTitle">
+              Какой стиль вам ближе
+            </h2>
+          </div>
+          <p class="section-description" data-i18n="guideDescription">
+            Цвет не всегда говорит о крепости. А горечь — только одна из граней
+            вкуса.
+          </p>
+        </div>
+        <div id="style-guide" class="guide-grid"></div>
+      </section>
+      <section
+        class="ingredients-section container"
+        aria-labelledby="ingredients-title"
+      >
+        <div class="ingredients-intro">
+          <div class="eyebrow" data-i18n="ingredientsEyebrow">
+            Четыре основы и множество оттенков
+          </div>
+          <h2 id="ingredients-title" data-i18n="ingredientsTitle">
+            Что создаёт вкус пива
+          </h2>
+          <p data-i18n="ingredientsIntro">
+            За знакомыми словами в составе скрываются цвет, аромат, текстура и
+            характер каждого сорта.
+          </p>
+        </div>
+        <div class="ingredient-list" id="ingredient-list"></div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a
+            href="#"
+            class="footer-brand"
+            id="footer-brand"
+            aria-label="Атлас пива"
+            ><span class="brand-line">АТЛАС</span>
+            <span class="brand-line">ПИВА</span></a
+          >
+          <p data-i18n="footerDescription">
+            Разглядывайте этикетки и открывайте новые вкусы
+          </p>
+          <button
+            type="button"
+            class="footer-about"
+            data-about
+            data-i18n="about"
+          >
+            О проекте
+          </button>
+        </div>
+        <div class="footer-note">
+          <p data-i18n="footerNote">
+            Справочный каталог для совершеннолетних. Состав и крепость могут
+            отличаться в зависимости от рынка — сверяйтесь с этикеткой.
+          </p>
+          <span data-i18n="footerLine"
+            >Не магазин · Без рекламы · На двух языках</span
+          >
+        </div>
+        <span class="age-badge">18+</span>
+      </div>
+    </footer>
+    <dialog
+      id="detail-dialog"
+      class="detail-dialog"
+      aria-labelledby="detail-title"
+    >
+      <div class="dialog-top">
+        <span id="dialog-eyebrow"></span>
+        <div class="dialog-actions">
+          <div
+            class="locale-switch dialog-locales"
+            role="group"
+            aria-label="Язык / Language"
+          >
+            <button type="button" data-locale="ru" aria-pressed="true">
+              RU</button
+            ><span aria-hidden="true">/</span
+            ><button type="button" data-locale="en" aria-pressed="false">
+              EN
+            </button>
+          </div>
+          <button
+            type="button"
+            id="close-dialog"
+            class="icon-button"
+            aria-label="Закрыть карточку"
+            autofocus
+          >
+            <span data-icon="close"></span>
+          </button>
+        </div>
+        <div
+          id="dialog-feedback"
+          class="dialog-feedback"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+      </div>
+      <div id="detail-content" class="dialog-body"></div>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <noscript
+      ><p class="container">
+        Для интерактивного каталога включите JavaScript / Enable JavaScript to
+        explore the catalog
+      </p></noscript
+    >
   </body>
 </html>

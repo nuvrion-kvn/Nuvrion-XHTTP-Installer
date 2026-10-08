@@ -66,7 +66,7 @@ def build():
              ('nuvrion-traffic-control.py', traffic_source.encode())]
     for name in ('nuvrion-two-way-ping.sh', 'nuvrion-two-way-ping.service'):
         files.append((name, (ROOT/'src'/name).read_bytes()))
-    for directory, name in [('site/dist', 'pokehabitat/public'), ('site/server/dist', 'pokehabitat/server')]:
+    for directory, name in [('site/dist', 'beer-atlas/public')]:
         base = ROOT / directory
         assert base.is_dir()
         files.extend((name+'/'+p.relative_to(base).as_posix(), p.read_bytes())

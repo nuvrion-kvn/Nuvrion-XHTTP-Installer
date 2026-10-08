@@ -163,8 +163,9 @@ server {
         self.assertEqual(hashlib.sha256(data).hexdigest(), expected)
         with tarfile.open(fileobj=io.BytesIO(data),mode='r:gz') as tar:
             names = tar.getnames()
-            self.assertIn('pokehabitat/public/index.html', names)
-            self.assertIn('pokehabitat/server/server.mjs', names)
+            self.assertIn('beer-atlas/public/index.html', names)
+            self.assertIn('beer-atlas/public/beers.json', names)
+            self.assertFalse(any(n.startswith('pokehabitat/') for n in names))
             self.assertIn('installer-manager.sh', names)
             self.assertIn('nuvrion-auto-tuning.sh', names)
             self.assertIn('nuvrion-traffic-control.py', names)
