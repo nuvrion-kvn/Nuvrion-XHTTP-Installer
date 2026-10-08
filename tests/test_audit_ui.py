@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 import pty
 import select
+import signal
 import subprocess
 import tempfile
 import unittest
@@ -20,6 +21,8 @@ class AuditUiTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             source = SOURCE.replace('readonly BASE=/opt/remnanode', 'readonly BASE=' + td + '/node')
             source = source.replace('readonly PROFILE=/root/nuvrion-xhttp-profile.json', 'readonly PROFILE=' + td + '/profile.json')
+            source = source.replace('readonly HOSTS=/root/nuvrion-xhttp-host-settings.txt', 'readonly HOSTS=' + td + '/hosts.txt')
+            source = source.replace('readonly LOG=/var/log/nuvrion-xhttp-installer.log', 'readonly LOG=' + td + '/installer.log')
             if assume_socket:
                 source = source.replace('[[ -f $STATE && -S $XHTTP_SOCKET ]]', '[[ -f $STATE ]]')
             source = source.replace('/usr/local/bin/nuvrion-traffic-control', td + '/traffic')
@@ -156,6 +159,87 @@ final_report
         self.assertEqual(r.returncode, 0, r.stderr)
         self.assertIn('установлен; фильтрация выключена', r.stdout)
         self.assertNotIn('фильтрация и автообновление активны', r.stdout)
+        self.assertNotIn('Параметры extra',r.stdout)
+        self.assertNotIn('nuvrion-xhttp-extra.json',r.stdout)
+
+    def test_complete_profile_and_both_hosts_are_verbatim_and_not_logged(self):
+        import json
+        profile=json.dumps({'inbounds':[{'tag':'REALITY','privateKey':'FIXTURE_ONLY_PRIVATE_KEY'},
+                                       {'tag':'XHTTP','extension':'x'*320}],
+                            'routing':{'custom':'preserved'}},ensure_ascii=False,indent=2)+'\n'
+        hosts=('Настройки REALITY TCP Host в Remnawave\nАдрес: node.example\n'
+               'Настройки XHTTP Host в Remnawave\nPath: /custom/path/\n'
+               'XHTTP extra parameters: оставить пустым\n')
+        r=self.run_shell('''
+printf '%s' "$TEST_PROFILE" > "$PROFILE"
+printf '%s' "$TEST_HOSTS" > "$HOSTS"
+touch "$LOG";LOG_ENABLED=1
+print_remnawave_setup
+log_ok 'Проверка журнала'
+printf '\\nTEST_LOG_CONTENT\\n';cat "$LOG"
+''',TEST_PROFILE=profile,TEST_HOSTS=hosts,COLUMNS='32')
+        self.assertEqual(r.returncode,0,r.stderr)
+        terminal,log=r.stdout.split('TEST_LOG_CONTENT\n')
+        self.assertIn(profile,terminal)
+        self.assertIn(hosts,terminal)
+        self.assertIn('Проверка журнала',log)
+        self.assertNotIn('FIXTURE_ONLY_PRIVATE_KEY',log)
+        self.assertNotIn(profile,log)
+        self.assertNotIn(hosts,log)
+
+    @unittest.skipUnless(os.name!='nt','Requires a real PTY')
+    def test_traffic_install_returns_without_menu_and_keeps_parent_terminal(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);binary=root/'traffic';driver=root/'driver.py';script=root/'install.sh'
+            driver.write_text('''import os,sys
+from pathlib import Path
+if sys.stdin.isatty():
+    print("MUST_NOT_OPEN_MENU",flush=True)
+    raise SystemExit(97)
+Path(os.environ["TEST_TRAFFIC_BIN"]).write_text("#!/bin/sh\\nexit 0\\n")
+Path(os.environ["TEST_TRAFFIC_BIN"]).chmod(0o755)
+print("TRAFFIC_INSTALL_FINISHED",flush=True)
+''')
+            source=SOURCE.replace('readonly BASE=/opt/remnanode','readonly BASE='+td+'/node')
+            source=source.replace('/usr/local/bin/nuvrion-traffic-control',str(binary))
+            source=source.replace('/var/lib/nuvrion-traffic-control',td+'/traffic-state')
+            source=source.replace('/usr/local/bin/ntc',td+'/ntc')
+            script.write_text(source+'''
+WORK=$TEST_ROOT;SSH_PORT=22;PANEL_IP=192.0.2.10;ADMIN_IP=192.0.2.11
+helper(){ [[ $1 != get ]] || printf true; }
+python3(){ command python3 "$TEST_DRIVER" "$@"; }
+[[ -t 0 ]] || exit 98
+configure_traffic_control
+[[ -t 0 ]] || exit 99
+printf 'PARENT_INSTALL_CONTINUED\\n'
+''')
+            pid,fd=pty.fork()
+            if pid==0:
+                os.environ.update(TEST_ROOT=td,TEST_DRIVER=str(driver),TEST_TRAFFIC_BIN=str(binary),NO_COLOR='1')
+                os.execvp('bash',['bash',str(script)])
+            output=b'';status=None
+            try:
+                for _ in range(20):
+                    readable,_,_=select.select([fd],[],[],0.5)
+                    if readable:
+                        try:chunk=os.read(fd,4096)
+                        except OSError:break
+                        if not chunk:break
+                        output+=chunk
+                    ended,exit_status=os.waitpid(pid,os.WNOHANG)
+                    if ended:status=exit_status;break
+                if status is None:
+                    ended,exit_status=os.waitpid(pid,os.WNOHANG)
+                    if ended:status=exit_status
+                    else:
+                        os.kill(pid,signal.SIGKILL);_,status=os.waitpid(pid,0)
+            finally:
+                os.close(fd)
+            text=output.decode()
+            self.assertEqual(os.waitstatus_to_exitcode(status),0,text)
+            self.assertIn('TRAFFIC_INSTALL_FINISHED',text)
+            self.assertIn('PARENT_INSTALL_CONTINUED',text)
+            self.assertNotIn('MUST_NOT_OPEN_MENU',text)
 
     def test_traffic_report_requires_actual_filter_activity_not_only_marker(self):
         for state in (dict(enabled=True, filter_active=False, pending=False),
