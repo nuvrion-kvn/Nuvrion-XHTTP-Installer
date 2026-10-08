@@ -63,9 +63,37 @@ sudo bash ./nuvrion-xhttp-install.sh --reinstall --harden-profile \
 Назначьте ноде оба inbound, включите их в нужный Internal Squad и назначьте Squad
 пользователям. В серверных `clients` UUID добавляет Remnawave.
 
-Reality Host: введённый домен/SNI, 443, DEFAULT security, Firefox,
-`xtls-rprx-vision`. XHTTP Host: тот же домен/SNI, 443, TLS, Firefox, ALPN
-`h2,http/1.1`, заданный path, `auto`, пустой flow. Сокет в Host не указывается.
+### Настройки REALITY TCP Host в Remnawave
+
+```text
+Адрес:          DOMAIN
+Порт:           443
+SNI:            DOMAIN
+Security Layer: DEFAULT
+Отпечаток:      firefox
+ALPN:           Наследовать из inbound
+Inbound:        NODE_TAG
+```
+
+`DEFAULT` наследует REALITY из выбранного inbound. Transport — TCP/RAW,
+flow — `xtls-rprx-vision`. Поля Host, Path и XHTTP extra parameters оставьте пустыми.
+
+### Настройки XHTTP Host в Remnawave
+
+```text
+Адрес:          DOMAIN
+Порт:           443
+SNI:            DOMAIN
+Security Layer: TLS (Transport Layer Security)
+Отпечаток:      firefox
+ALPN:           h2,http/1.1
+Inbound:        NODE_TAG XHTTP
+```
+
+В поле Host укажите `DOMAIN`, в Path — свой путь из профиля (по умолчанию
+`/api/v3/sync/`). Transport — XHTTP, mode — `auto` из inbound, flow оставьте пустым.
+Адрес и SNI обоих Host должны совпадать с доменом ноды (`DOMAIN` в профиле).
+В Inbound выберите соответствующий тег из профиля. Сокет в Host не указывается.
 Оставьте extra Host пустым для наследования `xhttpSettings.extra` из inbound.
 Непустой Host extra переопределяет клиентский объект в подписке, не меняя
 серверный Config Profile. Выгрузка extra не требует отдельного применения.

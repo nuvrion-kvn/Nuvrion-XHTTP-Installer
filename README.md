@@ -491,22 +491,37 @@ API-порт установленной ноды определяется авт
 
 ### Шаблоны Host
 
-Параметры в интерфейсе панели:
+#### Настройки REALITY TCP Host в Remnawave
 
-| Поле | REALITY TCP Host | XHTTP Host |
-|---|---|---|
-| Inbound | `NODE_TAG` | `NODE_TAG XHTTP` |
-| Address / SNI | `DOMAIN` | `DOMAIN` |
-| Port | `443` | `443` — внешний вход, не Unix socket |
-| Security Layer | `DEFAULT` — наследовать REALITY | `TLS` — TLS завершается в Nginx |
-| Fingerprint | `firefox` | `firefox` |
-| ALPN | Наследовать | `h2,http/1.1` |
-| Host / Path | Пусто | `DOMAIN` / `/api/v3/sync/` |
-| Transport / Mode | TCP/RAW из inbound | XHTTP / `auto` из inbound |
-| Flow в клиенте | `xtls-rprx-vision` | Пусто |
-| XHTTP extra parameters | Пусто | **Пусто — наследовать из профиля** |
+```text
+Адрес:          DOMAIN
+Порт:           443
+SNI:            DOMAIN
+Security Layer: DEFAULT
+Отпечаток:      firefox
+ALPN:           Наследовать из inbound
+Inbound:        NODE_TAG
+```
 
-Следующие JSON — тела **двух отдельных запросов создания Host** через Remnawave API (`POST /api/hosts`), а не Config Profile и не общий bulk import. Их поля сверены с [официальным контрактом CreateHost](https://github.com/remnawave/backend/blob/010b365ab1fabea01192b5e6ade4e98e66ee1dbd/libs/contract/commands/hosts/create.command.ts). При работе через UI перенесите значения из таблицы.
+`DEFAULT` наследует REALITY из выбранного inbound. Transport — TCP/RAW, flow в клиенте — `xtls-rprx-vision`. Поля Host, Path и XHTTP extra parameters оставьте пустыми.
+
+#### Настройки XHTTP Host в Remnawave
+
+```text
+Адрес:          DOMAIN
+Порт:           443
+SNI:            DOMAIN
+Security Layer: TLS (Transport Layer Security)
+Отпечаток:      firefox
+ALPN:           h2,http/1.1
+Inbound:        NODE_TAG XHTTP
+```
+
+TLS завершается в Nginx. В поле Host укажите `DOMAIN`, в Path — `/api/v3/sync/` или свой путь из профиля. Transport — XHTTP, mode — `auto` из inbound, flow оставьте пустым. **XHTTP extra parameters оставьте пустым для наследования extra из профиля.**
+
+Адрес и SNI обоих Host должны совпадать с доменом ноды (`DOMAIN` в профиле). Внешний порт обоих Host — `443`. В Inbound выберите соответствующий тег из профиля и назначьте оба inbound ноде.
+
+Следующие JSON — тела **двух отдельных запросов создания Host** через Remnawave API (`POST /api/hosts`), а не Config Profile и не общий bulk import. Их поля сверены с [официальным контрактом CreateHost](https://github.com/remnawave/backend/blob/010b365ab1fabea01192b5e6ade4e98e66ee1dbd/libs/contract/commands/hosts/create.command.ts). При работе через UI перенесите значения из блоков выше.
 
 Замените `CONFIG_PROFILE_UUID`, `REALITY_INBOUND_UUID`, `XHTTP_INBOUND_UUID` и `NODE_UUID` на UUID объектов **своей панели** после создания профиля. `DOMAIN` и `NODE_TAG` должны совпасть с профилем. Поле `nodes` ограничивает Host выбранной нодой.
 
