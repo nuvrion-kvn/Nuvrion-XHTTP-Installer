@@ -41,6 +41,8 @@ jobs:
           start = next((index for index, line in enumerate(lines)
                         if line.startswith(('FAIL:', 'ERROR:'))), max(0, len(lines) - 30))
           excerpt = '\n'.join(lines[start:])[-30000:]
+          annotation = excerpt.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+          print('::error title=Regression test failure::' + annotation)
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
               summary.write('### Ошибки unit/shell tests\n\n<pre>'
                             + html.escape(excerpt) + '</pre>\n')
