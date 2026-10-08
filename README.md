@@ -1,126 +1,137 @@
 <div align="center">
 
-<img src="assets/nuvrion-xhttp-banner.svg" alt="Nuvrion XHTTP Installer" width="100%">
+<img src="assets/nuvrion-xhttp-banner.png" alt="Nuvrion XHTTP Installer — REALITY TCP + XHTTP" width="100%">
 
 # Nuvrion XHTTP Installer
 
-### VLESS REALITY TCP + XHTTP · Unix-Socket Decoy для Remnawave
+**Remnawave Node · VLESS REALITY TCP selfsteal · VLESS XHTTP · Nginx · Unix sockets**
 
 [![Validation](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/actions/workflows/validate.yml/badge.svg)](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/actions/workflows/validate.yml)
-[![Release](https://img.shields.io/badge/release-v1.0.0-d6a753?style=for-the-badge)](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/tag/v1.0.0)
-[![License](https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge)](LICENSE)
-![TLS](https://img.shields.io/badge/TLS-1.2%20%2F%201.3-06b6d4?style=for-the-badge)
-
-**RemnaNode · Xray · REALITY · XHTTP · nginx · PokéHabitat · Auto Tuning · Traffic Control**
+[![Download](https://img.shields.io/badge/download-latest%20release-b89557)](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest)
+[![License](https://img.shields.io/badge/license-MIT-397b68)](LICENSE)
+![Platform](https://img.shields.io/badge/platform-Ubuntu%2024.04.x-344b65)
 
 </div>
 
-## Назначение
+## Назначение и состав
 
-**Nuvrion XHTTP Installer** настраивает серверную часть Remnawave-ноды с двумя
-транспортами: VLESS REALITY TCP/RAW и VLESS XHTTP. Один автономный Bash-файл
-содержит nginx-шаблоны, сайт PokéHabitat, игровой API, тюнинг, диагностику,
-резервное копирование и генератор конфигурации для панели.
+Автономный Bash-установщик разворачивает Remnawave Node или подключает XHTTP-инфраструктуру к существующей ноде. Внешний вход обоих транспортов — **TCP/443 в Xray**. REALITY TCP работает с локальным selfsteal target: Nginx принимает перенаправленный TLS-поток через Unix socket. Nginx обслуживает сайт декой и проксирует XHTTP к отдельному Unix inbound Xray.
 
-Внешний TCP/443 обслуживает Xray. Обычный HTTPS проходит через local Reality
-target и PROXY protocol в nginx. Nginx отдаёт сайт либо передаёт XHTTP-запрос
-по второму Unix socket. TCP upstream, WebSocket и gRPC в эту схему не добавляются.
+В файл `nuvrion-xhttp-install.sh` встроены конфигурационные шаблоны, собранный сайт декой с локальным API, генератор Config Profile, Auto Tuning, Traffic Control, Two-Way Ping, диагностика и backup/rollback. При установке не требуется скачивать дополнительные файлы из этого репозитория.
 
-Версия **1.0.0** устанавливает Remnanode на чистый сервер и настраивает уже
-установленную ноду. На чистом сервере доступны **latest и выбор стабильной версии**.
-Для существующей ноды сохраняются образ, Xray, действующие ключи, SSH и настройки.
-Сначала показывает диагностику и план, затем запрашивает подтверждение и создаёт
-backup. Полный профиль нужно применить в Remnawave отдельно.
+| Подсистема | Результат установки |
+|---|---|
+| Remnawave Node | Выбор latest или стабильного тега для новой ноды; закрепление точного image ID. У существующей ноды сохраняется образ |
+| Транспорты | VLESS REALITY TCP/RAW на `:443` и VLESS XHTTP на Unix socket; `network_mode: host` |
+| Nginx | TLS 1.2/1.3, HTTP/2, PROXY protocol, сайт декой и HTTP reverse proxy для XHTTP |
+| Сайт декой | Встроенные HTML/JS/изображения, локальный API через Unix socket, SQLite и отдельный systemd-сервис |
+| TLS | Let's Encrypt HTTP-01, автоматическое продление, проверка конфигурации и reload Nginx |
+| Remnawave | Полный профиль ноды с двумя inbound и встроенным extra; параметры двух Host с fingerprint `firefox` |
+| Auto Tuning | Сетевые sysctl, BBR/fq, TFO, RPS/RFS, ZRAM, лимиты, kernel hardening и системное обслуживание |
+| Traffic Control | IPv4/IPv6-фильтрация входящих источников по спискам, allowlist, ручные блокировки, статистика и ежедневное обновление |
+| Two-Way Ping | Фильтрация входящих echo-request и IPv4 timestamp-request; исходящий ping и ICMP-ошибки сохраняются |
+| Эксплуатация | Проверка портов, shared mounts, TLS, backend и журналов; резервные копии, восстановление и удаление собственных компонентов |
 
-## Что входит
+Код Auto Tuning и Traffic Control закреплён в установщике. Внешние обращения нужны для системных пакетов, официальных контейнерных образов, Node.js runtime сайта, ACME, DNS и обновления списков Traffic Control.
 
-- первая установка Remnawave Node с выбором официальной версии и закреплением image ID;
-- установка отсутствующих Docker/Compose через APT, без переустановки существующих;
-- REALITY TCP/RAW + XHTTP через общий `/dev/shm`;
-- nginx HTTPS/HTTP/2, PROXY protocol и обычный HTTP `proxy_pass`;
-- автономный PokéHabitat: HTML, JS, изображения, локальный API и SQLite;
-- Let's Encrypt, автоматическое продление, staging dry-run и nginx deploy-hook;
-- полный Config Profile, настройки двух Host с fingerprint **Firefox** и XHTTP extra;
-- cookie-padding на проверенном Xray 26.7.28; все пользовательские extra сохраняются;
-- DNS **AdGuard → COMSS**, IPv4, cache и serveStale;
-- встроенный Nuvrion Auto Tuning: BBR/fq, TFO, RPS/RFS, ZRAM, buffers, backlog,
-  conntrack, системные лимиты, kernel hardening, Fail2ban, security updates, NTP и TRIM;
-- Nuvrion Traffic Control: IPv4/IPv6 списки, исключения, статистика, диагностика,
-  русское меню `ntc` и автоматическое обновление;
-- Two-Way Ping, защита Node API, backup/rollback, безопасное обслуживание APT и очистка;
-- диагностика и `--self-check` без изменения работающей конфигурации.
+**Содержание:** [архитектура](#архитектура-трафика) · [установка](#установка) · [профиль ноды](#шаблон-профиля-ноды) · [шаблоны-host](#шаблоны-host) · [extra](#наследование-extra) · [Auto Tuning](#auto-tuning) · [Traffic Control](#traffic-control) · [диагностика](#диагностика-и-критерии-готовности) · [восстановление](#резервные-копии-удаление-и-восстановление)
 
-Auto Tuning и Traffic Control встроены как закреплённые snapshots. Шаблоны и код
-компонентов не загружаются во время установки. Списки блокировки, APT packages
-и ACME используют свои штатные внешние источники. Настройки SSH только проверяются.
+## Архитектура трафика
 
-## Схема работы
+![Пути REALITY, HTTPS и XHTTP, TLS termination и передача IP](assets/xhttp-scheme.svg)
 
-![REALITY TCP и XHTTP через Unix sockets](assets/xhttp-scheme.svg)
+<details>
+<summary>Текстовая схема для терминала</summary>
 
 ```text
-Internet
-   |
-   v
-:443 / Xray (Remnanode, network_mode: host)
-   |
-   +---- valid REALITY / VLESS -----------> Xray routing
-   |
-   +---- HTTPS / Reality target, xver: 1
+Internet / clients
+  |
+  v
+TCP/443 · Xray REALITY TCP/RAW · Remnawave Node
+  |
+  +-- authenticated REALITY/VLESS ------------------> Xray routing
+  |                                                       |
+  |                                                       +--> DIRECT / BLOCK
+  |
+  +-- ordinary TLS / XHTTP TLS · xver: 1 (PROXY v1)
+        |
+        v
+      /dev/shm/nuvrion-xhttp/nginx.sock
+        |
+        v
+      Nginx · TLS termination · HTTP/2
+        |
+        +-- / ------------------------------> site decoy (200)
+        +-- /api/game/ ---------------------> local API Unix socket / SQLite
+        +-- /api/v3/sync/ · HTTP proxy_pass
               |
               v
-       /dev/shm/nuvrion-xhttp/nginx.sock
+            /dev/shm/nuvrion-xhttp/xrxh.socket
               |
               v
-            Nginx
-              |
-              +---- / --------------------> PokéHabitat
-              +---- /api/game/ -----------> local game Unix socket
-              +---- /api/v3/sync/ ---------> /dev/shm/nuvrion-xhttp/xrxh.socket
-                                                    |
-                                                    v
-                                                Xray XHTTP
+            Xray XHTTP · VLESS --------------------> Xray routing
 ```
 
-Защищённый каталог имеет mode `2710` и группу nginx workers; nginx socket —
-`0600`, XHTTP — `0660`. В `listen: "/dev/shm/nuvrion-xhttp/xrxh.socket,0660"`
-суффикс `0660` задаёт **права**, а не часть имени. Setgid/tmpfiles сохраняют
-группу и доступ после пересоздания sockets и перезагрузки.
+</details>
 
-Старые eGames-пути `/dev/shm/nginx.sock` и `/dev/shm/xrxh.socket,0666` сохраняются
-при обычном импорте. Их перенос выполняется явно через `--harden-profile` с
-согласованным применением профиля в панели. Общий mount `/dev/shm:/dev/shm:rw`
-нужен обоим контейнерам; проверяется совпадение inode внутри каждого.
+1. Xray внутри Remnawave Node слушает TCP/443. Авторизованный REALITY/VLESS-поток поступает сразу в маршрутизацию Xray.
+2. Обычный HTTPS, включая TLS-соединение XHTTP-клиента, передаётся локальному REALITY target: `nginx.sock`. `xver: 1` добавляет PROXY protocol v1 с адресом клиента.
+3. Nginx завершает TLS на `listen unix:… ssl proxy_protocol;`, включает `http2 on;` и выбирает HTTP location.
+4. `/` возвращает сайт декой. `/api/game/` обращается к локальному API сайта. `/api/v3/sync/` передаётся через **HTTP/1.1 `proxy_pass`** в `xrxh.socket`, без буферизации запросов и ответов.
+5. XHTTP inbound Xray принимает VLESS из Unix socket и применяет routing профиля. Внутренний участок Nginx → Xray не использует TLS: TLS завершается в Nginx.
+
+В XHTTP location `X-Real-IP` и `X-Forwarded-For` устанавливаются из `$proxy_protocol_addr`. Xray принимает этот заголовок через `sockopt.trustedXForwardedFor: ["X-Forwarded-For"]`; совместимость установленного core проверяется до генерации профиля. Backend доступен через ограниченный Unix socket, а не публичный TCP-порт.
+
+### Контейнеры, mounts и права
+
+![Размещение сервисов, shared memory, права Unix sockets и TLS mounts](assets/deployment-scheme.svg)
+
+| Объект | Новая установка | Назначение |
+|---|---|---|
+| Shared mount | `/dev/shm:/dev/shm:rw` у Node и контейнерного Nginx | Оба процесса видят одинаковые sockets; диагностика сверяет inode внутри контейнеров |
+| Socket directory | `/dev/shm/nuvrion-xhttp`, mode `2710`, `root:<nginx-worker-gid>` | Setgid обеспечивает наследование группы; tmpfiles восстанавливает каталог при загрузке |
+| REALITY target | `/dev/shm/nuvrion-xhttp/nginx.sock`, mode `0600` | Nginx master создаёт listener; Xray от root подключается с PROXY protocol |
+| XHTTP listener | `/dev/shm/nuvrion-xhttp/xrxh.socket,0660` | Xray создаёт socket; Nginx worker подключается по группе |
+| Сертификаты | `/etc/letsencrypt:/etc/letsencrypt:ro` в контейнерном Nginx | Используются стандартные `live/DOMAIN/{fullchain,privkey}.pem`, включая ссылки на `archive` |
+| Сайт | Каталог декоя → `/var/www/decoy:ro` | Статические файлы без доступа на запись из Nginx |
+| API сайта | `/run/nuvrion-pokehabitat:/run/nuvrion-pokehabitat:ro` | Отдельный `game.sock`; база остаётся у непривилегированного systemd-сервиса |
+
+В записи `"…/xrxh.socket,0660"` суффикс `0660` — **mode socket, не часть имени файла**. Для ранее установленной eGames-схемы сохраняются `/dev/shm/nginx.sock` и `"/dev/shm/xrxh.socket,0666"`. Перенос на защищённый каталог выполняется только через явную миграцию `--harden-profile`, с применением согласованного профиля в панели.
+
+Создаваемый Nginx использует read-only root filesystem, tmpfs для runtime/cache, `no-new-privileges`, ограничение PID и `cap_drop: ALL` с минимальными capabilities `CHOWN`, `DAC_OVERRIDE`, `SETUID`, `SETGID`. Docker socket и privileged mode не используются. AppArmor и штатные механизмы ядра сохраняются. Существующие service names, mounts и нестандартные параметры сначала анализируются; конфликтующие конфигурации не заменяются автоматически.
+
+### Панель и конфигурация клиента
+
+![Config Profile, Host, Node API и наследование XHTTP extra](assets/remnawave-scheme.svg)
+
+Config Profile определяет **серверные inbound, DNS и routing**. Host связывает inbound с публичными адресом/портом и параметрами клиентской подписки. Для XHTTP Host задаёт `securityLayer: TLS`, потому что клиент подключается к Nginx через внешний вход Xray. В самом Unix inbound XHTTP `security: tls` не требуется.
+
+Node API `:2222` — управляющий канал панели, отдельный от пользовательского `:443`. Панель загружает профиль и пользователей в ноду; установщик не изменяет generated/live Xray config. Наличие файла с профилем на диске само по себе не создаёт `xrxh.socket`.
 
 ## Требования
 
-- Ubuntu 24.04.x, root и systemd;
-- чистый сервер либо существующий Remnanode с `network_mode: host`;
-- проверенная версия: **Remnanode 3.4.2 / Xray 26.7.28**, nginx 1.30;
-- домен с A-записью на сервер, IP панели и email для Let's Encrypt;
-- SECRET_KEY из панели для новой ноды; для действующей — root-only экспорт Config Profile;
-- исходящий доступ к APT, ACME, DoH и выбранным спискам блокировки.
+- Ubuntu 24.04.x, root, systemd, архитектура x86_64 или aarch64.
+- Домен с A-записью на внешний IPv4 сервера; IP панели Remnawave и email для ACME.
+- Для новой ноды — `SECRET_KEY` из панели. Для существующей — экспорт действующего Config Profile в root-only файл.
+- Для существующей ноды — Docker Compose и `network_mode: host`. Образ и Xray автоматически не обновляются.
+- Доступ к официальным package/registry/ACME endpoints, DoH и источникам выбранных блок-листов.
 
-При первой установке меню показывает latest и стабильные версии из официального
-Docker registry. Номер также задаётся через `--node-version X.Y.Z`; в запуске
-с `--yes` без номера используется latest. Образ закрепляется по точному image ID.
-Поддержка XHTTP проверяется штатным Xray из выбранного образа до запуска ноды.
-Существующий образ/Xray не обновляются: допустим только `--node-version keep`.
-Для других версий core новые cookie-padding настройки автоматически не включаются.
+Проверенная связка: Remnawave Node **3.4.2**, Xray **26.7.28**, Nginx **1.30**. При выборе другой версии установщик проверяет доступность XHTTP и `trustedXForwardedFor` штатным бинарником core. Cookie-padding добавляется только для проверенного Xray 26.7.28; это не основание автоматически обновлять существующий core.
 
-## Загрузка приватного релиза
+## Установка
 
-Репозиторий приватный: анонимная ссылка `raw.githubusercontent.com` не подходит.
-Скачайте два файла через авторизованный GitHub или GitHub CLI на своём компьютере:
+### Получение файла
+
+Репозиторий приватный. Скачайте `nuvrion-xhttp-install.sh` и `SHA256SUMS` из [актуального релиза](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest) с авторизованного аккаунта либо через GitHub CLI на своём компьютере:
 
 ```bash
-gh release download v1.0.0 \
+gh release download \
   --repo nuvrion-kvn/Nuvrion-XHTTP-Installer \
   --pattern nuvrion-xhttp-install.sh --pattern SHA256SUMS
 scp nuvrion-xhttp-install.sh SHA256SUMS root@SERVER_IP:/root/
 ```
 
-На сервере:
+На сервере проверьте целостность и запустите интерактивное меню:
 
 ```bash
 cd /root
@@ -128,28 +139,25 @@ sha256sum -c SHA256SUMS
 sudo bash ./nuvrion-xhttp-install.sh
 ```
 
-Для работы достаточно **одного Bash-файла**. SHA256SUMS нужен для проверки
-скачивания, остальные файлы репозитория — документация и материалы разработчика.
+Для выполнения нужен один Bash-файл; `SHA256SUMS` используется только для проверки скачивания. Шаблоны ниже служат справочными примерами — установщик генерирует файлы с фактическими параметрами сервера.
 
-## Установка и меню
-
-| Пункт | Действие |
+| Пункт меню | Операция |
 |---:|---|
-| 1 | Установить XHTTP-компоненты |
-| 2 | Переустановить / восстановить |
+| 1 | Установить Node при отсутствии и настроить XHTTP-инфраструктуру |
+| 2 | Переустановить / восстановить компоненты |
 | 3 | Диагностика XHTTP |
-| 4 | Удалить собственные XHTTP-компоненты |
+| 4 | Удалить компоненты установщика |
 | 5 | Восстановить последнюю резервную копию |
-| 6 | Обновление Ubuntu, ZRAM и безопасная очистка |
+| 6 | Обслужить Ubuntu, ZRAM и выполнить безопасную очистку |
 | 0 | Выход |
 
-Перед вопросами объясняется `Д = Да`, `Н = Нет`. До изменений показываются
-обнаруженная конфигурация и конкретный план. `--yes` подтверждает показанный
-план и автоматический rollback при критической ошибке.
+До записи конфигурации выполняются диагностика, показ найденных сервисов и план изменений. После подтверждения создаётся timestamped backup. `--yes` подтверждает показанный план и автоматический rollback при критической ошибке.
 
-Первая установка: получите SECRET_KEY в панели, сохраните его на сервере в
-root-only файл с правами `0600` или введите скрыто в интерактивном меню.
-Ключ нельзя передавать аргументом командной строки.
+### Новая нода
+
+Версии выбираются из официального Docker registry: latest либо стабильный тег. После pull образ закрепляется по image ID. Если Docker/Compose отсутствуют, устанавливаются необходимые APT-пакеты; действующая установка Docker сохраняется.
+
+SECRET_KEY вводится скрыто либо читается из файла с правами `0600`. Секрет не передаётся аргументом командной строки.
 
 ```bash
 sudo bash ./nuvrion-xhttp-install.sh --install \
@@ -158,13 +166,9 @@ sudo bash ./nuvrion-xhttp-install.sh --install \
   --node-version latest --secret-key-file /root/node-secret.txt
 ```
 
-Вместо latest можно указать доступный номер, например `--node-version 3.4.2`.
-Firewall ограничивает API **до первого старта** ноды. Остановленные контейнеры,
-неоднозначная конфигурация, существующий Compose или занятые 443/2222 прекращают
-новую установку без замены файлов. После установки создайте связи ноды с профилем
-в панели; до загрузки inbound отображается WAITING_FOR_REMNAWAVE_PROFILE.
+Конкретный доступный тег задаётся через `--node-version 3.4.2`. В интерактивном режиме доступен выбор; при `--yes` без номера новая нода использует latest. Доступ к API ограничивается **до первого старта**. Найденные Compose/container conflicts или занятые `:443`/`:2222` прерывают новую установку без замены чужих файлов.
 
-Пример с сохранением действующего профиля:
+### Существующая нода
 
 ```bash
 sudo bash ./nuvrion-xhttp-install.sh --install \
@@ -173,94 +177,497 @@ sudo bash ./nuvrion-xhttp-install.sh --install \
   --node-version keep --profile-input /root/existing-profile.json
 ```
 
-## Профиль, Host и extra в Remnawave
+Исходный Compose сохраняется; необходимые изменения вносятся отдельным override. Образ, Reality key, clients, tags и пользовательские настройки импортируемого профиля сохраняются. Для существующей ноды допустим `--node-version keep`; смена версии требует отдельной операции вне этого установщика.
 
-| Выходной файл | Содержимое |
+При изменении только Nginx config выполняются проверка и reload. Пересоздаётся только сервис, которому требуется новый mount/Compose-параметр. Перед затрагиванием ноды выводится предупреждение о возможном коротком прерывании VPN.
+
+## Применение в Remnawave
+
+| Выходной файл | Назначение |
 |---|---|
-| `/root/nuvrion-xhttp-profile.json` | Полный Config Profile: два inbound, DNS, routing, outbounds |
-| `/root/nuvrion-xhttp-host-settings.txt` | Настройки обоих Host и public Reality key |
-| `/root/nuvrion-xhttp-extra.json` | XHTTP extra для проверки/ручного заполнения Host |
+| `/root/nuvrion-xhttp-profile.json` | Готовый Config Profile с private Reality key и встроенным `xhttpSettings.extra`; права root-only |
+| `/root/nuvrion-xhttp-host-settings.txt` | Фактические параметры двух Host и public Reality key |
+| `/root/nuvrion-xhttp-extra.json` | Необязательная выгрузка клиентских extra-параметров для диагностики или явного Host override |
 
-JSON содержит private Reality key и сохраняется root-only. Вставьте его в
-Config Profile панели, назначьте оба inbound нужной ноде и создайте два Host.
-Установщик не редактирует live generated Xray config.
+1. Создайте или обновите Config Profile содержимым **сгенерированного** `/root/nuvrion-xhttp-profile.json`.
+2. Назначьте ноде оба inbound этого профиля. Пользователи заполняются панелью; `clients: []` в шаблоне сохраняется.
+3. Создайте два Host, каждый с соответствующим inbound, и свяжите их с этой нодой.
+4. Для XHTTP задайте TLS, Firefox, ALPN `h2,http/1.1`; поле extra оставьте пустым.
+5. После загрузки профиля повторите `--self-check`; окончательное рабочее состояние — `RUNNING`.
 
-| Настройка | REALITY Host | XHTTP Host |
-|---|---|---|
-| Address / SNI | Ваш DOMAIN | Ваш DOMAIN |
-| Port | 443 | 443 |
-| Security | DEFAULT / Reality inbound | TLS |
-| Fingerprint | Firefox | Firefox |
-| Flow | `xtls-rprx-vision` | пустой |
-| ALPN | настройки Reality | `h2`, `http/1.1` |
-| XHTTP path / mode | — | `/api/v3/sync/`, `auto` |
+### Шаблон профиля ноды
 
-Extra уже встроен в `streamSettings.xhttpSettings.extra`. Оставьте Host extra
-пустым для наследования. Заполненный Host extra может заменить inbound extra;
-при ручном заполнении используйте весь сгенерированный объект.
+Копируемый JSON также сохранён в [templates/node-profile.json](templates/node-profile.json). Он воспроизводит генератор **новой** ноды с защищёнными sockets и cookie-padding для проверенного core. Для действующей legacy-ноды используйте её сгенерированный профиль, поскольку пути и права могут отличаться.
 
-До применения JSON отображается **WAITING_FOR_REMNAWAVE_PROFILE**: XHTTP socket
-создаёт Xray только после загрузки соответствующего inbound. Это промежуточное
-состояние, а не завершённая проверка VPN.
+| Подстановка | Что указать |
+|---|---|
+| `DOMAIN` | Домен сертификата и SNI, например `node.example.com` |
+| `NODE_TAG` | Tag REALITY inbound; связанный XHTTP tag — `NODE_TAG XHTTP`. Замените также tags во всех routing rules |
+| `REPLACE_WITH_NODE_REALITY_PRIVATE_KEY` | Индивидуальный private key, сгенерированный Xray этой ноды; для существующей ноды сохраните её ключ |
 
-## Переустановка и security migration
+**Не применяйте шаблон до подстановки значений.** Общего предустановленного ключа или UUID пользователя в нём нет. Public key панель получает из выбранного REALITY inbound; он также выводится установщиком.
 
-```bash
-sudo bash ./nuvrion-xhttp-install.sh --reinstall --node-version keep
-sudo bash ./nuvrion-xhttp-install.sh --reinstall --harden-profile \
-  --node-version keep --profile-input /root/existing-profile.json
+```json
+{
+  "log": {
+    "access": "none",
+    "dnsLog": false,
+    "loglevel": "warning"
+  },
+  "dns": {
+    "servers": [
+      {
+        "address": "https+local://dns.adguard-dns.com/dns-query",
+        "timeoutMs": 2500,
+        "queryStrategy": "UseIPv4"
+      },
+      {
+        "address": "https+local://dns.comss.one/dns-query",
+        "timeoutMs": 2000,
+        "queryStrategy": "UseIPv4"
+      }
+    ],
+    "serveStale": true,
+    "disableCache": false,
+    "queryStrategy": "UseIPv4",
+    "disableFallback": false,
+    "serveExpiredTTL": 600,
+    "enableParallelQuery": false
+  },
+  "inbounds": [
+    {
+      "tag": "NODE_TAG",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      },
+      "streamSettings": {
+        "network": "raw",
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpcongestion": "bbr",
+          "tcpKeepAliveIdle": 60,
+          "tcpKeepAliveInterval": 30
+        },
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "xver": 1,
+          "target": "/dev/shm/nuvrion-xhttp/nginx.sock",
+          "spiderX": "",
+          "minClientVer": "0.0.0",
+          "shortIds": [
+            ""
+          ],
+          "privateKey": "REPLACE_WITH_NODE_REALITY_PRIVATE_KEY",
+          "serverNames": [
+            "DOMAIN"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "NODE_TAG XHTTP",
+      "listen": "/dev/shm/nuvrion-xhttp/xrxh.socket,0660",
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "fallbacks": [],
+        "decryption": "none"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "auto",
+          "path": "/api/v3/sync/",
+          "extra": {
+            "noSSEHeader": true,
+            "xPaddingBytes": "100-1000",
+            "scMaxBufferedPosts": 30,
+            "scMaxEachPostBytes": 1000000,
+            "scStreamUpServerSecs": "20-80",
+            "scMinPostsIntervalMs": 30,
+            "noGRPCHeader": false,
+            "xmux": {
+              "cMaxReuseTimes": 0,
+              "maxConcurrency": "16-32",
+              "maxConnections": 0,
+              "hKeepAlivePeriod": 0,
+              "hMaxRequestTimes": "600-900",
+              "hMaxReusableSecs": "1800-3000"
+            },
+            "xPaddingObfsMode": true,
+            "xPaddingPlacement": "cookie",
+            "xPaddingKey": "site_session",
+            "xPaddingMethod": "tokenish"
+          }
+        },
+        "sockopt": {
+          "trustedXForwardedFor": [
+            "X-Forwarded-For"
+          ]
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "DIRECT",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpcongestion": "bbr",
+          "tcpKeepAliveIdle": 60,
+          "tcpKeepAliveInterval": 30
+        }
+      }
+    },
+    {
+      "tag": "BLOCK",
+      "protocol": "blackhole"
+    }
+  ],
+  "routing": {
+    "rules": [
+      {
+        "port": "443",
+        "type": "field",
+        "network": "udp",
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "port": "25",
+        "type": "field",
+        "network": "tcp",
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "ip": [
+          "geoip:private"
+        ],
+        "type": "field",
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:private"
+        ],
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:category-ads-all",
+          "domain:analytics.google.com",
+          "domain:adjust.net.in",
+          "domain:amplitude.com",
+          "domain:metrika.yandex.ru",
+          "domain:mytracker.ru"
+        ],
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      }
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "AsIs"
+  }
+}
 ```
 
-Обычный импорт сохраняет keys, UUID, clients, tags, DNS, routing и custom extra.
-`--harden-profile` явно меняет output-пути sockets, DNS и padding; его JSON нужно
-применить в панели согласованно с инфраструктурой. Образ ноды не меняется.
-При необходимом пересоздании только ноды/nginx выводится предупреждение о
-кратком прерывании VPN. Повторный запуск без изменений контейнеры не пересоздаёт.
+В XHTTP `path` и `mode` находятся в `xhttpSettings`, остальные transport knobs — в **`xhttpSettings.extra`**. Новая DNS-конфигурация использует AdGuard и COMSS по DoH, IPv4, cache и serveStale. Routing блокирует UDP/443 (QUIC), TCP/25 (SMTP), распознанный BitTorrent, private IP/domain и перечисленные рекламные/аналитические домены. Это правила выхода Xray для обоих inbound; фильтрация входящих источников Traffic Control работает отдельно.
 
-## Диагностика
+### Шаблоны Host
+
+Параметры в интерфейсе панели:
+
+| Поле | REALITY TCP Host | XHTTP Host |
+|---|---|---|
+| Inbound | `NODE_TAG` | `NODE_TAG XHTTP` |
+| Address / SNI | `DOMAIN` | `DOMAIN` |
+| Port | `443` | `443` — внешний вход, не Unix socket |
+| Security Layer | `DEFAULT` — наследовать REALITY | `TLS` — TLS завершается в Nginx |
+| Fingerprint | `firefox` | `firefox` |
+| ALPN | Наследовать | `h2,http/1.1` |
+| Host / Path | Пусто | `DOMAIN` / `/api/v3/sync/` |
+| Transport / Mode | TCP/RAW из inbound | XHTTP / `auto` из inbound |
+| Flow в клиенте | `xtls-rprx-vision` | Пусто |
+| XHTTP extra parameters | Пусто | **Пусто — наследовать из профиля** |
+
+Следующие JSON — тела **двух отдельных запросов создания Host** через Remnawave API (`POST /api/hosts`), а не Config Profile и не общий bulk import. Их поля сверены с [официальным контрактом CreateHost](https://github.com/remnawave/backend/blob/010b365ab1fabea01192b5e6ade4e98e66ee1dbd/libs/contract/commands/hosts/create.command.ts). При работе через UI перенесите значения из таблицы.
+
+Замените `CONFIG_PROFILE_UUID`, `REALITY_INBOUND_UUID`, `XHTTP_INBOUND_UUID` и `NODE_UUID` на UUID объектов **своей панели** после создания профиля. `DOMAIN` и `NODE_TAG` должны совпасть с профилем. Поле `nodes` ограничивает Host выбранной нодой.
+
+**REALITY TCP Host** · [отдельный файл](templates/host-reality.json)
+
+```json
+{
+  "inbound": {
+    "configProfileUuid": "CONFIG_PROFILE_UUID",
+    "configProfileInboundUuid": "REALITY_INBOUND_UUID"
+  },
+  "remark": "NODE_TAG REALITY",
+  "address": "DOMAIN",
+  "port": 443,
+  "sni": "DOMAIN",
+  "host": null,
+  "path": null,
+  "alpn": null,
+  "fingerprint": "firefox",
+  "securityLayer": "DEFAULT",
+  "xhttpExtraParams": null,
+  "isDisabled": false,
+  "isHidden": false,
+  "nodes": [
+    "NODE_UUID"
+  ]
+}
+```
+
+**XHTTP Host** · [отдельный файл](templates/host-xhttp.json)
+
+```json
+{
+  "inbound": {
+    "configProfileUuid": "CONFIG_PROFILE_UUID",
+    "configProfileInboundUuid": "XHTTP_INBOUND_UUID"
+  },
+  "remark": "NODE_TAG XHTTP",
+  "address": "DOMAIN",
+  "port": 443,
+  "sni": "DOMAIN",
+  "host": "DOMAIN",
+  "path": "/api/v3/sync/",
+  "alpn": "h2,http/1.1",
+  "fingerprint": "firefox",
+  "securityLayer": "TLS",
+  "xhttpExtraParams": null,
+  "isDisabled": false,
+  "isHidden": false,
+  "nodes": [
+    "NODE_UUID"
+  ]
+}
+```
+
+В API ALPN хранится строкой `"h2,http/1.1"`; в сгенерированном клиентском Xray JSON это массив `["h2", "http/1.1"]`. REALITY public key, Short ID, transport и flow берутся из привязанного inbound — они не являются дополнительными полями CreateHost. Внешний порт обоих Host всегда 443.
+
+### Наследование extra
+
+**Extra уже находится в профиле ноды; отдельное заполнение extra в Host для этой схемы не требуется.** В шаблоне XHTTP Host используется `"xhttpExtraParams": null`. Remnawave берёт `streamSettings.xhttpSettings.extra` выбранного inbound при построении клиентской подписки. Такое поведение подтверждено в [официальном resolver Remnawave](https://github.com/remnawave/backend/blob/010b365ab1fabea01192b5e6ade4e98e66ee1dbd/src/modules/subscription-template/resolve-proxy/resolve-proxy-config.service.ts).
+
+Непустой Host extra является явным переопределением клиентского объекта. Он не изменяет серверный профиль и может заменить унаследованные параметры. Используйте его только при намеренной настройке отдельного Host. Файл `/root/nuvrion-xhttp-extra.json` содержит выгрузку клиентских knobs; это не третий обязательный шаг настройки и не полная копия серверного extra. Stream separation и `downloadSettings` по умолчанию не добавляются.
+
+## Auto Tuning
+
+Встроен [Nuvrion Auto Tuning](https://github.com/nuvrion-kvn/Nuvrion-Auto-Tuning/tree/cf1dca62884d262575f1995b62cfd90cb4286908) как закреплённый snapshot. Профиль рассчитывается по CPU, RAM, ядру, сетевым интерфейсам и текущей конфигурации, поэтому фиксированный набор чисел для всех VPS не применяется.
+
+| Компонент | Что выполняется | Условия и проверка |
+|---|---|---|
+| TCP congestion / qdisc | Проверка `tcp_bbr`, выбор BBR и `fq` | Только при поддержке ядра; существующий допустимый congestion control не подменяется неподдерживаемым значением |
+| TCP Fast Open | `net.ipv4.tcp_fastopen=3`, sockopt в профиле Xray | Постоянный sysctl; клиентская поддержка TFO зависит от ОС/сети |
+| TCP/UDP buffers | Настройка `rmem/wmem`, `tcp_rmem/tcp_wmem`, минимальных UDP buffers | Значения из CPU/RAM-профиля; проверяются реально применённые sysctl |
+| Очереди и backlog | `somaxconn`, SYN backlog, `netdev_max_backlog`, TCP keepalive | Настройки очередей и таймаутов; это не гарантированное увеличение скорости канала |
+| Conntrack | Проверка модуля, лимита записей и hashsize | Размеры согласуются с RAM и поддержкой ядра; восстановление после загрузки |
+| Исходящие порты | Диапазон `10240–65535`, резервирование обнаруженных service ports | Активные listeners исключаются из автоматического выделения ephemeral ports |
+| RPS/RFS | CPU masks RX-очередей и `rps_sock_flow_entries` | `nuvrion-rps.service`, проверка масок и автозапуска; учитываются доступные очереди |
+| Лимиты файлов | Профиль `nofile` до 1 048 576, системные и Compose-лимиты | Сохраняются посторонние параметры; применение к работающему процессу проверяется отдельно |
+| ZRAM | Swap в сжатой памяти, размер по RAM, `zstd` либо поддерживаемый fallback, priority `100` | `nuvrion-zram.service`, проверка модуля, активного swap и автозапуска; чужой работающий ZRAM manager сохраняется |
+| Network hardening | Запрет redirects/source-route IPv4/IPv6, игнорирование broadcast ICMP и bogus ICMP errors | IPv6 не отключается; строгий глобальный `rp_filter` не навязывается |
+| Kernel hardening | `dmesg_restrict`, `kptr_restrict`, protected hardlinks/symlinks/FIFOs/regular files | Более строгие существующие значения сохраняются; AppArmor/seccomp не отключаются |
+| Fail2ban | Установка/проверка защиты SSH jail | Конфигурация Fail2ban отдельно от настроек аутентификации sshd |
+| Security updates | Настройка unattended-upgrades и проверка APT timers | Без принудительной перезагрузки; существующая политика reboot учитывается |
+| Время и TRIM | Проверка NTP, доступного time service и `fstrim.timer` | TRIM только при поддержке discard; пользовательские mask не отменяются |
+| Аудит системы | Диск, inode, filesystem, журналы, сертификаты, pending reboot | Итоговый отчёт и проверка после загрузки |
+
+Основной sysctl-профиль: `/etc/sysctl.d/99-zzzz-nuvrion-performance.conf`. `nuvrion-performance-sysctl.service` восстанавливает значения после старта Docker; TFO закрепляется отдельным профилем. RPS и ZRAM имеют собственные setup scripts и units. Отчёт интеграции сохраняется в `/opt/remnanode/nuvrion-xhttp/tuning-report.log`; tuning snapshots — в `/var/lib/nuvrion-tuning`.
+
+Если у загруженного ядра нет рабочего модуля ZRAM, устанавливаются необходимые Ubuntu kernel modules и проверяется восстановление. Требование перезагрузки показывается явно; наличие пакета без активного swap не считается исправным ZRAM.
+
+Интеграция передаёт firewall-управление основному установщику и запрещает vendor-коду лишние restart/recreate Docker, Node и Xray. В этом установщике **порт, ключи и параметры аутентификации SSH сохраняются**: модуль key-only SSH из самостоятельного Auto Tuning отключён. Проверка SSH и Fail2ban остаётся включённой. `--no-tuning` пропускает применение Auto Tuning, но не отключает базовую настройку XHTTP/firewall/TLS.
+
+## Traffic Control
+
+Встроен [Nuvrion Traffic Control](https://github.com/nuvrion-kvn/Nuvrion-Traffic-Control/tree/7c8bfd3aba5b26ecf628b546c559b27a6fdbadb7). Компонент фильтрует **адреса источников входящих соединений** на хосте через nftables; он не является лимитером пропускной способности и не заменяет правила выходного routing Xray.
+
+![Разделение API guard, ICMP privacy, Traffic Control и временного ACME-доступа](assets/firewall-scheme.svg)
+
+### Списки и порядок обработки
+
+Источники — `antiscanner.list`, `government_networks.list` и `skipa.list` из [traffic-guard-lists](https://github.com/shadow-netlab/traffic-guard-lists/tree/main/public). Имена списков описывают источник данных, а не гарантию идентификации каждого сканера или организации.
+
+- Загружаются все три списка; принимаются IPv4/IPv6 и CIDR. Проверяются синтаксис, лимит размера 8 MiB и максимум 150 000 записей на список. Некорректная загрузка не заменяет рабочий набор частичным.
+- Сети нормализуются и объединяются. Набор, покрывающий весь IPv4 или весь IPv6, отклоняется.
+- Правила публикуются одной транзакцией после `nft -c`. Управляется только таблица `inet nuvrion_tc`; существующий firewall не сбрасывается.
+- В цепочке `input`, priority `-10`, сначала исключаются loopback, established/related, найденные SSH-порты и allowlist. Затем адреса из blocklist получают counter и DROP.
+- IP панели и администратора добавляются в allowlist. Если адрес администратора не удалось определить из SSH-сессии, он запрашивается или задаётся `--admin-ip`; `--ssh-port` задаёт исключение фильтра, не меняет порт sshd.
+- Исключение в Traffic Control означает пропуск **его** проверки. Оно не отменяет ограничение Node API на 2222 и другие таблицы firewall.
+
+Автозапуск: `nuvrion-traffic-control.service`. Обновление: `nuvrion-traffic-control-update.timer` — через 15 минут после загрузки, далее раз в сутки с random delay до 30 минут. При активации используется страховочный rollback timer на 120 секунд; успешная проверка завершает активацию. Ручные ban/allow и настройки сохраняются при обновлениях.
+
+Журнал блокировок использует kernel journal, префиксы `NVTC4`/`NVTC6`, rate limit `5/minute`, burst `10`. DROP counters учитывают заблокированные пакеты независимо от ограничения журналирования. Команды изменения сериализуются lock-файлом.
+
+### Управление
+
+```bash
+sudo ntc                         # русское интерактивное меню
+sudo ntc check                   # диагностика компонента
+sudo ntc status                  # состояние, списки и timers
+sudo ntc rules                   # текущие nftables rules
+sudo ntc logs                    # последние блокировки
+sudo ntc top --no-resolve         # статистика без внешнего RDAP lookup
+sudo ntc update                  # обновить все списки
+sudo ntc allow 192.0.2.20         # добавить доверенный источник
+sudo ntc disallow 192.0.2.20      # убрать исключение
+sudo ntc ban 198.51.100.0/24      # ручная блокировка сети
+sudo ntc unban 198.51.100.0/24    # убрать ручную блокировку
+sudo ntc disable                 # выключить фильтрацию компонента
+sudo ntc activate                # включить фильтрацию с проверками
+sudo ntc restore                 # восстановить правила из сохранённого state
+sudo ntc repair --yes            # восстановить служебные файлы компонента
+sudo ntc rollback               # вернуть предыдущий набор
+```
+
+Состояние хранится в `/var/lib/nuvrion-traffic-control/state.json`, исполняемый файл — `/usr/local/bin/nuvrion-traffic-control`, shortcut — `ntc`. Уже существующий сторонний Traffic Control обнаруживается до записи. `--no-traffic-control` пропускает его новую установку; существующая фильтрация не удаляется.
+
+### Two-Way Ping и доступ к API
+
+Two-Way Ping — отдельный сервис `nuvrion-two-way-ping.service` и таблица `inet nuvrion_privacy` с priority `-20`. Отбрасываются входящие ICMPv4/v6 echo-request и ICMPv4 timestamp-request. Ответы на исходящий ping, ICMP-ошибки и механизмы PMTU сохраняются. TCP/443 продолжает отвечать пользователям; это не режим полной сетевой невидимости. Новая настройка пропускается через `--no-two-way-ping`.
+
+Основной firewall определяется до изменений: активный UFW, nftables или iptables. Добавляются только необходимые правила; сохраняется dump для восстановления. При nft backend отдельный API guard с priority `-250` разрешает 2222 только IP панели и отбрасывает остальные источники, включая другую IP family. Правило открытия 443 не отменяет блок-листы Traffic Control.
+
+| Порт / канал | Политика |
+|---|---|
+| `443/TCP` | Пользовательские REALITY, XHTTP и HTTPS сайта декой |
+| `2222/TCP` | Node API, только IP панели |
+| `80/TCP` | Временно на время ACME HTTP-01; после операции правило закрывается |
+| Действующий SSH | Существующие настройки; исключение в Traffic Control и защита Fail2ban |
+| Unix sockets | Локальная связь процессов, без дополнительных публичных upstream-портов |
+
+## TLS и продление сертификата
+
+Перед выпуском определяется внешний IPv4, запрашиваются DNS A-record и проверяется соответствие домена серверу. Несовпадение показывается до ACME. Nginx читает стандартные Let's Encrypt paths; сертификаты не копируются в отдельный каталог.
+
+Для standalone Certbot определяется владелец `:80`. Известный сервис останавливается адресно и возвращается в исходное состояние. Неизвестный процесс не завершается: установка выдаёт ошибку. Для HTTP-01 firewall и Traffic Control получают временное исключение; ACME lease ограничен 1200 секундами. После операции закрывается временный доступ и восстанавливается сервис.
+
+Certbot timer выполняет renew. Deploy-hook сначала проверяет Nginx config, затем reload **только Nginx**. При невалидной конфигурации reload не выполняется. Диагностика проверяет сертификат/SAN/expiry, timer, hooks и staging dry-run; Node ради renew не перезапускается.
+
+## Диагностика и критерии готовности
 
 ```bash
 sudo bash ./nuvrion-xhttp-install.sh --diagnose
 sudo bash ./nuvrion-xhttp-install.sh --self-check
-ntc check
 ```
 
-Проверяются контейнеры, listeners, mounted sockets/inode/permissions, реально
-загруженный nginx config, HTTPS, TLS/SNI, сертификат, renewal, firewall, logs,
-ZRAM/RPS и остальные компоненты. `--self-check` не создаёт пользователей и не
-выполняет reboot, rollback или package changes.
+Диагностика читает OS/kernel/uptime, внешний IP и DNS, версии Docker/Compose/Node/Xray, контейнеры, listeners, socket permissions, mounts, Nginx config, сертификат, certbot timer, firewall, HTTP-ответы и последние ошибки. `--self-check` выполняет автоматические проверки без изменений конфигурации, создания пользователей или reboot.
 
-Состояния: NOT INSTALLED, PARTIALLY INSTALLED, BROKEN,
-WAITING_FOR_REMNAWAVE_PROFILE, RUNNING. Успех не объявляется при ошибках validation.
+| Проверка | Рабочий результат |
+|---|---|
+| Node / API | Контейнер UP; `:2222` слушает Node API и ограничен IP панели |
+| Внешний вход | `:443` обслуживает Xray |
+| REALITY target | `nginx.sock` существует; listener и доступ из Node подтверждены |
+| XHTTP backend | `xrxh.socket` существует после применения профиля; совпадение inode и доступ worker из Nginx подтверждены |
+| Nginx | Config test успешен; загруженный config содержит нужный path и Unix `proxy_pass` |
+| Сайт декой | HTTPS `/` возвращает `200`; TLS/SNI проверяются |
+| XHTTP route | Ответ совпадает с прямым Unix backend; нет `502/504`, refused или permission errors |
+| TLS / renew | Действующий сертификат, корректные SAN и настроенный renewal |
+| Система | Firewall, SSH, ZRAM/RPS и включённые компоненты проходят соответствующие проверки |
+| Logs | Нет свежих failed-to-listen, duplicate inbound, invalid config или ошибок socket upstream |
 
-- **HTTP 200** на `/` — штатный decoy PokéHabitat.
-- **HTTP 400** на XHTTP path без полноценного клиента ожидаем: backend отверг
-  неполный запрос; диагностика сравнивает ответ с прямым Unix backend.
-- **HTTP 502/504**, socket not found, connection refused или permission denied
-  означают ошибку связи с backend.
+**HTTP 400 на XHTTP path** от одиночного curl ожидаем: запрос без сессии XHTTP не является корректным transport request. Сам по себе статус 400 не доказывает рабочий VPN — установщик сравнивает ответ с прямым backend, а полноценная проверка транспорта требует авторизованного клиента. **502/504** означают ошибку proxy/backend; такое состояние не считается готовым.
 
-Cookie-padding изменяет HTTP-вид ответа, но не гарантирует невидимость для DPI.
-Сертификат при неизвестном SNI остаётся действительным только для имён из SAN;
-внутренние маршруты требуют совпадения SNI и Host.
+| Состояние | Значение |
+|---|---|
+| `NOT INSTALLED` | Компоненты не найдены |
+| `PARTIALLY INSTALLED` | Обнаружена неполная инфраструктура |
+| `BROKEN` | Найдены критические ошибки установленной конфигурации |
+| `WAITING_FOR_REMNAWAVE_PROFILE` | Инфраструктура подготовлена; профиль/inbound ещё не загружен панелью |
+| `RUNNING` | Обязательные проверки применённой конфигурации пройдены |
 
-## Обновления, ZRAM и очистка
+Выход `0` при подготовке может сопровождаться `WAITING_FOR_REMNAWAVE_PROFILE`. Это не подтверждение работы клиентского транспорта. Cookie-padding изменяет HTTP-представление; оно не гарантирует обход любого DPI. Сертификат валиден только для имён SAN; внутренние API/XHTTP routes проверяют SNI и Host.
+
+## Обслуживание и переустановка
 
 ```bash
 sudo bash ./nuvrion-xhttp-install.sh --maintain
+sudo bash ./nuvrion-xhttp-install.sh --reinstall --node-version keep
 ```
 
-APT обслуживается с показом и проверкой плана. OpenSSH, Docker/containerd/runc
-закреплены на время операции; package restarts запрещены, действующие configs и
-holds сохраняются. Autoremove затрагивает только проверенные неиспользуемые
-пакеты; критические службы, ядра, сертификаты, backup и игровая база защищены.
-ZRAM проверяется вместе с модулем загруженного ядра и автозапуском. Если нужен
-новый kernel, перезагрузка выполняется отдельно в выбранное пользователем время.
+Обслуживание показывает APT-план и повторно проверяет его перед применением. OpenSSH, Docker/containerd/runc закрепляются на время операции; автоматические package restarts подавляются, существующие конфиги и holds сохраняются. Autoremove применяется только к проверенным неиспользуемым пакетам; ядра, критические службы, сертификаты, backups и база сайта защищены. `autoclean` очищает устаревший APT-кэш. Перезагрузка после kernel update выполняется отдельно в выбранное время.
 
-Опции `--no-updates`, `--no-tuning`, `--no-traffic-control`,
-`--no-two-way-ping` пропускают соответствующую новую настройку. Уже работающие
-чужие компоненты не удаляются и не заменяются молча. SSH остаётся без изменений.
+| Опция | Действие |
+|---|---|
+| `--no-updates` | Пропустить обновление Ubuntu; недостающие обязательные зависимости всё равно нужны |
+| `--no-tuning` | Пропустить Auto Tuning; XHTTP/TLS/firewall остаются частью установки |
+| `--no-traffic-control` | Пропустить новую настройку Traffic Control |
+| `--no-two-way-ping` | Пропустить новую настройку ICMP privacy |
 
-## Backup, удаление и rollback
+Опции не удаляют ранее настроенные компоненты. Обычная переустановка сохраняет Reality key и пользовательские extra. Явная миграция legacy-profile:
+
+```bash
+sudo bash ./nuvrion-xhttp-install.sh --reinstall --harden-profile \
+  --node-version keep --profile-input /root/existing-profile.json
+```
+
+Она согласованно меняет output socket paths, DNS и padding; новый Config Profile необходимо применить в Remnawave. Действующий image не меняется.
+
+## Резервные копии, удаление и восстановление
+
+Перед изменениями создаётся `/root/nuvrion-xhttp-backups/YYYYMMDD-HHMMSS/`: Compose/override, Nginx, сайт, Let's Encrypt, firewall dump, units/hooks, состояние компонентов и manifest с версиями/контейнерами. Критическая ошибка запускает предложение rollback; `--yes` подтверждает автоматическое восстановление.
 
 ```bash
 sudo bash ./nuvrion-xhttp-install.sh --remove
@@ -269,83 +676,45 @@ sudo bash ./nuvrion-xhttp-install.sh --restore \
   --backup /root/nuvrion-xhttp-backups/YYYYMMDD-HHMMSS
 ```
 
-Timestamped backup сохраняет Compose, nginx, decoy, Let's Encrypt, firewall,
-units/hooks и manifest. Удаление работает по маркерам и записям владения:
-Remnanode, Docker, чужие компоненты, сертификаты, SSH и база игроков сохраняются.
-Исходный Compose не заменяется; XHTTP использует отдельный минимальный override.
+Удаление использует markers и записи владения. Remnawave Node, Docker, чужие Nginx/сертификаты/firewall, SSH и пользовательская база сайта сохраняются. При восстановлении старых socket paths нужно восстановить соответствующий профиль в панели: rollback на сервере не редактирует Remnawave. Установленные APT-пакеты и обновления ядра не откатываются копированием конфигов.
 
-Rollback infrastructure не меняет панель: при обратном переносе sockets нужно
-восстановить также сохранённый Config Profile. Package/kernel upgrades не
-откатываются копированием конфигурации.
-
-Журнал: `/var/log/nuvrion-xhttp-installer.log`, без private keys и credentials.
+Лог установщика: `/var/log/nuvrion-xhttp-installer.log`. Private Reality keys, API tokens и passwords в него не записываются.
 
 | Exit code | Значение |
 |---:|---|
-| 0 | Успех/подготовка; проверьте состояние WAITING или RUNNING |
+| 0 | Успех или подготовка; учитывайте состояние WAITING/RUNNING |
 | 1 | Общая ошибка |
 | 2 | Неподдерживаемая ОС |
-| 3 | Отсутствующая нода или недопустимая смена версии |
+| 3 | Node detection/install/version error |
 | 4 | Certbot / TLS |
 | 5 | Nginx config |
 | 6 | Unix socket |
 | 7 | Firewall |
 | 8 | Выполнен rollback |
 
-## Порты
-
-| Порт | Назначение и доступ |
-|---|---|
-| 443/TCP | Xray, оба пользовательских транспорта и HTTPS decoy |
-| 2222/TCP | Node API, только IP панели |
-| 80/TCP | Временно для Certbot HTTP-01 |
-| Действующий SSH | Администрирование; настройки и ключи сохраняются |
-
-## Сборка и проверки
+## Проверки и материалы разработчика
 
 ```bash
 python3 -m unittest discover -s tests -p 'test_xhttp*.py' -v
 bash -n nuvrion-xhttp-install.sh
 shellcheck -S style nuvrion-xhttp-install.sh
-python3 tools/build_xhttp.py
 sha256sum -c SHA256SUMS
 git diff --check
 ```
 
-Материалы `site/dist` и `site/server/dist` — закреплённая готовая сборка
-PokéHabitat; `tools/build_xhttp.py` повторно упаковывает её без сети. Исходный
-frontend/game проект доступен в [Vision Installer](https://github.com/nuvrion-kvn/Nuvrion-Vision-Installer).
-Готовый standalone Bash не зависит от этих файлов при установке.
+`python3 tools/build_xhttp.py` повторно упаковывает standalone из локальных закреплённых материалов без сети. `site/dist` и `site/server/dist` содержат готовую сборку сайта декой; исходный проект доступен в [Vision Installer](https://github.com/nuvrion-kvn/Nuvrion-Vision-Installer). Эти каталоги не нужны на сервере для запуска установщика.
 
-Проверены настоящие REALITY/XHTTP-подключения, DNS fallback, HTTP/2, socket
-permissions, firewall fault injection, reinstall, rollback и test-node reboot.
-215 тестов общего исходного проекта прошли до выделения репозитория; отдельный
-XHTTP-набор запускается здесь самостоятельно. HAPP/INCY, публичная подписка
-скрытых тестовых Host, чистая ОС без ноды и WAN throughput не подтверждены.
-
-Исправление первой установки в 1.0.0 проверено запуском настоящей Node latest
-и 3.4.2 в отдельных приватных Docker fixtures и 60 unit/shell tests на Linux.
-Повторный запуск исправленного скрипта на действующей тестовой ноде дал RUNNING,
-сайт 200 и XHTTP backend 400, сохранив контейнеры, image/Xray, SSH и профиль.
-Полная установка новой ОС с первоначальным Docker/APT и новым ACME issuance
-пока не проводилась.
+На тестовой ноде проверены авторизованные REALITY/XHTTP-клиенты, сайт/API, DNS fallback, HTTP/2, mounts и права sockets, reinstall, rollback, firewall fault injection и reboot. Проверка клиента с той же ноды не измеряет качество WAN-маршрута. Полная установка чистой ОС с первоначальным Docker/APT и новым ACME issuance, HAPP/INCY и WAN throughput пока не подтверждены; подробные результаты вынесены в отчёт.
 
 - [Матрица фактических результатов](NUVRION-TEST-RESULTS.md)
 - [Технический отчёт](NUVRION-SECURITY-IMPLEMENTATION-REPORT.md)
 - [Применение и восстановление](NUVRION-DEPLOYMENT-GUIDE.md)
-- [Изменения security-ревизии](NUVRION-SECURITY-CHANGES.diff)
-- [Релиз 1.0.0](docs/RELEASE-NOTES-1.0.0.md)
+- [Изменения security-компонентов](NUVRION-SECURITY-CHANGES.diff)
+- [JSON-шаблоны](templates/)
+- [Промпт и происхождение баннера](assets/banner-prompt.txt)
 
 ## Источники и авторство
 
-Основная схема REALITY/PROXY protocol — из проверенного
-[eGames](https://github.com/eGamesAPI/remnawave-reverse-proxy/tree/fccf1be0d3e139a07f2f492804b97849e0991a41),
-XHTTP inbound/HTTP Unix proxy — из
-[legiz](https://github.com/legiz-ru/my-remnawave/blob/2af846044e35f61fc4cbf40aa0c78a5518a89313/README.md).
-Встроены закреплённые [Auto Tuning](https://github.com/nuvrion-kvn/Nuvrion-Auto-Tuning/tree/cf1dca62884d262575f1995b62cfd90cb4286908)
-и [Traffic Control](https://github.com/nuvrion-kvn/Nuvrion-Traffic-Control/tree/7c8bfd3aba5b26ecf628b546c559b27a6fdbadb7).
+REALITY local target/PROXY protocol основаны на [eGames](https://github.com/eGamesAPI/remnawave-reverse-proxy/tree/fccf1be0d3e139a07f2f492804b97849e0991a41); XHTTP Unix inbound и HTTP reverse proxy — на [legiz](https://github.com/legiz-ru/my-remnawave/blob/2af846044e35f61fc4cbf40aa0c78a5518a89313/README.md). Интегрированы закреплённые Auto Tuning и Traffic Control, указанные выше; схема обоих транспортов сохранена.
 
-Автор установщика: **Nuvrion · [nuvrion-kvn](https://github.com/nuvrion-kvn)**.
-Оригинальный код — [MIT](LICENSE). Сторонние пакеты и игровые материалы сохраняют
-свои лицензии: [notices](THIRD_PARTY_NOTICES.md), [PokéHabitat licenses](site/LICENSES.md).
-Для вопросов и ошибок используется GitHub; рабочие секреты не прикладывайте.
+Автор установщика: **Nuvrion · [nuvrion-kvn](https://github.com/nuvrion-kvn)**. Оригинальный код — [MIT](LICENSE). Сторонние источники и материалы сохраняют свои лицензии: [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md), [лицензии сайта декой](site/LICENSES.md).

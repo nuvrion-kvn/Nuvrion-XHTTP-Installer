@@ -57,8 +57,11 @@ sudo bash ./nuvrion-xhttp-install.sh --reinstall --harden-profile \
 Reality Host: введённый домен/SNI, 443, DEFAULT security, Firefox,
 `xtls-rprx-vision`. XHTTP Host: тот же домен/SNI, 443, TLS, Firefox, ALPN
 `h2,http/1.1`, заданный path, `auto`, пустой flow. Сокет в Host не указывается.
-Оставьте extra Host пустым для наследования из inbound. Заполненный Host extra
-заменяет серверный extra — проверьте, что четыре поля cookie-padding не потеряны.
+Оставьте extra Host пустым для наследования `xhttpSettings.extra` из inbound.
+Непустой Host extra переопределяет клиентский объект в подписке, не меняя
+серверный Config Profile. Выгрузка extra не требует отдельного применения.
+Копируемые JSON-шаблоны профиля и обоих Host доступны в [README](README.md#шаблон-профиля-ноды)
+и каталоге [templates](templates/).
 Скрытые Host исключаются из обычной подписки: для теста используйте их connection
 keys либо разрешённую отдельную подписку. Не ослабляйте глобальные правила панели.
 
@@ -76,8 +79,11 @@ sudo bash ./nuvrion-xhttp-install.sh --self-check
 backend; полноценный VPN проверяется авторизованным клиентом. 502/504, отказ
 сокета или ошибки permissions требуют исправления, это не успешная установка.
 
-Схема: внешний Xray :443 → Reality target `/dev/shm/nuvrion-xhttp/nginx.sock`
-→ Nginx HTTPS/PROXY protocol → PokéHabitat либо HTTP proxy на
+![Пути REALITY, HTTPS и XHTTP](assets/xhttp-scheme.svg)
+
+Авторизованный REALITY-поток с внешнего Xray :443 поступает сразу в routing.
+Обычный HTTPS/XHTTP TLS проходит через Reality target `/dev/shm/nuvrion-xhttp/nginx.sock`
+→ Nginx HTTPS/PROXY protocol → сайт декой либо HTTP proxy на
 `/dev/shm/nuvrion-xhttp/xrxh.socket`. Каталог root:web-group `2710`, Nginx socket
 `0600`, XHTTP `0660`. Суффикс `,0660` — mode, не часть имени. Старые пути/0666
 сохраняются до явной миграции. Группа наследуется от setgid-каталога при каждом

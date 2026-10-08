@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1190" viewBox="0 0 1440 1190" role="img" aria-labelledby="title desc">
+<title id="title">Firewall · API guard, Traffic Control и ACME</title><desc id="desc">Пример nftables backend: независимые таблицы сохраняют существующие правила хоста.</desc>
+<defs><marker id="gold" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#a77b32"/></marker><marker id="teal" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#287d72"/></marker><marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#416eab"/></marker><marker id="gray" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#5d7083"/></marker></defs>
+<rect width="1440" height="1190" rx="20" fill="#f8f7f3"/>
+<text x="36" y="43" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#a77b32" font-weight="700">NUVRION / TECHNICAL ARCHITECTURE</text>
+<text x="36" y="80" font-family="Segoe UI, Arial, sans-serif" font-size="27" fill="#233447" font-weight="700">Firewall · API guard, Traffic Control и ACME</text>
+<text x="36" y="111" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Пример nftables backend: независимые таблицы сохраняют существующие правила хоста.</text>
+<rect x="36" y="150" width="600" height="114" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="36" y="164" width="4" height="86" rx="2" fill="#416eab"/>
+<text x="56" y="181" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Входящий пакет · IPv4 / IPv6</text>
+<text x="56" y="210" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">TCP 443 / TCP 2222 / временный TCP 80 / SSH / ICMP</text>
+<text x="56" y="235" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Проверки INPUT выполняются по priority</text>
+<path d="M336,264 L336,317" fill="none" stroke="#416eab" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
+<rect x="36" y="317" width="600" height="114" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="36" y="331" width="4" height="86" rx="2" fill="#287d72"/>
+<text x="56" y="348" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">API guard · priority -250</text>
+<text x="56" y="377" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">inet nuvrion_xhttp · 2222 только PANEL_IP</text>
+<text x="56" y="402" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Другой source / другая IP family → DROP</text>
+<path d="M336,431 L336,484" fill="none" stroke="#416eab" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
+<rect x="36" y="484" width="600" height="114" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="36" y="498" width="4" height="86" rx="2" fill="#416eab"/>
+<text x="56" y="515" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Two-Way Ping · priority -20</text>
+<text x="56" y="544" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">inet nuvrion_privacy · echo-request → DROP</text>
+<text x="56" y="569" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">ICMP errors / PMTU / replies исходящего ping сохраняются</text>
+<path d="M336,598 L336,651" fill="none" stroke="#416eab" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
+<rect x="36" y="651" width="600" height="216" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="36" y="665" width="4" height="188" rx="2" fill="#a77b32"/>
+<text x="56" y="682" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Traffic Control · priority -10</text>
+<text x="56" y="711" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">inet nuvrion_tc · allow4/6 + block4/6 sets</text>
+<text x="56" y="736" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">1. Loopback / ACME HTTP-01 lease → RETURN</text>
+<text x="56" y="761" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">2. Established/related, SSH, allowlist → RETURN</text>
+<text x="56" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">3. Source из blocklist → counter + DROP</text>
+<text x="56" y="811" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">4. Остальные → к следующим таблицам firewall</text>
+<text x="56" y="836" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">RETURN не отменяет другие проверки INPUT</text>
+<path d="M336,867 L336,920" fill="none" stroke="#416eab" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
+<rect x="36" y="920" width="600" height="124" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="36" y="934" width="4" height="96" rx="2" fill="#287d72"/>
+<text x="56" y="951" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Существующий firewall / listeners</text>
+<text x="56" y="980" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">UFW / nftables / iptables правила сохраняются</text>
+<text x="56" y="1005" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">443 → Xray · 2222 → Node API · SSH → текущий sshd</text>
+<text x="56" y="1030" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Открытие 443 не отменяет source DROP Traffic Control</text>
+<rect x="722" y="150" width="682" height="450" rx="15" fill="#f0f3f4" stroke="#c8d3da" stroke-dasharray="7 5"/>
+<text x="740" y="179" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="600">CONTROL PLANE · Traffic Control</text>
+<rect x="749" y="209" width="628" height="142" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="749" y="223" width="4" height="114" rx="2" fill="#a77b32"/>
+<text x="769" y="240" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Проверка и атомарное обновление</text>
+<text x="769" y="269" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">antiscanner / government_networks / skipa</text>
+<text x="769" y="294" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">IPv4 + IPv6 · CIDR validation · size / coverage limits</text>
+<text x="769" y="319" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">nft -c → одна транзакция только inet nuvrion_tc</text>
+<text x="769" y="344" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Сбой загрузки: рабочие lists остаются</text>
+<rect x="749" y="385" width="628" height="176" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="749" y="399" width="4" height="148" rx="2" fill="#416eab"/>
+<text x="769" y="416" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">State, исключения и эксплуатация</text>
+<text x="769" y="445" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Панель + ADMIN_IP → allowlist; SSH ports обнаруживаются</text>
+<text x="769" y="470" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Ручные allow / ban сохраняются при обновлениях</text>
+<text x="769" y="495" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Boot restore + daily timer + rollback guard 120 s</text>
+<text x="769" y="520" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Счётчики DROP; kernel journal NVTC4 / NVTC6</text>
+<text x="769" y="545" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">ntc: status / check / update / rules / logs / rollback</text>
+<rect x="722" y="638" width="682" height="406" rx="15" fill="#f0f3f4" stroke="#c8d3da" stroke-dasharray="7 5"/>
+<text x="740" y="667" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="600">CERTBOT HTTP-01 · временный доступ TCP/80</text>
+<rect x="749" y="696" width="628" height="291" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="749" y="710" width="4" height="263" rx="2" fill="#287d72"/>
+<text x="769" y="727" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">ACME transaction</text>
+<text x="769" y="756" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">1. DNS A ↔ внешний IPv4; определить владельца :80</text>
+<text x="769" y="781" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">2. Остановить только известный service, сохранить state</text>
+<text x="769" y="806" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">3. Открыть HTTP-01 и bounded lease (до 1200 s)</text>
+<text x="769" y="831" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">4. Выпустить / продлить сертификат standalone</text>
+<text x="769" y="856" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">5. Закрыть временное правило; вернуть service state</text>
+<text x="769" y="881" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">6. Проверить Nginx config → reload только Nginx</text>
+<text x="769" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400"></text>
+<text x="769" y="931" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">При неизвестном владельце :80: ошибка, процесс живёт.</text>
+<text x="769" y="956" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">При nginx -t error: reload не выполняется.</text>
+<text x="36" y="1102" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#233447" font-weight="600">Traffic Control фильтрует источник входящего трафика. Xray routing фильтрует выходные назначения отдельно.</text>
+<path d="M36,1138 H1404" stroke="#d9dfdf"/>
+<text x="36" y="1160" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">Схема не изображает все возможные чужие INPUT hooks. При UFW/iptables используется обнаруженный backend основного firewall.</text>
+</svg>

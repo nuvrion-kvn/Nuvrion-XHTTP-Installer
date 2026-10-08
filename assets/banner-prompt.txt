@@ -1,0 +1,7 @@
+Asset: assets/nuvrion-xhttp-banner.png
+Tool: built-in ImageGen (new image; opaque background).
+Use: repository cover. Architecture diagrams are separate editable SVGs.
+The illustration is decorative and does not encode the deployment topology.
+
+Prompt:
+Use case: ads-marketing. Asset type: premium wide GitHub repository banner, landscape ratio 3:1. Primary request: a new refined cover for Nuvrion XHTTP Installer, a Linux server and Remnawave networking project. Scene: clean warm ivory-white studio background with very subtle technical grid, spacious editorial layout. On the left, an original sculptural capital N monogram made from satin champagne-gold metal and frosted glass, with two elegant golden fiber-like paths branching toward a small precise abstract server form. On the right, large perfectly readable charcoal typography, exact text: "NUVRION"; below it exact text: "XHTTP INSTALLER"; smaller line exact text: "REALITY TCP + XHTTP". Small understated bottom line exact text: "REMNAWAVE / XRAY / NGINX". Premium architectural product rendering, realistic brushed gold and soft shadows, disciplined composition, ample margins, polished technical editorial identity. No version numbers. No Pokemon/game imagery, no shields, no padlocks, no mascots, no noisy circuit-board background, no watermarks, no extra words. Keep all lettering exact and legible at README width.

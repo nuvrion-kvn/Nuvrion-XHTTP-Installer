@@ -1,13 +1,14 @@
 # Nuvrion XHTTP Installer 1.0.0
 
 Автономная установка и настройка Remnawave-ноды: VLESS REALITY TCP + XHTTP,
-nginx через Unix sockets и локальный PokéHabitat.
+Nginx через Unix sockets и локальный сайт декой.
 
 - Один Bash-файл со встроенными шаблонами, сайтом, игровым API и компонентами.
 - Первая установка Node: latest или доступная стабильная версия официального image.
 - Отсутствующие Docker/Compose устанавливаются через APT; SECRET_KEY вводится скрыто/файлом 0600.
 - Сохранена схема Xray :443 → Reality local target/PROXY protocol → nginx → XHTTP socket.
-- Готовые Config Profile, параметры двух Host с Firefox и полный XHTTP extra.
+- Готовый Config Profile со встроенным XHTTP extra и параметры двух Host с Firefox.
+  В Host extra оставляется пустым: панель наследует его из inbound.
 - Cookie-padding для проверенного Xray 26.7.28, DNS AdGuard → COMSS.
 - Защищённые socket permissions, Docker NNP, pids limits и read-only Nginx.
 - Auto Tuning, ZRAM/RPS/BBR, Traffic Control, Two-Way Ping, Fail2ban и security automation.
@@ -16,7 +17,6 @@ nginx через Unix sockets и локальный PokéHabitat.
 
 Установщик предназначен для Ubuntu 24.04.x: чистый сервер или существующий Remnanode.
 Смена образа/Xray действующей ноды и изменения SSH запрещены.
-Исправление первой установки опубликовано **в том же релизе 1.0.0**, по запросу автора.
 Профиль применяется через Remnawave отдельно; до этого возможен статус
 WAITING_FOR_REMNAWAVE_PROFILE.
 

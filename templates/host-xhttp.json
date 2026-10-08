@@ -1,0 +1,21 @@
+{
+  "inbound": {
+    "configProfileUuid": "CONFIG_PROFILE_UUID",
+    "configProfileInboundUuid": "XHTTP_INBOUND_UUID"
+  },
+  "remark": "NODE_TAG XHTTP",
+  "address": "DOMAIN",
+  "port": 443,
+  "sni": "DOMAIN",
+  "host": "DOMAIN",
+  "path": "/api/v3/sync/",
+  "alpn": "h2,http/1.1",
+  "fingerprint": "firefox",
+  "securityLayer": "TLS",
+  "xhttpExtraParams": null,
+  "isDisabled": false,
+  "isHidden": false,
+  "nodes": [
+    "NODE_UUID"
+  ]
+}

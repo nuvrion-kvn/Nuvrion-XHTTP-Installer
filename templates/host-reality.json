@@ -1,0 +1,21 @@
+{
+  "inbound": {
+    "configProfileUuid": "CONFIG_PROFILE_UUID",
+    "configProfileInboundUuid": "REALITY_INBOUND_UUID"
+  },
+  "remark": "NODE_TAG REALITY",
+  "address": "DOMAIN",
+  "port": 443,
+  "sni": "DOMAIN",
+  "host": null,
+  "path": null,
+  "alpn": null,
+  "fingerprint": "firefox",
+  "securityLayer": "DEFAULT",
+  "xhttpExtraParams": null,
+  "isDisabled": false,
+  "isHidden": false,
+  "nodes": [
+    "NODE_UUID"
+  ]
+}

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1040" viewBox="0 0 1440 1040" role="img" aria-labelledby="title desc">
+<title id="title">Remnawave · Config Profile, Host и extra</title><desc id="desc">Config Profile управляет сервером; Host описывает внешний вход для клиентской подписки.</desc>
+<defs><marker id="gold" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#a77b32"/></marker><marker id="teal" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#287d72"/></marker><marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#416eab"/></marker><marker id="gray" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#5d7083"/></marker></defs>
+<rect width="1440" height="1040" rx="20" fill="#f8f7f3"/>
+<text x="36" y="43" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#a77b32" font-weight="700">NUVRION / TECHNICAL ARCHITECTURE</text>
+<text x="36" y="80" font-family="Segoe UI, Arial, sans-serif" font-size="27" fill="#233447" font-weight="700">Remnawave · Config Profile, Host и extra</text>
+<text x="36" y="111" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Config Profile управляет сервером; Host описывает внешний вход для клиентской подписки.</text>
+<rect x="36" y="149" width="800" height="431" rx="15" fill="#f0f3f4" stroke="#c8d3da" stroke-dasharray="7 5"/>
+<text x="54" y="178" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="600">REMNAWAVE PANEL · профиль, inbound, Node и пользователи</text>
+<rect x="66" y="211" width="356" height="278" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="66" y="225" width="4" height="250" rx="2" fill="#287d72"/>
+<text x="86" y="242" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Config Profile</text>
+<text x="86" y="271" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">REALITY: tag NODE_TAG</text>
+<text x="86" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">TCP/443 · local Reality target</text>
+<text x="86" y="321" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">privateKey · serverNames · xver 1</text>
+<text x="86" y="346" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400"></text>
+<text x="86" y="371" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">XHTTP: tag NODE_TAG XHTTP</text>
+<text x="86" y="396" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">Unix listen · path · mode auto</text>
+<text x="86" y="421" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">xhttpSettings.extra ← все knobs</text>
+<text x="86" y="446" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">DNS · routing · outbounds</text>
+<rect x="467" y="211" width="338" height="121" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="467" y="225" width="4" height="93" rx="2" fill="#287d72"/>
+<text x="487" y="242" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Host · REALITY TCP</text>
+<text x="487" y="271" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">address DOMAIN · port 443</text>
+<text x="487" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">security DEFAULT · firefox</text>
+<text x="487" y="321" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">Inbound UUID → REALITY profile</text>
+<rect x="467" y="369" width="338" height="121" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="467" y="383" width="4" height="93" rx="2" fill="#a77b32"/>
+<text x="487" y="400" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Host · XHTTP</text>
+<text x="487" y="429" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">address DOMAIN · port 443</text>
+<text x="487" y="454" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">security TLS · firefox · ALPN</text>
+<text x="487" y="479" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">xhttpExtraParams: null</text>
+<path d="M422,271 L467,271" fill="none" stroke="#287d72" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#teal)"/>
+<path d="M422,429 L467,429" fill="none" stroke="#a77b32" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gold)"/>
+<text x="72" y="543" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="500">Пользователи и разрешённые inbound назначаются панелью.</text>
+<rect x="985" y="211" width="419" height="190" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="985" y="225" width="4" height="162" rx="2" fill="#416eab"/>
+<text x="1005" y="242" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Remnawave Node</text>
+<text x="1005" y="271" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Панель → Node API :2222</text>
+<text x="1005" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Firewall: только PANEL_IP</text>
+<text x="1005" y="321" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Профиль + clients → runtime Xray</text>
+<text x="1005" y="346" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Xray создаёт Unix inbound socket</text>
+<text x="1005" y="371" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Live config не редактируется вручную</text>
+<path d="M836,269 L985,269" fill="none" stroke="#416eab" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
+<text x="859" y="241" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#416eab" font-weight="500">Node API</text>
+<rect x="985" y="461" width="419" height="156" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="985" y="475" width="4" height="128" rx="2" fill="#416eab"/>
+<text x="1005" y="492" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Клиентская подписка</text>
+<text x="1005" y="521" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">UUID пользователя из панели</text>
+<text x="1005" y="546" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">REALITY: key / Short ID из inbound</text>
+<text x="1005" y="571" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">XHTTP: TLS + path + mode + extra</text>
+<text x="1005" y="596" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Внешний endpoint DOMAIN:443</text>
+<path d="M805,430 L902,430 L902,535 L985,535" fill="none" stroke="#a77b32" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gold)"/>
+<text x="851" y="398" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#a77b32" font-weight="500">Resolver</text>
+<path d="M805,293 L890,293 L890,495 L985,495" fill="none" stroke="#287d72" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#teal)"/>
+<rect x="66" y="671" width="738" height="179" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="66" y="685" width="4" height="151" rx="2" fill="#a77b32"/>
+<text x="86" y="702" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Наследование XHTTP extra</text>
+<text x="86" y="731" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Host xhttpExtraParams: null / пусто</text>
+<text x="86" y="756" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">↓ Remnawave берёт inbound xhttpSettings.extra</text>
+<text x="86" y="781" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">xmux · buffering limits · padding → клиент</text>
+<text x="86" y="806" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Непустой Host extra: явное клиентское переопределение</text>
+<text x="86" y="831" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Серверный профиль от Host override не меняется</text>
+<rect x="985" y="671" width="419" height="194" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="985" y="685" width="4" height="166" rx="2" fill="#416eab"/>
+<text x="1005" y="702" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Выходные файлы установщика</text>
+<text x="1005" y="731" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">profile.json → применить в панели</text>
+<text x="1005" y="756" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">host-settings.txt → оба Host</text>
+<text x="1005" y="781" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">extra.json → опциональная выгрузка</text>
+<text x="1005" y="806" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400"></text>
+<text x="1005" y="831" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Дополнительный extra в Host</text>
+<text x="1005" y="856" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">для штатной схемы не требуется</text>
+<text x="66" y="920" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#a77b32" font-weight="700">WAITING_FOR_REMNAWAVE_PROFILE</text>
+<text x="66" y="951" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Подготовленная инфраструктура ждёт загрузки inbound; после применения профиля запускается self-check.</text>
+<path d="M36,988 H1404" stroke="#d9dfdf"/>
+<text x="36" y="1010" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">В Host API ALPN = "h2,http/1.1". В клиентском Xray JSON ALPN = ["h2", "http/1.1"]. Unix path не задаётся как Host address.</text>
+</svg>

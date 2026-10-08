@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1090" viewBox="0 0 1440 1090" role="img" aria-labelledby="title desc">
+<title id="title">Размещение сервисов и Unix sockets</title><desc id="desc">Shared mount обеспечивает общий inode; права ограничивают локальных клиентов backend.</desc>
+<defs><marker id="gold" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#a77b32"/></marker><marker id="teal" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#287d72"/></marker><marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#416eab"/></marker><marker id="gray" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#5d7083"/></marker></defs>
+<rect width="1440" height="1090" rx="20" fill="#f8f7f3"/>
+<text x="36" y="43" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#a77b32" font-weight="700">NUVRION / TECHNICAL ARCHITECTURE</text>
+<text x="36" y="80" font-family="Segoe UI, Arial, sans-serif" font-size="27" fill="#233447" font-weight="700">Размещение сервисов и Unix sockets</text>
+<text x="36" y="111" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Shared mount обеспечивает общий inode; права ограничивают локальных клиентов backend.</text>
+<rect x="36" y="149" width="1368" height="784" rx="15" fill="#f0f3f4" stroke="#c8d3da" stroke-dasharray="7 5"/>
+<text x="54" y="178" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="600">NODE HOST · Ubuntu 24.04.x · systemd · Docker Engine</text>
+<rect x="66" y="208" width="555" height="162" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="66" y="222" width="4" height="134" rx="2" fill="#287d72"/>
+<text x="86" y="239" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Docker · Remnawave Node</text>
+<text x="86" y="268" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">network_mode: host · Xray / rw-core от root</text>
+<text x="86" y="293" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">rw-node :2222 → управляющий API панели</text>
+<text x="86" y="318" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">rw-core :443 → вход клиентов</text>
+<text x="86" y="343" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Bind: /dev/shm:/dev/shm:rw</text>
+<rect x="819" y="208" width="555" height="162" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="819" y="222" width="4" height="134" rx="2" fill="#a77b32"/>
+<text x="839" y="239" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Docker · Nginx</text>
+<text x="839" y="268" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">network_mode: host · TLS listener только Unix</text>
+<text x="839" y="293" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">master root · workers GID из диагностики</text>
+<text x="839" y="318" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">read-only rootfs · tmpfs runtime/cache</text>
+<text x="839" y="343" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Bind: /dev/shm:/dev/shm:rw</text>
+<rect x="369" y="459" width="702" height="167" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="369" y="473" width="4" height="139" rx="2" fill="#a77b32"/>
+<text x="389" y="490" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">HOST /dev/shm/nuvrion-xhttp</text>
+<text x="389" y="519" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#5d7083" font-weight="400">Каталог 2710 · root:&lt;nginx-worker-gid&gt; · setgid</text>
+<text x="389" y="544" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#5d7083" font-weight="400">nginx.sock 0600 · создаёт Nginx master</text>
+<text x="389" y="569" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#5d7083" font-weight="400">xrxh.socket 0660 · создаёт Xray после загрузки inbound</text>
+<text x="389" y="594" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#5d7083" font-weight="400">tmpfiles восстанавливает каталог при загрузке</text>
+<path d="M344,370 L344,405 L485,405 L485,459" fill="none" stroke="#287d72" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#teal)"/>
+<text x="70" y="432" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#287d72" font-weight="500">Node видит shared sockets</text>
+<path d="M1096,370 L1096,405 L948,405 L948,459" fill="none" stroke="#a77b32" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gold)"/>
+<text x="1105" y="434" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#a77b32" font-weight="500">Nginx видит тот же inode</text>
+<rect x="66" y="716" width="405" height="164" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="66" y="730" width="4" height="136" rx="2" fill="#416eab"/>
+<text x="86" y="747" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">HOST · сертификаты и сайт</text>
+<text x="86" y="776" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">/etc/letsencrypt → Nginx :ro</text>
+<text x="86" y="801" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">live + archive · symlinks сохранены</text>
+<text x="86" y="826" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Decoy assets → /var/www/decoy :ro</text>
+<text x="86" y="851" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Node private key: root-only output</text>
+<rect x="517" y="716" width="405" height="164" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="517" y="730" width="4" height="136" rx="2" fill="#416eab"/>
+<text x="537" y="747" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">systemd · API сайта декой</text>
+<text x="537" y="776" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Непривилегированный nuvrion-game</text>
+<text x="537" y="801" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">/run/…/game.sock · mode 0660</text>
+<text x="537" y="826" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Nginx получает /run/… :ro mount</text>
+<text x="537" y="851" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">SQLite: StateDirectory mode 0700</text>
+<rect x="968" y="716" width="406" height="164" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="968" y="730" width="4" height="136" rx="2" fill="#287d72"/>
+<text x="988" y="747" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Диагностика / lifecycle</text>
+<text x="988" y="776" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Config → nginx -t → reload</text>
+<text x="988" y="801" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">stat + ss + inode в контейнерах</text>
+<text x="988" y="826" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Socket создаёт процесс-listener</text>
+<text x="988" y="851" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">/dev/shm очищается при reboot</text>
+<path d="M1071,567 L1171,567 L1171,716" fill="none" stroke="#5d7083" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#gray)"/>
+<text x="55" y="981" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#233447" font-weight="600">Режим 0660 / 0666 после запятой — права socket; это не часть имени файла.</text>
+<text x="55" y="1012" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Legacy-пути сохраняются до явной миграции. Site/API filesystem mounts отделены от private profile output.</text>
+<path d="M36,1040 H1404" stroke="#d9dfdf"/>
+<text x="36" y="1062" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">Host Nginx также поддерживается: применяется фактически найденная конфигурация. Диаграмма показывает новую Docker-схему.</text>
+</svg>

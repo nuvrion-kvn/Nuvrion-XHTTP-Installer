@@ -1,0 +1,219 @@
+{
+  "log": {
+    "access": "none",
+    "dnsLog": false,
+    "loglevel": "warning"
+  },
+  "dns": {
+    "servers": [
+      {
+        "address": "https+local://dns.adguard-dns.com/dns-query",
+        "timeoutMs": 2500,
+        "queryStrategy": "UseIPv4"
+      },
+      {
+        "address": "https+local://dns.comss.one/dns-query",
+        "timeoutMs": 2000,
+        "queryStrategy": "UseIPv4"
+      }
+    ],
+    "serveStale": true,
+    "disableCache": false,
+    "queryStrategy": "UseIPv4",
+    "disableFallback": false,
+    "serveExpiredTTL": 600,
+    "enableParallelQuery": false
+  },
+  "inbounds": [
+    {
+      "tag": "NODE_TAG",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      },
+      "streamSettings": {
+        "network": "raw",
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpcongestion": "bbr",
+          "tcpKeepAliveIdle": 60,
+          "tcpKeepAliveInterval": 30
+        },
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "xver": 1,
+          "target": "/dev/shm/nuvrion-xhttp/nginx.sock",
+          "spiderX": "",
+          "minClientVer": "0.0.0",
+          "shortIds": [
+            ""
+          ],
+          "privateKey": "REPLACE_WITH_NODE_REALITY_PRIVATE_KEY",
+          "serverNames": [
+            "DOMAIN"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "NODE_TAG XHTTP",
+      "listen": "/dev/shm/nuvrion-xhttp/xrxh.socket,0660",
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "fallbacks": [],
+        "decryption": "none"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "auto",
+          "path": "/api/v3/sync/",
+          "extra": {
+            "noSSEHeader": true,
+            "xPaddingBytes": "100-1000",
+            "scMaxBufferedPosts": 30,
+            "scMaxEachPostBytes": 1000000,
+            "scStreamUpServerSecs": "20-80",
+            "scMinPostsIntervalMs": 30,
+            "noGRPCHeader": false,
+            "xmux": {
+              "cMaxReuseTimes": 0,
+              "maxConcurrency": "16-32",
+              "maxConnections": 0,
+              "hKeepAlivePeriod": 0,
+              "hMaxRequestTimes": "600-900",
+              "hMaxReusableSecs": "1800-3000"
+            },
+            "xPaddingObfsMode": true,
+            "xPaddingPlacement": "cookie",
+            "xPaddingKey": "site_session",
+            "xPaddingMethod": "tokenish"
+          }
+        },
+        "sockopt": {
+          "trustedXForwardedFor": [
+            "X-Forwarded-For"
+          ]
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "DIRECT",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpcongestion": "bbr",
+          "tcpKeepAliveIdle": 60,
+          "tcpKeepAliveInterval": 30
+        }
+      }
+    },
+    {
+      "tag": "BLOCK",
+      "protocol": "blackhole"
+    }
+  ],
+  "routing": {
+    "rules": [
+      {
+        "port": "443",
+        "type": "field",
+        "network": "udp",
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "port": "25",
+        "type": "field",
+        "network": "tcp",
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "ip": [
+          "geoip:private"
+        ],
+        "type": "field",
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:private"
+        ],
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:category-ads-all",
+          "domain:analytics.google.com",
+          "domain:adjust.net.in",
+          "domain:amplitude.com",
+          "domain:metrika.yandex.ru",
+          "domain:mytracker.ru"
+        ],
+        "inboundTag": [
+          "NODE_TAG",
+          "NODE_TAG XHTTP"
+        ],
+        "outboundTag": "BLOCK"
+      }
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "AsIs"
+  }
+}
