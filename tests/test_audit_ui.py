@@ -108,11 +108,12 @@ validate_zram
         self.assertEqual(r.returncode, 0, r.stderr)
 
     def test_tls_helper_failure_cannot_pass_self_check(self):
-        # Mock only the socket presence boundary; the test exercises real
-        # helper exit handling without requiring socket capabilities in CI.
+        # Exercise real helper exit handling while isolating socket presence
+        # and the external linter from the generated test shell.
         r = self.run_shell('''
 mkdir -p "$OWN";touch "$STATE"
 run_diagnostics(){ FAILS=0;WAITS=0; }
+shellcheck(){ return 0; }
 helper(){ return 1; }
 curl(){ printf '200 2'; }
 if run_self_check;then echo FALSE_SUCCESS;exit 1;fi
@@ -120,6 +121,17 @@ if run_self_check;then echo FALSE_SUCCESS;exit 1;fi
 ''', assume_socket=True)
         self.assertEqual(r.returncode, 0, r.stderr + r.stdout)
         self.assertIn('Проверка TLS/SNI завершилась ошибкой', r.stderr)
+        self.assertNotIn('FALSE_SUCCESS', r.stdout)
+
+    def test_shellcheck_failure_cannot_pass_self_check(self):
+        r = self.run_shell('''
+run_diagnostics(){ FAILS=0;WAITS=0; }
+shellcheck(){ return 1; }
+if run_self_check;then echo FALSE_SUCCESS;exit 1;fi
+[[ $FAILS == 1 ]]
+''')
+        self.assertEqual(r.returncode, 0, r.stderr + r.stdout)
+        self.assertIn('ShellCheck', r.stderr)
         self.assertNotIn('FALSE_SUCCESS', r.stdout)
 
     def traffic_report(self, state, **env):
