@@ -22,7 +22,29 @@ jobs:
           sha256sum -c SHA256SUMS
 
       - name: Проверка Python и shell regression tests
-        run: sudo python3 -m unittest discover -s tests -p 'test_*.py' -v
+        id: regression
+        run: |
+          set -o pipefail
+          sudo python3 -m unittest discover -s tests -p 'test_*.py' -v 2>&1 \
+            | tee "$RUNNER_TEMP/xhttp-tests.log"
+
+      - name: Ошибки регрессионных тестов
+        if: failure() && steps.regression.outcome == 'failure'
+        run: |
+          python3 - <<'PY'
+          import html
+          import os
+          from pathlib import Path
+
+          log = Path(os.environ['RUNNER_TEMP']) / 'xhttp-tests.log'
+          lines = log.read_text(errors='replace').splitlines()
+          start = next((index for index, line in enumerate(lines)
+                        if line.startswith(('FAIL:', 'ERROR:'))), max(0, len(lines) - 30))
+          excerpt = '\n'.join(lines[start:])[-30000:]
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('### Ошибки unit/shell tests\n\n<pre>'
+                            + html.escape(excerpt) + '</pre>\n')
+          PY
 
       - name: Воспроизводимая автономная сборка
         run: |
