@@ -7,19 +7,28 @@
 **Remnawave Node · VLESS REALITY TCP selfsteal · VLESS XHTTP · Nginx · Unix sockets**
 
 [![Validation](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/actions/workflows/validate.yml/badge.svg)](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/actions/workflows/validate.yml)
-[![Download](https://img.shields.io/badge/download-latest%20release-b89557)](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest)
+[![Download](https://img.shields.io/badge/download-current%20build-b89557)](https://raw.githubusercontent.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/main/nuvrion-xhttp-install.sh)
 [![License](https://img.shields.io/badge/license-MIT-397b68)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Ubuntu%2024.04.x-344b65)
 
 </div>
 
+Авторский установщик **Nuvrion** для **Ubuntu 24.04 LTS**: развёртывание Remnawave Node, REALITY TCP и XHTTP через Nginx и Unix-сокеты, сайт PokéHabitat, TLS, оптимизация и диагностика. Поддерживается только ветка Ubuntu 24.04.x; установка на другие ОС завершается отказом до изменений.
+
 ## Быстрый запуск с GitHub
 
-Скопируйте **весь блок** в SSH-терминал сервера с Ubuntu 24.04.x. Команда установит средства скачивания, загрузит официальный релиз, проверит SHA-256 и запустит установку. Авторизация GitHub не требуется.
+Скопируйте **весь блок** в SSH-терминал сервера с Ubuntu 24.04.x. Команда проверит ОС, установит средства скачивания, определит текущий коммит `main`, загрузит установщик и SHA-256 из **одного коммита**, проверит целостность и запустит установку. Авторизация GitHub не требуется.
 
 ```bash
-sudo apt-get update && sudo apt-get install -y curl ca-certificates && bash -c '
+(
   set -Eeuo pipefail
+  source /etc/os-release
+  [[ ${ID:-} == ubuntu && ${VERSION_ID:-} == 24.04 ]] || {
+    printf "Поддерживается только Ubuntu 24.04 LTS; изменения не начаты.\n" >&2
+    exit 2
+  }
+  sudo apt-get update
+  sudo apt-get install -y curl ca-certificates python3
   umask 077
   launch_dir=$(mktemp -d /tmp/nuvrion-xhttp-launch.XXXXXXXX)
   cleanup() {
@@ -27,17 +36,24 @@ sudo apt-get update && sudo apt-get install -y curl ca-certificates && bash -c '
     rmdir -- "$launch_dir"
   }
   trap cleanup EXIT
-  release_url=https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest/download
-  curl --proto "=https" --tlsv1.2 -fsSL --retry 3 \
-    "$release_url/nuvrion-xhttp-install.sh" -o "$launch_dir/nuvrion-xhttp-install.sh"
-  curl --proto "=https" --tlsv1.2 -fsSL --retry 3 \
-    "$release_url/SHA256SUMS" -o "$launch_dir/SHA256SUMS"
+  revision=$(curl --proto "=https" --tlsv1.2 -fsSL --connect-timeout 15 --max-time 60 --retry 3 --retry-max-time 180 \
+    https://api.github.com/repos/nuvrion-kvn/Nuvrion-XHTTP-Installer/commits/main \
+    | python3 -c 'import json, sys; print(json.load(sys.stdin)["sha"])')
+  [[ $revision =~ ^[0-9a-f]{40}$ ]] || {
+    printf "Не удалось определить коммит установщика.\n" >&2
+    exit 1
+  }
+  source_url=https://raw.githubusercontent.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/$revision
+  curl --proto "=https" --tlsv1.2 -fsSL --connect-timeout 15 --max-time 300 --retry 3 --retry-max-time 900 \
+    "$source_url/nuvrion-xhttp-install.sh" -o "$launch_dir/nuvrion-xhttp-install.sh"
+  curl --proto "=https" --tlsv1.2 -fsSL --connect-timeout 15 --max-time 300 --retry 3 --retry-max-time 900 \
+    "$source_url/SHA256SUMS" -o "$launch_dir/SHA256SUMS"
   (cd "$launch_dir" && sha256sum -c SHA256SUMS)
   sudo bash "$launch_dir/nuvrion-xhttp-install.sh" --install
-'
+)
 ```
 
-[Скачать установщик](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest/download/nuvrion-xhttp-install.sh) · [SHA256SUMS](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest/download/SHA256SUMS) · [Официальный релиз](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest)
+[Скачать текущий установщик](https://raw.githubusercontent.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/main/nuvrion-xhttp-install.sh) · [SHA256SUMS](https://raw.githubusercontent.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/main/SHA256SUMS) · [История опубликованных релизов](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases)
 
 После запуска установщик покажет состав компонентов и запросит домен, API-порт ноды, IP панели и секретный ключ. Сначала проверяются DNS и найденная конфигурация, затем показывается план и запрашивается подтверждение изменений. Секретный ключ вводится скрыто. Дальнейшие параметры и применение профиля описаны в [разделе установки](#установка).
 
@@ -124,7 +140,7 @@ TCP/443 · Xray REALITY TCP/RAW · Remnawave Node
 | Сайт | Каталог декоя → `/var/www/decoy:ro` | Статические файлы без доступа на запись из Nginx |
 | API сайта | `/run/nuvrion-pokehabitat:/run/nuvrion-pokehabitat:ro` | Отдельный `game.sock`; база остаётся у непривилегированного systemd-сервиса |
 
-В записи `"…/xrxh.socket,0660"` суффикс `0660` — **mode socket, не часть имени файла**. Для ранее установленной eGames-схемы сохраняются `/dev/shm/nginx.sock` и `"/dev/shm/xrxh.socket,0666"`. Перенос на защищённый каталог выполняется только через явную миграцию `--harden-profile`, с применением согласованного профиля в панели.
+В записи `"…/xrxh.socket,0660"` суффикс `0660` — **mode socket, не часть имени файла**. Для ранее установленной схемы с сокетами непосредственно в `/dev/shm` сохраняются `/dev/shm/nginx.sock` и `"/dev/shm/xrxh.socket,0666"`. Перенос на защищённый каталог выполняется только через явную миграцию `--harden-profile`, с применением согласованного профиля в панели.
 
 Создаваемый Nginx использует read-only root filesystem, tmpfs для runtime/cache, `no-new-privileges`, ограничение PID и `cap_drop: ALL` с минимальными capabilities `CHOWN`, `DAC_OVERRIDE`, `SETUID`, `SETGID`. Docker socket и privileged mode не используются. AppArmor и штатные механизмы ядра сохраняются. Существующие service names, mounts и нестандартные параметры сначала анализируются; конфликтующие конфигурации не заменяются автоматически.
 
@@ -138,7 +154,7 @@ Node API использует выбранный порт (**2222 по умол�
 
 ## Требования
 
-- Ubuntu 24.04.x, root, systemd, архитектура x86_64 или aarch64.
+- Только Ubuntu 24.04 LTS / 24.04.x, root, systemd, архитектура x86_64 или aarch64. Другие версии Ubuntu и другие дистрибутивы не поддерживаются.
 - Домен с A-записью на внешний IPv4 сервера; IP панели Remnawave и email для ACME.
 - Для новой ноды — `SECRET_KEY` из панели. Для существующей — экспорт действующего Config Profile в root-only файл.
 - Для существующей ноды — Docker Compose и `network_mode: host`. Образ и Xray автоматически не обновляются.
@@ -152,12 +168,11 @@ Node API использует выбранный порт (**2222 по умол�
 
 Для запуска прямо на сервере используйте [готовую команду выше](#быстрый-запуск-с-github). Репозиторий и файлы релиза доступны публично, без аккаунта или токена GitHub.
 
-Если хотите предварительно сохранить файлы на компьютере, скачайте `nuvrion-xhttp-install.sh` и `SHA256SUMS` из [актуального релиза](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest) либо через GitHub CLI:
+Если хотите предварительно сохранить файлы на компьютере, получите текущую сборку и её `SHA256SUMS` одним клонированием, затем перенесите их на сервер:
 
 ```bash
-gh release download \
-  --repo nuvrion-kvn/Nuvrion-XHTTP-Installer \
-  --pattern nuvrion-xhttp-install.sh --pattern SHA256SUMS
+git clone --depth 1 https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer.git
+cd Nuvrion-XHTTP-Installer
 scp nuvrion-xhttp-install.sh SHA256SUMS root@SERVER_IP:/root/
 ```
 
@@ -679,6 +694,7 @@ sudo bash ./nuvrion-xhttp-install.sh --self-check
 | `PARTIALLY INSTALLED` | Обнаружена неполная инфраструктура |
 | `BROKEN` | Найдены критические ошибки установленной конфигурации |
 | `WAITING_FOR_REMNAWAVE_PROFILE` | Инфраструктура подготовлена; профиль/inbound ещё не загружен панелью |
+| `WAITING_FOR_REBOOT` | Обязательные проверки без ошибок; применённый профиль требует перезагрузки для завершения настройки |
 | `RUNNING` | Обязательные проверки применённой конфигурации пройдены |
 
 Выход `0` при подготовке может сопровождаться `WAITING_FOR_REMNAWAVE_PROFILE`. Это не подтверждение работы клиентского транспорта. Cookie-padding изменяет HTTP-представление; оно не гарантирует обход любого DPI. Сертификат валиден только для имён SAN; внутренние API/XHTTP routes проверяют SNI и Host.
@@ -710,7 +726,7 @@ sudo bash ./nuvrion-xhttp-install.sh --reinstall --harden-profile \
 
 ## Резервные копии, удаление и восстановление
 
-Перед изменениями создаётся `/root/nuvrion-xhttp-backups/YYYYMMDD-HHMMSS/`: Compose/override, Nginx, сайт, Let's Encrypt, firewall dump, units/hooks, состояние компонентов и manifest с версиями/контейнерами. Критическая ошибка запускает предложение rollback; `--yes` подтверждает автоматическое восстановление.
+Перед изменениями создаётся `/root/nuvrion-xhttp-backups/YYYYMMDD-HHMMSS/`: Compose/override, Nginx, сайт, Let's Encrypt, firewall dump, units/hooks, состояние компонентов и manifest с версиями/контейнерами. Критическая ошибка запускает предложение rollback; `--yes` подтверждает автоматическое восстановление. Файлы восстанавливаются по журналу изменений текущей транзакции: новые чужие файлы сохраняются, конфликт поздней внешней правки вызывает безопасный отказ. Старый backup без такого журнала не подходит для этого восстановления.
 
 ```bash
 sudo bash ./nuvrion-xhttp-install.sh --remove
@@ -738,7 +754,7 @@ sudo bash ./nuvrion-xhttp-install.sh --restore \
 ## Проверки и материалы разработчика
 
 ```bash
-python3 -m unittest discover -s tests -p 'test_xhttp*.py' -v
+python3 -m unittest discover -s tests -p 'test_*.py' -v
 bash -n nuvrion-xhttp-install.sh
 shellcheck -S style nuvrion-xhttp-install.sh
 sha256sum -c SHA256SUMS
@@ -747,7 +763,7 @@ git diff --check
 
 `python3 tools/build_xhttp.py` повторно упаковывает standalone из локальных закреплённых материалов без сети. `site/dist` и `site/server/dist` содержат готовую сборку сайта декой; исходный проект доступен в [Vision Installer](https://github.com/nuvrion-kvn/Nuvrion-Vision-Installer). Эти каталоги не нужны на сервере для запуска установщика.
 
-На тестовой ноде проверены авторизованные REALITY/XHTTP-клиенты, сайт/API, DNS fallback, HTTP/2, mounts и права sockets, reinstall, rollback, firewall fault injection и reboot. Проверка клиента с той же ноды не измеряет качество WAN-маршрута. Полная установка чистой ОС с первоначальным Docker/APT и новым ACME issuance, HAPP/INCY и WAN throughput пока не подтверждены; подробные результаты вынесены в отчёт.
+Исторические результаты автора для исходного релиза описывают проверки авторизованных REALITY/XHTTP-клиентов, сайта/API, DNS fallback, HTTP/2, sockets, reinstall, rollback, firewall fault injection и reboot. Они не являются повторной проверкой версии после аудита. Исправления проверены локальными регрессионными тестами, статическим анализом и воспроизводимой сборкой. Реальные VPS, ACME, reboot и клиенты требуют отдельной приёмки. Поддерживаемая платформа проекта — только Ubuntu 24.04 LTS / 24.04.x. Подробные результаты вынесены в отчёт.
 
 - [Матрица фактических результатов](NUVRION-TEST-RESULTS.md)
 - [Технический отчёт](NUVRION-SECURITY-IMPLEMENTATION-REPORT.md)
@@ -758,6 +774,6 @@ git diff --check
 
 ## Источники и авторство
 
-REALITY local target/PROXY protocol основаны на [eGames](https://github.com/eGamesAPI/remnawave-reverse-proxy/tree/fccf1be0d3e139a07f2f492804b97849e0991a41); XHTTP Unix inbound и HTTP reverse proxy — на [legiz](https://github.com/legiz-ru/my-remnawave/blob/2af846044e35f61fc4cbf40aa0c78a5518a89313/README.md). Интегрированы закреплённые Auto Tuning и Traffic Control, указанные выше; схема обоих транспортов сохранена.
+Установщик, управление инфраструктурой, генерация конфигураций и диагностика разработаны и поддерживаются проектом **Nuvrion**. Интегрированы закреплённые модули Nuvrion Auto Tuning и Traffic Control, указанные выше. Техническая документация XHTTP Unix inbound и HTTP reverse proxy: [справочный материал](https://github.com/legiz-ru/my-remnawave/blob/2af846044e35f61fc4cbf40aa0c78a5518a89313/README.md).
 
 Автор установщика: **Nuvrion · [nuvrion-kvn](https://github.com/nuvrion-kvn)**. Оригинальный код — [MIT](LICENSE). Сторонние источники и материалы сохраняют свои лицензии: [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md), [лицензии сайта декой](site/LICENSES.md).

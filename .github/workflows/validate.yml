@@ -22,7 +22,7 @@ jobs:
           sha256sum -c SHA256SUMS
 
       - name: Проверка Python и shell regression tests
-        run: sudo python3 -m unittest discover -s tests -p 'test_xhttp*.py' -v
+        run: sudo python3 -m unittest discover -s tests -p 'test_*.py' -v
 
       - name: Воспроизводимая автономная сборка
         run: |

@@ -22,7 +22,7 @@ umask 077
 # ============================================================
 # Nuvrion — адаптивная оптимизация сети v1.0.0
 # Author: Nuvrion
-# Debian / Ubuntu / Xray / Remnawave
+# Ubuntu 24.04 LTS / Xray / Remnawave
 #
 # Основные env-флаги публичной версии:
 #   NUVRION_SECURITY=0                    — отключить блок безопасности
@@ -31,7 +31,7 @@ umask 077
 #   NUVRION_PANEL_IPS="203.0.113.10"       — IP/CIDR панели Remnawave
 #   NUVRION_PANEL_PORT=PORT               — явно задать порт API Remnawave Node
 #   NUVRION_FIREWALL_PORTS="tcp:8443,udp:8443" — дополнительные разрешённые порты
-#   NUVRION_HARDEN_SSH=1                  — key-only SSH, только при готовом authorized_keys
+#   NUVRION_HARDEN_SSH=1                  — доступ только по ключам SSH, только при готовом authorized_keys
 #   NUVRION_ALLOW_DOCKER_RESTART=1        — разрешить редкий fallback с restart Docker
 #   NUVRION_SYSTEM_MAINTENANCE=0           — отключить NTP/fstrim/диск-аудит
 #   NUVRION_INSTALL_ZRAM_PACKAGES=0        — не устанавливать недостающие компоненты ZRAM
@@ -76,11 +76,46 @@ else
     C_CYAN=''
 fi
 
-UI_LINE='────────────────────────────────────────────────────────────'
+ui_width() {
+    local width=${COLUMNS:-80}
+    [[ $width =~ ^[0-9]{1,3}$ ]] || width=80
+    width=$((10#$width))
+    (( width < 40 )) && width=40
+    (( width > 80 )) && width=80
+    printf '%s' "$width"
+}
+
+UI_WIDTH=$(ui_width)
+printf -v UI_LINE '%*s' "$UI_WIDTH" ''
+UI_LINE=${UI_LINE// /─}
 
 section() {
-    printf '\n%s%s┌─ %s%s\n' "$C_BOLD" "$C_BLUE" "$*" "$C_RESET"
-    printf '%s└%s%s\n' "$C_DIM" "$UI_LINE" "$C_RESET"
+    printf '\n'
+    ui_message '[•]' "$C_BLUE" "$*"
+    printf '%s%s%s\n' "$C_DIM" "$UI_LINE" "$C_RESET"
+}
+
+report_row() {
+    local label=$1 value=${2:-} column=24 prefix part width available padding
+    width=$(ui_width)
+    (( width < 60 )) && column=20
+    if (( ${#label} > column )); then
+        ui_message '[•]' "$C_CYAN" "$label"
+        prefix='  '
+    else
+        padding=$((column - ${#label}))
+        printf -v prefix '  %s%*s  ' "$label" "$padding" ''
+    fi
+    available=$((width - ${#prefix}))
+    while (( ${#value} > available )); do
+        part=${value:0:available}
+        if [[ $part == *" "* ]]; then part=${part% *}; fi
+        [[ -n $part ]] || part=${value:0:available}
+        printf '%s%s\n' "$prefix" "$part"
+        value=${value:${#part}}; value=${value# }
+        printf -v prefix '%*s' "${#prefix}" ''
+    done
+    printf '%s%s\n' "$prefix" "$value"
 }
 
 on_error() {
@@ -116,11 +151,8 @@ trap 'on_error "$LINENO" "$BASH_COMMAND"' ERR
 trap cleanup_runtime_files EXIT
 
 ui_message() {
-    local badge=$1 color=$2 message=$3 width=${COLUMNS:-80} part
-    [[ $width =~ ^[0-9]{2,3}$ ]] || width=80
-    width=$((10#$width))
-    (( width < 24 )) && width=24
-    (( width > 80 )) && width=80
+    local badge=$1 color=$2 message=$3 width part
+    width=$(ui_width)
     width=$((width - 4))
     while (( ${#message} > width )); do
         part=${message:0:width}
@@ -198,21 +230,12 @@ prompt_choice_yes_no_skip() {
 }
 
 show_intro() {
-    printf '\n%s%s╭%s╮%s\n' "$C_BOLD" "$C_CYAN" "$UI_LINE" "$C_RESET"
-    printf '%s%s│  Nuvrion · АДАПТИВНАЯ ОПТИМИЗАЦИЯ СЕРВЕРА · v1.0.0%s\n' "$C_BOLD" "$C_CYAN" "$C_RESET"
-    printf '%s%s╰%s╯%s\n' "$C_BOLD" "$C_CYAN" "$UI_LINE" "$C_RESET"
-    printf '\n%sЧто делает скрипт:%s\n' "$C_BOLD" "$C_RESET"
-    printf '  ◆ Оптимизирует сеть: BBR/fq, TCP/UDP-буферы, backlog и conntrack.\n'
-    printf '  ◆ Проверяет и восстанавливает ZRAM; при необходимости устанавливает компоненты.\n'
-    printf '  ◆ Настраивает распределение сетевой нагрузки и лимиты Remnawave Node.\n'
-    printf '  ◆ Усиливает безопасные sysctl-параметры и проверяет SSH, Fail2ban и firewall.\n'
-    printf '  ◆ Проверяет защиту API панели Remnawave и чувствительные публичные порты.\n'
-    printf '  ◆ Проверяет security-updates, NTP, TRIM, диск/inode и сертификаты.\n'
-    printf '  ◆ Создаёт снимки состояния и планирует контроль после перезагрузки.\n'
-    printf '\n%sПринцип работы:%s настройки рассчитываются по CPU/RAM; рабочие сторонние\n' "$C_BOLD" "$C_RESET"
-    printf 'конфигурации не перезаписываются без необходимости. Некоторые недостающие\n'
-    printf 'пакеты и systemd-компоненты могут быть установлены автоматически.\n'
-    printf '\n%s%s%s\n' "$C_DIM" "$UI_LINE" "$C_RESET"
+    section "Nuvrion · АДАПТИВНАЯ ОПТИМИЗАЦИЯ СЕРВЕРА · v1.0.0"
+    ui_message '[•]' "$C_CYAN" "Оптимизирует сеть: BBR/fq, TCP/UDP-буферы, сетевые очереди и conntrack."
+    ui_message '[•]' "$C_CYAN" "Проверяет ZRAM, распределение сетевой нагрузки и лимиты Remnawave Node."
+    ui_message '[•]' "$C_CYAN" "Проверяет SSH, Fail2ban, брандмауэр, обновления, время, диск и сертификаты."
+    ui_message '[•]' "$C_CYAN" "Создаёт снимки состояния и планирует проверку после перезагрузки."
+    ui_message '[•]' "$C_CYAN" "Настройки рассчитываются по CPU/RAM. Рабочие сторонние конфигурации сохраняются; недостающие компоненты могут быть установлены автоматически."
 }
 
 show_intro
@@ -274,9 +297,9 @@ case "$ARCH_RAW" in
         ;;
 esac
 case "${OS_ID}:${OS_VERSION}" in
-    ubuntu:22.04|ubuntu:24.04|debian:12) ;;
+    ubuntu:24.04) ;;
     *)
-        printf '%s%s[✗]%s Система %s %s не входит в проверенную матрицу: Ubuntu 22.04/24.04 или Debian 12.\n' \
+        printf '%s%s[✗]%s Система %s %s не поддерживается. Требуется Ubuntu 24.04 LTS.\n' \
             "$C_BOLD" "$C_RED" "$C_RESET" "${OS_ID:-неизвестная}" "${OS_VERSION:-без версии}" >&2
         exit 1
         ;;
@@ -378,14 +401,11 @@ MODULES_CONF=/etc/modules-load.d/99-nuvrion-performance.conf
 CONNTRACK_MODPROBE_CONF=/etc/modprobe.d/99-nuvrion-nf-conntrack.conf
 AUTHORITATIVE_SERVICE=/etc/systemd/system/nuvrion-performance-sysctl.service
 
-printf '\n%s%s%s\n' "$C_BOLD" "$C_CYAN" "$UI_LINE"
-printf '  Nuvrion  ·  адаптивная оптимизация сети  ·  v1.0.0\n'
-printf '%s%s\n' "$UI_LINE" "$C_RESET"
-printf '  Автор       %sNuvrion%s\n' "$C_BOLD" "$C_RESET"
-printf '  Сервер      %s vCPU · %s MB RAM\n' "$CPU" "$RAM_MB"
-printf '  Ядро        %s\n' "$(uname -r)"
-printf '  Запуск      %s\n' "$RUN_ID"
-printf '%s%s%s\n\n' "$C_DIM" "$UI_LINE" "$C_RESET"
+section "Nuvrion · адаптивная оптимизация сети · v1.0.0"
+report_row "Автор" "Nuvrion"
+report_row "Сервер" "${CPU} vCPU · ${RAM_MB} МБ RAM"
+report_row "Ядро" "$(uname -r)"
+report_row "Запуск" "$RUN_ID"
 
 # ============================================================
 # Адаптивный профиль
@@ -505,13 +525,22 @@ SYNC_TARGET=1
 # value 2 forces it for every connection, which is not a universal tuning choice.
 MTU_PROBING=1
 
-# Kernel ceilings: raise only when below target; otherwise do not claim ownership.
+# Kernel ceilings: preserve an existing managed assignment on repeat runs.
+# Otherwise the first run raises the live value and the second drops its
+# persistent setting from the regenerated profile. Higher ceilings are kept.
+profile_manages_sysctl() {
+    local key=$1
+    [[ -f $CONF ]] || return 1
+    grep -Eq "^[[:space:]]*${key//./\\.}[[:space:]]*=" "$CONF"
+}
 NR_OPEN_TARGET=1048576
 CUR_NR_OPEN=$(num_or_zero "$(sysctl -n fs.nr_open 2>/dev/null || echo 0)")
 MANAGE_NR_OPEN=0
 NR_OPEN=$CUR_NR_OPEN
 if (( CUR_NR_OPEN < NR_OPEN_TARGET )); then
     NR_OPEN=$NR_OPEN_TARGET
+    MANAGE_NR_OPEN=1
+elif profile_manages_sysctl fs.nr_open; then
     MANAGE_NR_OPEN=1
 fi
 
@@ -523,6 +552,8 @@ MANAGE_FILE_MAX=0
 FILE_MAX=$CUR_FILE_MAX
 if (( CUR_FILE_MAX < FILE_MAX_TARGET )); then
     FILE_MAX=$FILE_MAX_TARGET
+    MANAGE_FILE_MAX=1
+elif profile_manages_sysctl fs.file-max; then
     MANAGE_FILE_MAX=1
 fi
 
@@ -772,7 +803,7 @@ else
         fi
     done
 
-    if [[ -n $PREVIOUS_PROFILE ]] && grep -Eq '(Nuvrion|Nuvrion) Adaptive Network Performance Profile v4' "$PREVIOUS_PROFILE" 2>/dev/null; then
+    if [[ -n $PREVIOUS_PROFILE ]] && grep -Eq 'Nuvrion Adaptive Network Performance Profile v4' "$PREVIOUS_PROFILE" 2>/dev/null; then
         if [[ -n $OLD_V4_SNAPSHOT ]]; then
             line=$(grep -m1 -E '^net[./]ipv4[./]ip_local_reserved_ports[[:space:]]*=' "$OLD_V4_SNAPSHOT" 2>/dev/null || true)
             if [[ -n $line ]]; then
@@ -785,7 +816,7 @@ else
             V4_RESERVED_RECONCILED=1
         else
             BASE_RESERVED=$CUR_RESERVED
-            warn "Обнаружен профиль v4, но pre-v4 snapshot не найден; текущий список reserved ports сохранён без попытки угадывать устаревшие значения."
+            warn "Обнаружен профиль v4, но снимок перед v4 не найден; текущий список зарезервированных портов сохранён без попытки угадывать устаревшие значения."
         fi
     else
         BASE_RESERVED=$CUR_RESERVED
@@ -1275,10 +1306,10 @@ while IFS= read -r line || [[ -n $line ]]; do
 
         after_value=$(normalize_ws "$(sysctl -n "$key" 2>/dev/null || echo '<недоступно>')")
         if [[ $before_value == "$desired_value" ]]; then
-            printf '%s%s[✓]%s %-42s уже=%s\n' "$C_BOLD" "$C_GREEN" "$C_RESET" "$key" "$after_value"
+            ui_message '[✓]' "$C_GREEN" "$key: уже=$after_value"
             ALREADY_MATCHED=$((ALREADY_MATCHED + 1))
         else
-            printf '%s[•]%s %-42s %s -> %s\n' "$C_MAGENTA" "$C_RESET" "$key" "$before_value" "$after_value"
+            ui_message '[•]' "$C_CYAN" "$key: $before_value → $after_value"
             FORCED_CHANGES=$((FORCED_CHANGES + 1))
         fi
     elif [[ $key == net.netfilter.nf_conntrack_buckets && -e /proc/sys/net/netfilter/nf_conntrack_buckets ]]; then
@@ -1355,7 +1386,7 @@ info "Runtime-значения задаются Nuvrion принудительн
 # авторитетный профиль, чтобы итоговое live-состояние точно совпадало с ним.
 if ! "$SYSCTL_BIN" -p "$CONF" >/dev/null 2>&1; then
     if (( PROFILE_REBOOT_REQUIRED )); then
-        info "Профиль применён частично; conntrack hash table ожидает reboot."
+        info "Профиль применён частично; таблица conntrack ожидает перезагрузку."
     else
         warn "Контрольное применение $CONF после очистки вернуло ошибку."
     fi
@@ -1509,11 +1540,11 @@ for key in "${!DESIRED[@]}"; do
     actual=$(normalize_ws "$(sysctl -n "$key" 2>/dev/null || echo '<unavailable>')")
 
     if [[ $actual == "$desired" ]]; then
-        printf '%s%s[✓]%s %-42s %s\n' "$C_BOLD" "$C_GREEN" "$C_RESET" "$key" "$actual"
+        ui_message '[✓]' "$C_GREEN" "$key: $actual"
     elif [[ -n ${PENDING_REBOOT[$key]+x} ]]; then
-        printf '%s%s[!]%s %-42s сейчас=%s после перезагрузки=%s\n' "$C_BOLD" "$C_YELLOW" "$C_RESET" "$key" "$actual" "$desired"
+        ui_message '[!]' "$C_YELLOW" "$key: сейчас=$actual, после перезагрузки=$desired"
     else
-        printf '%s%s[✗]%s %-42s нужно=%s фактически=%s\n' "$C_BOLD" "$C_RED" "$C_RESET" "$key" "$desired" "$actual"
+        ui_message '[✗]' "$C_RED" "$key: нужно=$desired, фактически=$actual"
         VERIFY_FAIL=$((VERIFY_FAIL + 1))
     fi
 done
@@ -1537,7 +1568,7 @@ fi
 if [[ $(sysctl -n net.core.default_qdisc 2>/dev/null || true) == fq ]]; then
     ok "default_qdisc=fq"
 else
-    warn "fq недоступен; сохранён текущий default qdisc"
+    warn "fq недоступен; сохранён текущая дисциплина сетевой очереди"
 fi
 
 DEFAULT_IF=""
@@ -1593,7 +1624,7 @@ if (( MANAGE_RESERVED )); then
     fi
     if (( V4_RESERVED_RECONCILED )); then
         if [[ $(normalize_ws "$CUR_RESERVED") != $(normalize_ws "$MERGED_RESERVED") ]]; then
-            ok "Резервы v4 восстановлены по pre-v4 baseline; случайные UDP-порты не перенесены"
+            ok "Резервы v4 восстановлены по исходному снимку перед v4; случайные UDP-порты не перенесены"
         else
             info "Базовый список резервов v4 восстановлен; устаревших резервов для удаления нет"
         fi
@@ -2327,7 +2358,7 @@ elif (( RPS_EXISTING )); then
     RPS_STATUS="уже настроен"
     ok "RPS уже настроен; существующие значения не изменяются"
 elif (( RXQ_COUNT >= CPU )); then
-    RPS_STATUS="hardware multiqueue ${RXQ_COUNT} RX / ${CPU} CPU"
+    RPS_STATUS="аппаратные очереди: RX=${RXQ_COUNT}, vCPU=${CPU}"
     ok "RPS не нужен: RX-очередей (${RXQ_COUNT}) не меньше числа vCPU (${CPU})"
 elif [[ -n $SYSTEMCTL_BIN && -d /run/systemd/system ]]; then
     RPS_MASK=""
@@ -2377,7 +2408,7 @@ EOF
         if "$SYSTEMCTL_BIN" enable nuvrion-rps.service >/dev/null 2>&1 \
            && "$SYSTEMCTL_BIN" restart nuvrion-rps.service >/dev/null 2>&1 \
            && rps_current_active; then
-            RPS_STATUS="Nuvrion mask=${RPS_MASK}, RX=${RXQ_COUNT}"
+            RPS_STATUS="Nuvrion: маска=${RPS_MASK}, RX-очередей=${RXQ_COUNT}"
             ok "RPS включён для ${PRIMARY_IF}: ${RXQ_COUNT} RX-очередь(и), CPU mask=${RPS_MASK}"
         else
             RPS_STATUS="не удалось включить"
@@ -2514,7 +2545,7 @@ EOFCOMPOSE
         DOCKER_CONTAINER_RECREATED=$((DOCKER_CONTAINER_RECREATED + 1))
         LIMIT_CHANGES=$((LIMIT_CHANGES + 1))
         LIMIT_RESTART_NOTICE=1
-        ok "remnanode: running и оба лимита NOFILE подтверждены"
+        ok "remnanode запущен, оба лимита NOFILE подтверждены"
         return 0
     fi
     if (( existed )); then
@@ -2536,7 +2567,7 @@ EOFCOMPOSE
 fix_docker_default_nofile() {
     local daemon_json=/etc/docker/daemon.json
     if [[ ${NUVRION_ALLOW_DOCKER_RESTART:-0} != 1 ]]; then
-        warn "Глобальный restart Docker запрещён по умолчанию. Для явного разрешения используйте NUVRION_ALLOW_DOCKER_RESTART=1."
+        warn "Перезапуск всего Docker запрещён по умолчанию. Для явного разрешения используйте NUVRION_ALLOW_DOCKER_RESTART=1."
         return 2
     fi
     local tmp backup existed=0 result was_running
@@ -2614,7 +2645,7 @@ PY
     chmod 0644 "$daemon_json"
     LIMIT_CHANGES=$((LIMIT_CHANGES + 1))
     LIMIT_RESTART_NOTICE=1
-    info "В Docker daemon.json установлен default nofile=${NOFILE_TARGET}:${NOFILE_TARGET}."
+    info "В Docker daemon.json установлен лимит по умолчанию nofile=${NOFILE_TARGET}:${NOFILE_TARGET}."
 
     # Пользовательское требование: после изменения конфигурации Docker
     # обязательно перезапускаем Docker daemon.
@@ -2674,7 +2705,7 @@ if [[ -n $DOCKER_BIN ]] && "$TIMEOUT_BIN" 10 "$DOCKER_BIN" inspect --type contai
 
             if (( COMPOSE_RC == 2 )); then
                 if [[ ${NUVRION_ALLOW_DOCKER_RESTART:-0} == 1 ]]; then
-                    info "Compose-метаданные недоступны; явно разрешён fallback через Docker default-ulimits и restart docker.service."
+                    info "Compose-метаданные недоступны; явно разрешён резервный способ через default-ulimits и перезапуск Docker."
                     DAEMON_RC=0
                     fix_docker_default_nofile || DAEMON_RC=$?
                     if (( DAEMON_RC != 0 )); then
@@ -2683,11 +2714,11 @@ if [[ -n $DOCKER_BIN ]] && "$TIMEOUT_BIN" 10 "$DOCKER_BIN" inspect --type contai
                     fi
                 else
                     LIMIT_FIX_ERRORS=$((LIMIT_FIX_ERRORS + 1))
-                    warn "Compose-метаданные недоступны. Глобальный restart Docker не выполняется без NUVRION_ALLOW_DOCKER_RESTART=1."
+                    warn "Compose-метаданные недоступны. Перезапуск всего Docker не выполняется без NUVRION_ALLOW_DOCKER_RESTART=1."
                 fi
             elif (( COMPOSE_RC != 0 )); then
                 LIMIT_FIX_ERRORS=$((LIMIT_FIX_ERRORS + 1))
-                warn "Точечное исправление NOFILE через Docker Compose завершилось ошибкой; restart всего Docker не выполняется автоматически."
+                warn "Точечное исправление NOFILE через Docker Compose завершилось ошибкой; перезапуск всего Docker не выполняется автоматически."
             fi
 
             NOFILE_AFTER=$(get_remnanode_nofile)
@@ -2702,7 +2733,7 @@ if [[ -n $DOCKER_BIN ]] && "$TIMEOUT_BIN" 10 "$DOCKER_BIN" inspect --type contai
 fi
 
 # ============================================================
-# Проверка network namespace Docker
+# Проверка сетевое пространство имён Docker
 # ============================================================
 
 if [[ -n $DOCKER_BIN ]] && "$TIMEOUT_BIN" 10 "$DOCKER_BIN" inspect --type container remnanode >/dev/null 2>&1; then
@@ -2710,9 +2741,9 @@ if [[ -n $DOCKER_BIN ]] && "$TIMEOUT_BIN" 10 "$DOCKER_BIN" inspect --type contai
     echo "Сетевой режим remnanode: ${NETWORK_MODE}"
 
     if [[ $NETWORK_MODE == host ]]; then
-        ok "remnanode использует network namespace хоста"
+        ok "remnanode использует сетевое пространство имён хоста"
     else
-        warn "remnanode не использует host networking; sysctl хоста могут не действовать внутри его network namespace."
+        warn "remnanode не использует сеть хоста; sysctl хоста могут не действовать внутри его сетевое пространство имён."
     fi
 
     CONTAINER_KEYS=(
@@ -2755,7 +2786,7 @@ if [[ -n $DOCKER_BIN ]] && "$TIMEOUT_BIN" 10 "$DOCKER_BIN" inspect --type contai
     done
 
     if (( NETNS_MISMATCH > 0 )); then
-        conflict "В network namespace remnanode отличаются ${NETNS_MISMATCH} настроенных параметров; используйте network_mode: host или задайте эквивалентные sysctl контейнера."
+        conflict "В сетевое пространство имён remnanode отличаются ${NETNS_MISMATCH} настроенных параметров; используйте network_mode: host или задайте эквивалентные sysctl контейнера."
     else
         ok "remnanode видит критические сетевые параметры профиля"
     fi
@@ -2799,7 +2830,7 @@ EOF
                 CHANGED_SYSTEMD_SERVICES+=("$svc")
                 LIMIT_CHANGES=$((LIMIT_CHANGES + 1))
                 LIMIT_RESTART_NOTICE=1
-                info "$svc: создан отдельный drop-in LimitNOFILE=${NOFILE_TARGET}"
+                info "$svc: создан дополнительный файл LimitNOFILE=${NOFILE_TARGET}"
             fi
         fi
     done
@@ -2817,7 +2848,7 @@ EOF
             "$SYSTEMCTL_BIN" daemon-reload >/dev/null 2>&1 || true
             SYSTEMD_DROPINS_READY=0
             LIMIT_FIX_ERRORS=$((LIMIT_FIX_ERRORS + SYSTEMD_DROPINS_CHANGED))
-            conflict "systemd daemon-reload завершился ошибкой; все новые NOFILE drop-in отменены."
+            conflict "systemd daemon-reload завершился ошибкой; все новые дополнительные файлы NOFILE отменены."
         fi
 
         for svc in "${CHANGED_SYSTEMD_SERVICES[@]}"; do
@@ -2837,7 +2868,7 @@ EOF
                     fi
                     "$SYSTEMCTL_BIN" daemon-reload >/dev/null 2>&1 || true
                     "$SYSTEMCTL_BIN" restart "$svc" >/dev/null 2>&1 || true
-                    conflict "Не удалось перезапустить $svc после изменения LimitNOFILE; drop-in отменён."
+                    conflict "Не удалось перезапустить $svc после изменения LimitNOFILE; дополнительный файл отменён."
                 fi
             else
                 info "$svc сейчас не запущен; новый LimitNOFILE применится при следующем старте."
@@ -2863,7 +2894,7 @@ fi
 # Безопасность публичной ноды
 # ============================================================
 # Добавление/генерация SSH-ключей здесь намеренно отсутствует. Это отдельная
-# административная операция. SSH hardening может быть включён только явно и
+# административная операция. Усиление защиты SSH может быть включён только явно и
 # только если подходящий authorized_keys уже существует.
 
 section "БЕЗОПАСНОСТЬ СЕРВЕРА"
@@ -2926,6 +2957,28 @@ ensure_package() {
     return 1
 }
 
+# New SSH jails must also work on hosts that only use the system journal.
+# Keep file-based logging when auth.log exists; never alter an active jail.
+select_fail2ban_backend() {
+    local auth_log=${1:-/var/log/auth.log}
+    F2B_BACKEND=auto
+    [[ -f $auth_log ]] && return 0
+    if [[ -z $PYTHON3_BIN ]]; then
+        warn "Для Fail2ban с системным журналом требуется Python 3; jail не изменён."
+        return 1
+    fi
+    if ! "$PYTHON3_BIN" -c 'from systemd import journal' >/dev/null 2>&1; then
+        ensure_package python3-systemd || return 1
+    fi
+    if ! "$PYTHON3_BIN" -c 'from systemd import journal' >/dev/null 2>&1; then
+        warn "Модуль python3-systemd недоступен; jail Fail2ban не изменён."
+        return 1
+    fi
+    F2B_BACKEND=systemd
+    info "Файл auth.log отсутствует; новый jail Fail2ban использует системный журнал."
+    return 0
+}
+
 # ------------------------------------------------------------
 # SSH: только аудит; ключи не создаём и не добавляем
 # ------------------------------------------------------------
@@ -2974,7 +3027,7 @@ if [[ -n $SSHD_BIN ]]; then
 
     SSH_KBD=$(awk '$1=="kbdinteractiveauthentication" {print $2; exit}' <<<"$SSHD_EFFECTIVE")
     if [[ $SSH_PASSWORD == no && $SSH_KBD == no && $SSH_PUBKEY == yes && ( $SSH_ROOT == prohibit-password || $SSH_ROOT == forced-commands-only || $SSH_ROOT == no ) ]]; then
-        SSH_SECURITY_STATUS="глобальная конфигурация key-only; Match-контексты требуют отдельной проверки"
+        SSH_SECURITY_STATUS="глобально разрешён доступ только по ключам; Match-контексты требуют отдельной проверки"
         info "$SSH_SECURITY_STATUS"
     else
         SSH_SECURITY_STATUS="аудит: password=${SSH_PASSWORD:-?}, root=${SSH_ROOT:-?}, pubkey=${SSH_PUBKEY:-?}"
@@ -2987,9 +3040,9 @@ if [[ -n $SSHD_BIN ]]; then
             if [[ ${NUVRION_SSH_KEY_LOGIN_CONFIRMED:-0} != 1 ]]; then
                 warn "Сначала проверьте отдельный вход root по ключу и доступ к консоли провайдера. Для подтверждения задайте NUVRION_SSH_KEY_LOGIN_CONFIRMED=1. SSH не изменён."
             elif grep -qsE '^[[:space:]]*Match[[:space:]]' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf; then
-                warn "Обнаружены SSH Match-блоки: автоматический hardening пропущен, чтобы не изменить неизвестные условия входа."
+                warn "Обнаружены SSH Match-блоки: автоматическое усиление защиты пропущено, чтобы не изменить неизвестные условия входа."
             elif [[ ! -s $ROOT_KEYS ]]; then
-                warn "NUVRION_HARDEN_SSH=1, но /root/.ssh/authorized_keys пуст или отсутствует; SSH hardening пропущен во избежание потери доступа."
+                warn "NUVRION_HARDEN_SSH=1, но /root/.ssh/authorized_keys пуст или отсутствует; Усиление защиты SSH пропущен во избежание потери доступа."
             else
                 mkdir -p /etc/ssh/sshd_config.d
                 if [[ -f $SSH_DROPIN ]]; then
@@ -3014,14 +3067,14 @@ EOFSSH
                    && grep -qx 'pubkeyauthentication yes' <<<"$SSH_NEW_EFFECTIVE"; then
                     if [[ -n $SYSTEMCTL_BIN && -d /run/systemd/system ]]; then
                         if "$SYSTEMCTL_BIN" reload ssh.service >/dev/null 2>&1 || "$SYSTEMCTL_BIN" reload sshd.service >/dev/null 2>&1; then
-                            SSH_SECURITY_STATUS="key-only включён"
-                            ok "SSH hardening применён через drop-in; SSH-сервис перечитан без restart"
+                            SSH_SECURITY_STATUS="доступ только по ключам включён"
+                            ok "Усиление защиты SSH применён через дополнительный файл настроек; SSH-сервис перечитан без перезапуска"
                         else
-                            warn "SSH-конфигурация валидна, но reload сервиса не удался; изменения вступят в силу при следующем reload/restart."
+                            warn "SSH-конфигурация валидна, но перечитать настройки службы не удалось; изменения вступят в силу при следующем перечитывании или перезапуске."
                         fi
                     else
-                        SSH_SECURITY_STATUS="key-only записан, reload не выполнен"
-                        info "SSH drop-in создан; systemd недоступен, автоматический reload не выполнен."
+                        SSH_SECURITY_STATUS="доступ только по ключам записан, перечитывание не выполнено"
+                        info "дополнительный файл SSH создан; systemd недоступен, автоматическое перечитывание не выполнено."
                     fi
                 else
                     if [[ -n $SSH_DROPIN_BACKUP && -f $SSH_DROPIN_BACKUP ]]; then
@@ -3029,16 +3082,16 @@ EOFSSH
                     else
                         rm -f "$SSH_DROPIN"
                     fi
-                    warn "Новый SSH drop-in не прошёл проверку синтаксиса/эффективных значений; предыдущая конфигурация восстановлена."
+                    warn "Новый дополнительный файл SSH не прошёл проверку синтаксиса/эффективных значений; предыдущая конфигурация восстановлена."
                 fi
             fi
         else
-            info "Nuvrion не добавляет SSH-ключи. Для отдельного включения key-only после подготовки ключа используйте NUVRION_HARDEN_SSH=1."
+            info "Nuvrion не добавляет SSH-ключи. Для отдельного включения доступ только по ключам после подготовки ключа используйте NUVRION_HARDEN_SSH=1."
         fi
     fi
 else
     SSH_SECURITY_STATUS="sshd не обнаружен"
-    info "sshd не обнаружен; SSH hardening не требуется."
+    info "sshd не обнаружен; Усиление защиты SSH не требуется."
 fi
 
 # ------------------------------------------------------------
@@ -3061,6 +3114,9 @@ if [[ $SECURITY_ENABLED == 1 && -n $SSHD_BIN ]]; then
         if "$FAIL2BAN_CLIENT_BIN" status sshd >/dev/null 2>&1; then
             FAIL2BAN_STATUS="sshd уже защищён"
             ok "Fail2ban: существующий jail sshd активен; настройки пользователя не изменяются"
+        elif ! select_fail2ban_backend; then
+            FAIL2BAN_STATUS="не настроен: источник системного журнала недоступен"
+            warn "Fail2ban для SSH не настроен: отсутствует рабочий источник журналов."
         else
             F2B_CONF=/etc/fail2ban/jail.d/99-nuvrion-sshd.conf
             F2B_BACKUP=""
@@ -3073,6 +3129,7 @@ if [[ $SECURITY_ENABLED == 1 && -n $SSHD_BIN ]]; then
 # Nuvrion — защита SSH
 [sshd]
 enabled = true
+backend = ${F2B_BACKEND}
 port = ${SSH_PORT_CSV:-22}
 maxretry = 5
 findtime = 600
@@ -3127,7 +3184,7 @@ if [[ $SECURITY_ENABLED == 1 ]]; then
             ok "Автоматические обновления безопасности уже включены; существующая конфигурация не изменяется"
             if grep -RqsE '^[[:space:]]*Unattended-Upgrade::Automatic-Reboot[[:space:]]+"true"' /etc/apt/apt.conf.d 2>/dev/null; then
                 warn "В существующей конфигурации unattended-upgrades включена автоматическая перезагрузка; Nuvrion её не меняет автоматически."
-                UPDATES_STATUS="включены, autoreboot=true (внешняя настройка)"
+                UPDATES_STATUS="включены, автоперезагрузка разрешена (внешняя настройка)"
             fi
         else
             UA_CONF=/etc/apt/apt.conf.d/52nuvrion-unattended-upgrades
@@ -3138,7 +3195,7 @@ APT::Periodic::Unattended-Upgrade "1";
 Unattended-Upgrade::Automatic-Reboot "false";
 EOFUA
             chmod 0644 "$UA_CONF"
-            UPDATES_STATUS="включены Nuvrion, autoreboot=off"
+            UPDATES_STATUS="включены Nuvrion, автоперезагрузка отключена"
             ok "Автоматические обновления безопасности включены; автоматическая перезагрузка отключена"
         fi
 
@@ -3607,9 +3664,9 @@ resolve_panel_identity() {
     local suggestion=""
     if ((${#rw_ports[@]} == 1)); then
         suggestion=${rw_ports[0]}
-        info "Обнаружен открытый TCP listener rw-node/remnanode: ${suggestion}/tcp."
+        info "Обнаружен открытый TCP-порт rw-node/remnanode: ${suggestion}/tcp."
     elif ((${#rw_ports[@]} > 1)); then
-        info "Обнаружены TCP listeners rw-node/remnanode: $(IFS=,; echo "${rw_ports[*]}")."
+        info "Обнаружены слушающие TCP-порты rw-node/remnanode: $(IFS=,; echo "${rw_ports[*]}")."
     else
         info "Source-specific firewall rule для панели не найден; порт панели автоматически не подтверждён."
     fi
@@ -3667,40 +3724,105 @@ panel_port_collides_with_ssh() {
 
 get_existing_ufw_panel_sources() {
     [[ -n $UFW_BIN && -n ${PANEL_PORT:-} ]] || return 0
-    "$UFW_BIN" status 2>/dev/null | awk -v target="${PANEL_PORT}/tcp" '
-        $1==target && $2=="ALLOW" && $3!="Anywhere" {print $3}
-        $1==target && $2=="(v6)" && $3=="ALLOW" && $4!="Anywhere" {print $4}
-    ' | sort -u
+    "$UFW_BIN" status 2>/dev/null | awk -v target="${PANEL_PORT}/tcp" -v bare="$PANEL_PORT" '
+        ($1==target || $1==bare) && $2=="ALLOW" && $3!="Anywhere" && $3!="OUT" {print $3}
+        ($1==target || $1==bare) && $2=="(v6)" && $3=="ALLOW" && $4!="Anywhere" && $4!="OUT" {print $4}
+    ' | sort -u || return 1
     return 0
 }
 
 ufw_has_broad_panel_rule() {
     [[ -n $UFW_BIN && -n ${PANEL_PORT:-} ]] || return 1
-    "$UFW_BIN" status 2>/dev/null | grep -Eq "^[[:space:]]*${PANEL_PORT}/tcp([[:space:]]+\\(v6\\))?[[:space:]]+ALLOW[[:space:]]+Anywhere([[:space:]]|$)"
+    "$UFW_BIN" status 2>/dev/null | grep -Eq "^[[:space:]]*${PANEL_PORT}(/tcp)?([[:space:]]+\\(v6\\))?[[:space:]]+ALLOW[[:space:]]+Anywhere([[:space:]]|$)"
+}
+
+ufw_panel_rules_supported() {
+    local status unsupported
+    status=$("$TIMEOUT_BIN" 15 "$UFW_BIN" status numbered 2>/dev/null) || return 1
+    # Inactive status hides prepared rules. Do not enable an unverified ruleset.
+    if [[ $status != *'Status: active'* ]]; then
+        PANEL_FIREWALL_STATUS="не проверен: правила выключенного UFW недоступны"
+        warn "UFW выключен: нельзя подтвердить отсутствие правил, обходящих ограничение ${PANEL_PORT}/tcp. Настройте правила вручную перед включением."
+        return 1
+    fi
+    unsupported=$(awk -v port="$PANEL_PORT" '
+        match($0,/^\[[[:space:]]*[0-9]+\][[:space:]]+/) {
+            rest=substr($0,RSTART+RLENGTH); sub(/[[:space:]]+#.*/,"",rest)
+            if (!match(rest,/[[:space:]]+(ALLOW|LIMIT) IN[[:space:]]+/)) next
+            action=substr(rest,RSTART,RLENGTH)
+            target=substr(rest,1,RSTART-1)
+            gsub(/[[:space:]]+\(v6\)/,"",target)
+            bare=target; sub(/[[:space:]]+on[[:space:]]+[^[:space:]]+$/,"",bare)
+            # Named applications and other unfamiliar destinations are opaque.
+            if (bare !~ /^[0-9,:]+(\/(tcp|udp))?$/) { print $0; exit }
+            if (bare ~ /\/udp$/) next
+            spec=bare; sub(/\/tcp$/,"",spec)
+            count=split(spec,ports,","); overlap=0; invalid=0
+            for (i=1;i<=count;i++) {
+                n=split(ports[i],bounds,":")
+                if (n>2 || bounds[1] !~ /^[0-9]+$/ || (n==2 && bounds[2] !~ /^[0-9]+$/)) { invalid=1; break }
+                low=bounds[1]+0; high=(n==2 ? bounds[2]+0 : low)
+                if (low<1 || high>65535 || low>high) { invalid=1; break }
+                if (low<=port && port<=high) overlap=1
+            }
+            # Only the exact, simple ALLOW form can be reconciled safely below.
+            if (invalid || (overlap && (target!=bare || spec!=port || action ~ /LIMIT/))) { print $0; exit }
+        }' <<<"$status") || return 1
+    if [[ -n $unsupported ]]; then
+        PANEL_FIREWALL_STATUS="не подтверждён: неподдерживаемое разрешение UFW"
+        warn "Ограничение ${PANEL_PORT}/tcp не применяется: правило UFW может его обходить: $unsupported. Измените его вручную; чужие порты и порядок правил сохраняются."
+        return 1
+    fi
+    return 0
 }
 
 remove_broad_panel_rules() {
-    local -a nums=()
-    local n failed=0 status
+    local row n family protocol action failed=0 status
+    local -a rows=()
     [[ -n $UFW_BIN && -n ${PANEL_PORT:-} ]] || return 1
     status=$("$UFW_BIN" status numbered 2>/dev/null) || return 1
-    mapfile -t nums < <(
-        awk -v target="${PANEL_PORT}/tcp" '
+    mapfile -t rows < <(
+        awk -v port="$PANEL_PORT" '
             match($0,/^\[[[:space:]]*[0-9]+\][[:space:]]+/) {
                 n=substr($0,RSTART,RLENGTH); gsub(/[^0-9]/,"",n)
                 rest=substr($0,RSTART+RLENGTH)
-                if (n == "") next
-                if (rest !~ ("^" target "([[:space:]]|$)")) next
-                if (rest !~ /(ALLOW|DENY) IN/) next
-                if (rest !~ /Anywhere/) next
-                print n
+                if (rest !~ ("^" port "(/tcp)?([[:space:]]+\\(v6\\))?[[:space:]]+(ALLOW|DENY) IN[[:space:]]+Anywhere([[:space:]]|$)")) next
+                protocol=(rest ~ ("^" port "/tcp([[:space:]]|$)") ? "tcp" : "both")
+                family=(rest ~ ("^" port "(/tcp)?[[:space:]]+\\(v6\\)") ? "::/0" : "0.0.0.0/0")
+                action=(rest ~ /[[:space:]]ALLOW IN[[:space:]]/ ? "allow" : "deny")
+                print n "\t" family "\t" protocol "\t" action
             }
-        ' <<<"$status" | sort -nr
+        ' <<<"$status" | sort -t $'\t' -k1,1nr
     )
-    for n in "${nums[@]}"; do
+    for row in "${rows[@]}"; do
+        IFS=$'\t' read -r n family protocol action <<<"$row"
         if ! "$UFW_BIN" --force delete "$n" >/dev/null 2>&1; then
-            failed=1
+            failed=1; continue
         fi
+        # A protocol-free rule also controls UDP. Keep that original family,
+        # verdict and position rather than accidentally changing UDP access.
+        if [[ $protocol == both ]]; then
+            "$UFW_BIN" insert "$n" "$action" from "$family" to any port "$PANEL_PORT" proto udp \
+                comment Nuvrion-preserved-UDP >/dev/null 2>&1 || failed=1
+        fi
+    done
+    return "$failed"
+}
+
+remove_owned_panel_rules() {
+    local status n failed=0
+    local -a nums=()
+    status=$("$UFW_BIN" status numbered 2>/dev/null) || return 1
+    mapfile -t nums < <(awk -v target="${PANEL_PORT}/tcp" '
+        match($0,/^\[[[:space:]]*[0-9]+\][[:space:]]+/) {
+            n=substr($0,RSTART,RLENGTH); gsub(/[^0-9]/,"",n)
+            rest=substr($0,RSTART+RLENGTH)
+            if (rest ~ ("^" target "([[:space:]]|$)") &&
+                rest ~ /[[:space:]](ALLOW|DENY) IN[[:space:]]/ &&
+                rest ~ /#[[:space:]]+Nuvrion-panel-access[[:space:]]*$/) print n
+        }' <<<"$status" | sort -nr)
+    for n in "${nums[@]}"; do
+        "$UFW_BIN" --force delete "$n" >/dev/null 2>&1 || failed=1
     done
     return "$failed"
 }
@@ -3751,6 +3873,7 @@ add_ufw_extra_ports() {
 
 configure_panel_ufw_rule() {
     local snapshot status rc=0
+    ufw_panel_rules_supported || return 1
     status=$("$TIMEOUT_BIN" 15 "$UFW_BIN" status) || return 1
     snapshot=$(mktemp -d "$BACKUP_DIR/ufw-${RUN_ID}.XXXXXX") || return 1
     cp -a /etc/ufw "$snapshot/ufw" || return 1
@@ -3758,7 +3881,7 @@ configure_panel_ufw_rule() {
     if cp -a "$snapshot/ufw/." /etc/ufw/; then
         if [[ $status == *'Status: active'* ]]; then
             if ! "$TIMEOUT_BIN" 30 "$UFW_BIN" reload; then
-                conflict "Откат файлов UFW выполнен, но reload не подтверждён. Снимок: $snapshot"
+                conflict "Откат файлов UFW выполнен, но перечитывание не подтверждено. Снимок: $snapshot"
             fi
         fi
     else
@@ -3768,7 +3891,7 @@ configure_panel_ufw_rule() {
 }
 
 configure_panel_ufw_rule_impl() {
-    local ip
+    local ip existing foreign
     [[ -n ${PANEL_PORT:-} && -n ${PANEL_IPS_NORMALIZED:-} ]] || return 1
     if panel_port_collides_with_ssh; then
         warn "Порт панели ${PANEL_PORT}/tcp совпадает с портом SSH; ограничение по IP через UFW не применяется."
@@ -3781,16 +3904,32 @@ configure_panel_ufw_rule_impl() {
         return 3
     fi
     if ufw_has_broad_panel_rule; then
-        info "Удаляются широкие правила ${PANEL_PORT}/tcp -> Anywhere; разрешение останется только для IP панели."
+        info "Широкое разрешение TCP-порта ${PANEL_PORT} заменяется разрешениями для панели; правило UDP сохраняется."
     fi
+    remove_broad_panel_rules || return 1
+    remove_owned_panel_rules || return 1
+    # Only comments written by this version prove ownership. Never adopt or
+    # remove an unmarked administrator rule merely because its IP matches.
+    existing=$(get_existing_ufw_panel_sources) || return 1
     while IFS= read -r ip; do
         [[ -n $ip ]] || continue
-        "$UFW_BIN" allow from "$ip" to any port "$PANEL_PORT" proto tcp >/dev/null 2>&1 || return 1
+        if grep -Fxq "$ip" <<<"$existing"; then continue; fi
+        "$UFW_BIN" allow from "$ip" to any port "$PANEL_PORT" proto tcp \
+            comment Nuvrion-panel-access >/dev/null 2>&1 || return 1
     done <<<"$PANEL_IPS_NORMALIZED"
-    remove_broad_panel_rules || return 1
-    "$UFW_BIN" deny "${PANEL_PORT}/tcp" >/dev/null 2>&1 || return 1
+    "$UFW_BIN" deny "${PANEL_PORT}/tcp" comment Nuvrion-panel-access >/dev/null 2>&1 || return 1
+    foreign=""
+    while IFS= read -r ip; do
+        [[ -n $ip ]] || continue
+        grep -Fxq "$ip" <<<"$PANEL_IPS_NORMALIZED" && continue
+        foreign+="${foreign:+, }$ip"
+    done <<<"$existing"
     PANEL_SOURCE_CSV=$(awk 'NF{if(out!="")out=out",";out=out $0} END{print out}' <<<"$PANEL_IPS_NORMALIZED")
-    PANEL_FIREWALL_STATUS="${PANEL_PORT}/tcp только: ${PANEL_SOURCE_CSV}"
+    PANEL_FIREWALL_STATUS="${PANEL_PORT}/tcp: IP панели ${PANEL_SOURCE_CSV}"
+    if [[ -n $foreign ]]; then
+        PANEL_FIREWALL_STATUS+="; сторонние разрешения: $foreign"
+        warn "Сохранены непомеченные разрешения ${PANEL_PORT}/tcp: $foreign. Проверьте их вручную; принадлежность Nuvrion не подтверждена."
+    fi
     FIREWALL_CHANGED=1
     return 0
 }
@@ -3930,7 +4069,7 @@ audit_or_configure_external_firewall_panel() {
             return 0
         fi
         if nft_existing_panel_protection_ok; then
-            PANEL_FIREWALL_STATUS="nftables: найдены whitelist/drop; порядок и доступ извне требуют проверки"
+            PANEL_FIREWALL_STATUS="nftables: найдены разрешения по IP и запрет остальных; порядок и доступ извне требуют проверки"
             warn "Для ${PANEL_PORT}/tcp найдены правила nftables, но анализ строк не доказывает итоговую фильтрацию."
             return 0
         fi
@@ -4017,7 +4156,7 @@ if [[ $SECURITY_ENABLED == 1 ]]; then
                 info "UFW активен: существующие ограничения источников SSH сохраняются."
                 if (( PANEL_NEEDED && PANEL_UFW_ALLOWED )); then
                     if configure_panel_ufw_rule; then
-                        ok "UFW: API панели ${PANEL_PORT}/tcp ограничен подтверждёнными IP панели"
+                        ok "UFW: ${PANEL_FIREWALL_STATUS}"
                     else
                         warn "Не удалось полностью настроить UFW для ${PANEL_PORT}/tcp."
                     fi
@@ -4030,6 +4169,10 @@ if [[ $SECURITY_ENABLED == 1 ]]; then
                 elif [[ ${NUVRION_ENABLE_UFW:-auto} == 0 ]]; then WANT_ENABLE=0
                 elif prompt_yes_no "UFW установлен, но выключен. Настроить и включить firewall?"; then WANT_ENABLE=1; fi
 
+                if (( WANT_ENABLE && PANEL_NEEDED && PANEL_UFW_ALLOWED )) && ! ufw_panel_rules_supported; then
+                    WANT_ENABLE=0
+                    warn "UFW не включается: безопасное ограничение порта панели не подтверждено."
+                fi
                 if (( WANT_ENABLE )); then
                     info "Перед включением UFW сохраняются фактически открытые сейчас сервисные порты; жёсткого списка портов Nuvrion нет."
                     UFW_PREPARE_OK=1
@@ -4086,7 +4229,7 @@ if [[ $SECURITY_ENABLED == 1 ]]; then
                         FIREWALL_STATUS="UFW не включён: ошибка подготовки обязательных правил"
                         warn "Подготовка UFW завершилась ошибкой. Firewall оставлен выключенным, чтобы не потерять SSH или доступ панели."
                     elif "$UFW_BIN" --force enable >/dev/null 2>&1 && "$UFW_BIN" status 2>/dev/null | grep -q '^Status: active'; then
-                        FIREWALL_STATUS="UFW включён, default deny incoming"
+                        FIREWALL_STATUS="UFW включён, входящие по умолчанию запрещены"
                         FIREWALL_CHANGED=1
                         ok "UFW включён: входящие по умолчанию запрещены, обнаруженные рабочие сервисы сохранены"
                     else
@@ -4461,7 +4604,7 @@ elif [[ -n $CERTBOT_BIN || -d /etc/letsencrypt ]]; then
             ok "Автопродление Certbot: $CERT_TIMER_STATUS"
         else
             CERT_VERIFY_OK=0
-            warn "Certbot найден, но автоматический timer/cron автопродления не подтверждён."
+            warn "Certbot найден, но автоматический таймер или cron автопродления не подтверждён."
             CERT_TIMER_STATUS="не подтверждён"
         fi
 
@@ -4517,10 +4660,10 @@ elif [[ -n $CERTBOT_BIN || -d /etc/letsencrypt ]]; then
         if [[ -z $CERTBOT_BIN ]]; then
             CERT_DRYRUN_STATUS="невозможно: certbot недоступен"
             CERT_VERIFY_OK=0
-            warn "Certbot dry-run невозможен: команда certbot отсутствует."
+            warn "Тестовое продление Certbot невозможен: команда certbot отсутствует."
         elif [[ $CERTBOT_DRY_RUN != 1 ]]; then
             CERT_DRYRUN_STATUS="отключён NUVRION_CERTBOT_DRY_RUN=0"
-            info "Certbot dry-run отключён NUVRION_CERTBOT_DRY_RUN=0."
+            info "Тестовое продление Certbot отключён NUVRION_CERTBOT_DRY_RUN=0."
         elif certbot_dryrun_needed; then
             info "Проверяется реальное автопродление: certbot renew --dry-run ..."
             DRY_CMD=("$CERTBOT_BIN" renew --dry-run)
@@ -4545,15 +4688,15 @@ elif [[ -n $CERTBOT_BIN || -d /etc/letsencrypt ]]; then
                 date +%s >"$CERT_DRYRUN_STAMP"
                 chmod 0600 "$CERT_DRYRUN_STAMP" "$CERT_DRYRUN_LOG" 2>/dev/null || true
                 CERT_DRYRUN_STATUS="успешно"
-                ok "Certbot dry-run завершён успешно"
+                ok "Тестовое продление Certbot завершён успешно"
             else
                 CERT_DRYRUN_STATUS="ошибка rc=$DRY_RC (лог: $CERT_DRYRUN_LOG)"
                 CERT_VERIFY_OK=0
-                warn "Certbot dry-run завершился ошибкой (код $DRY_RC). Лог: $CERT_DRYRUN_LOG"
+                warn "Тестовое продление Certbot завершился ошибкой (код $DRY_RC). Лог: $CERT_DRYRUN_LOG"
             fi
         else
             CERT_DRYRUN_STATUS="успешно проверялся менее 7 дней назад"
-            ok "Certbot dry-run недавно проходил успешно; повторная staging-проверка сейчас не нужна"
+            ok "Тестовое продление Certbot недавно проходил успешно; повторная тестовая проверка сейчас не нужна"
         fi
 
         if [[ -n $CERT_MIN_DAYS ]]; then
@@ -4566,7 +4709,7 @@ elif [[ -n $CERTBOT_BIN || -d /etc/letsencrypt ]]; then
                 ok "Срок сертификатов: минимум ${CERT_MIN_DAYS} дн."
             fi
         fi
-        CERT_STATUS="certbot: ${CERT_COUNT} шт.; ${CERT_TIMER_STATUS}; dry-run=${CERT_DRYRUN_STATUS}"
+        CERT_STATUS="certbot: ${CERT_COUNT} шт.; ${CERT_TIMER_STATUS}; тестовое продление=${CERT_DRYRUN_STATUS}"
     fi
 elif command -v acme.sh >/dev/null 2>&1 || [[ -x /root/.acme.sh/acme.sh ]]; then
     CERT_MANAGER="acme.sh"
@@ -4660,7 +4803,7 @@ if [[ $SYSTEM_MAINTENANCE == 1 ]]; then
             ok "fstrim.timer уже настроен; существующая конфигурация не изменяется"
         elif [[ $FSTRIM_ENABLED == masked ]]; then
             FSTRIM_STATUS="замаскирован пользователем"
-            info "fstrim.timer замаскирован; Nuvrion не снимает пользовательскую mask-настройку."
+            info "fstrim.timer замаскирован; Nuvrion не снимает пользовательскую блокировку службы."
         else
             FSTRIM_TEST_OK=0
             ROOT_SRC=""
@@ -4682,7 +4825,7 @@ if [[ $SYSTEM_MAINTENANCE == 1 ]]; then
                     FSTRIM_STATUS="включён Nuvrion (discard=${DISCARD_GRAN} B)"
                     ok "Корневое устройство поддерживает discard (${DISCARD_GRAN} B); fstrim.timer включён"
                 else
-                    FSTRIM_STATUS="discard поддерживается, timer не включён"
+                    FSTRIM_STATUS="TRIM поддерживается, таймер не включён"
                     warn "Discard поддерживается, но не удалось включить fstrim.timer."
                 fi
             else
@@ -4755,7 +4898,7 @@ install_post_reboot_check() {
     atomic_write_file "$POST_REBOOT_SCRIPT" 0755 <<'POSTCHECK' || return 1
 #!/usr/bin/env bash
 set -u
-export LC_ALL=C
+export LC_ALL=C.UTF-8
 
 STATE_DIR=/var/lib/nuvrion-tuning
 MARKER="$STATE_DIR/post-reboot-check.pending"
@@ -4793,10 +4936,18 @@ check_sysctl() {
     fi
 }
 
-printf '============================================================\n'
-printf ' Nuvrion — проверка после перезагрузки\n'
+WIDTH=${COLUMNS:-80}
+[[ $WIDTH =~ ^[0-9]{1,3}$ ]] || WIDTH=80
+WIDTH=$((10#$WIDTH))
+(( WIDTH < 40 )) && WIDTH=40
+(( WIDTH > 80 )) && WIDTH=80
+printf -v LINE '%*s' "$WIDTH" ''
+LINE=${LINE// /─}
+
+printf '%s\n' "$LINE"
+printf 'Nuvrion: проверка после перезагрузки\n'
 printf ' Дата: %s\n' "$(date -Is 2>/dev/null || date)"
-printf '============================================================\n'
+printf '%s\n' "$LINE"
 
 for key in \
     net.core.default_qdisc \
@@ -4826,7 +4977,7 @@ if command -v docker >/dev/null 2>&1 && timeout 10 docker inspect --type contain
     RUNNING=$(timeout 10 docker inspect --type container -f '{{.State.Running}}' remnanode 2>/dev/null || true)
     if [[ $RUNNING == true ]]; then
         NETMODE=$(timeout 10 docker inspect --type container -f '{{.HostConfig.NetworkMode}}' remnanode 2>/dev/null || true)
-        [[ $NETMODE == host ]] && ok "remnanode network mode: host" || info "remnanode network mode: ${NETMODE:-не определён}"
+        [[ $NETMODE == host ]] && ok "remnanode режим сети: host" || info "remnanode режим сети: ${NETMODE:-не определён}"
         NOFILE=$(timeout 10 docker exec remnanode sh -c 'printf "%s/%s" "$(ulimit -Sn)" "$(ulimit -Hn)"' 2>/dev/null || true)
         if [[ $NOFILE == */* ]]; then
             S=${NOFILE%/*}; H=${NOFILE#*/}
@@ -4851,9 +5002,9 @@ else
     info "Активный UFW/nftables.service не подтверждён."
 fi
 
-printf '============================================================\n'
-printf 'ИТОГ: OK=%s, WARN=%s\n' "$OKS" "$WARNS"
-printf '============================================================\n'
+printf '%s\n' "$LINE"
+printf 'ИТОГ: успешно=%s, предупреждений=%s\n' "$OKS" "$WARNS"
+printf '%s\n' "$LINE"
 rm -f "$MARKER"
 exit 0
 POSTCHECK
@@ -4893,7 +5044,7 @@ if [[ -e /var/run/reboot-required || $PROFILE_REBOOT_REQUIRED -eq 1 ]]; then
         fi
     else
         POST_REBOOT_STATUS="отключена NUVRION_POST_REBOOT_CHECK=0"
-        info "Самопроверка после reboot отключена NUVRION_POST_REBOOT_CHECK=0."
+        info "Самопроверка после перезагрузки отключена NUVRION_POST_REBOOT_CHECK=0."
     fi
 else
     POST_REBOOT_STATUS="не требуется сейчас"
@@ -4965,6 +5116,7 @@ FINAL_SKIP=0
 
 ufw_current_panel_protection_ok() {
     [[ -n $UFW_BIN && -n ${PANEL_PORT:-} && -n ${PANEL_IPS_NORMALIZED:-} ]] || return 1
+    ufw_panel_rules_supported || return 1
     local expected actual ip
     expected=$(printf '%s\n' "$PANEL_IPS_NORMALIZED" | awk 'NF' | sort -u)
     actual=$(get_existing_ufw_panel_sources)
@@ -5033,14 +5185,14 @@ else
 fi
 
 if (( CPU <= 1 )); then final_skip "RPS / ядра" "1 vCPU — не требуется"
-elif [[ ${RPS_STATUS:-} == *"hardware multiqueue"* ]]; then final_ok "RPS / ядра" "$RPS_STATUS — программный RPS не требуется"
+elif [[ ${RPS_STATUS:-} == *"аппаратные очереди"* ]]; then final_ok "RPS / ядра" "$RPS_STATUS — программный RPS не требуется"
 elif rps_current_active; then final_ok "RPS / ядра" "ненулевые маски RX-очередей подтверждены"
 else final_warn "RPS / ядра" "${RPS_STATUS:-статус не подтверждён}"; fi
 
 if [[ -n $DOCKER_BIN ]] && "$TIMEOUT_BIN" 10 "$DOCKER_BIN" inspect --type container remnanode >/dev/null 2>&1; then
     RUNNING=$($TIMEOUT_BIN 10 "$DOCKER_BIN" inspect --type container -f '{{.State.Running}}' remnanode 2>/dev/null || true)
     NFP=$(get_remnanode_nofile || true)
-    if [[ $RUNNING == true && $NFP == */* ]] && nofile_pair_ok "$NFP"; then final_ok "Remnawave Node" "running, NOFILE=$NFP"; else final_warn "Remnawave Node" "running=${RUNNING:-?}, NOFILE=${NFP:-?}"; fi
+    if [[ $RUNNING == true && $NFP == */* ]] && nofile_pair_ok "$NFP"; then final_ok "Remnawave Node" "запущен, NOFILE=$NFP"; else final_warn "Remnawave Node" "состояние запуска=${RUNNING:-?}, NOFILE=${NFP:-?}"; fi
 else
     final_skip "Remnawave Node" "контейнер remnanode не обнаружен"
 fi
@@ -5058,9 +5210,9 @@ if [[ $SECURITY_ENABLED == 1 ]]; then
        && package_installed unattended-upgrades \
        && [[ -n $SYSTEMCTL_BIN ]] \
        && "$SYSTEMCTL_BIN" is-active --quiet apt-daily-upgrade.timer; then
-        final_ok "Security updates" "эффективная настройка и активный таймер подтверждены"
+        final_ok "Обновления безопасности" "эффективная настройка и активный таймер подтверждены"
     else
-        final_warn "Security updates" "эффективное расписание не подтверждено: ${UPDATES_STATUS:-?}"
+        final_warn "Обновления безопасности" "эффективное расписание не подтверждено: ${UPDATES_STATUS:-?}"
     fi
 else
     final_skip "Безопасность" "NUVRION_SECURITY=0"
@@ -5113,7 +5265,7 @@ if [[ $SYSTEM_MAINTENANCE == 1 ]]; then
     fi
     if [[ -n $SYSTEMCTL_BIN ]] && "$SYSTEMCTL_BIN" is-enabled --quiet fstrim.timer 2>/dev/null; then final_ok "TRIM" "fstrim.timer включён"
     elif [[ ${FSTRIM_STATUS:-} == *"не требуется"* || ${FSTRIM_STATUS:-} == *"не поддерж"* ]]; then final_skip "TRIM" "$FSTRIM_STATUS"
-    else final_warn "TRIM" "${FSTRIM_STATUS:-состояние timer не подтверждено}"; fi
+    else final_warn "TRIM" "${FSTRIM_STATUS:-состояние таймера не подтверждено}"; fi
 else
     final_skip "Обслуживание" "NUVRION_SYSTEM_MAINTENANCE=0"
 fi
@@ -5130,10 +5282,10 @@ if [[ -n $SYSTEMCTL_BIN && -f $AUTHORITATIVE_SERVICE ]]; then
     if "$SYSTEMCTL_BIN" is-enabled --quiet nuvrion-performance-sysctl.service 2>/dev/null; then
         final_ok "Автоприменение sysctl" "nuvrion-performance-sysctl.service включён"
     else
-        final_warn "Автоприменение sysctl" "systemd-unit существует, но не enabled"
+        final_warn "Автоприменение sysctl" "файл службы systemd существует, но автозапуск выключен"
     fi
 else
-    final_skip "Автоприменение sysctl" "systemd-unit не используется"
+    final_skip "Автоприменение sysctl" "служба systemd не используется"
 fi
 
 if [[ -S /var/run/docker.sock && -n $STAT_BIN ]]; then
@@ -5184,110 +5336,101 @@ else
     final_skip "Диск / inode" "статус не определён"
 fi
 
-FINAL_CHECK_STATUS="OK=${FINAL_OK}, предупреждений=${FINAL_WARN}, пропущено=${FINAL_SKIP}, всего=${FINAL_TOTAL}"
+FINAL_CHECK_STATUS="успешно=${FINAL_OK}, предупреждений=${FINAL_WARN}, пропущено=${FINAL_SKIP}, всего=${FINAL_TOTAL}"
 if (( FINAL_WARN > 0 && WARNINGS == 0 )); then WARNINGS=1; fi
 printf '%s%s%s\n' "$C_DIM" "$UI_LINE" "$C_RESET"
-printf '  Финальная проверка: %s\n' "$FINAL_CHECK_STATUS"
+report_row "Финальная проверка" "$FINAL_CHECK_STATUS"
 
 # ============================================================
 # Итоговый отчёт
 # ============================================================
 
-printf '\n%s%s%s\n' "$C_BOLD" "$C_CYAN" "$UI_LINE"
-printf '  Nuvrion v1.0.0  ·  ИТОГОВЫЙ ОТЧЁТ\n'
-printf '%s%s\n' "$UI_LINE" "$C_RESET"
+section "Nuvrion v1.0.0 · ИТОГОВЫЙ ОТЧЁТ"
+section "СИСТЕМА"
+report_row "CPU / RAM" "${CPU} vCPU / ${RAM_MB} МБ"
+report_row "Конфигурация" "$CONF"
+report_row "Снимок до изменений" "$SNAPSHOT"
+report_row "ZRAM" "$ZRAM_STATUS"
+report_row "RPS / ядра" "$RPS_STATUS"
+report_row "NTP / время" "$NTP_STATUS"
+report_row "TRIM" "$FSTRIM_STATUS"
+report_row "Диск / inode" "${DISK_STATUS}, inode=${INODE_STATUS}"
 
-printf '%sСИСТЕМА%s\n' "$C_BOLD" "$C_RESET"
-printf '  CPU / RAM             %s vCPU / %s MB\n' "$CPU" "$RAM_MB"
-printf '  Конфигурация          %s\n' "$CONF"
-printf '  Снимок до изменений   %s\n' "$SNAPSHOT"
-printf '  ZRAM                  %s\n' "$ZRAM_STATUS"
-printf '  RPS / ядра            %s\n' "$RPS_STATUS"
-printf '  NTP / время           %s\n' "$NTP_STATUS"
-printf '  TRIM                  %s\n' "$FSTRIM_STATUS"
-printf '  Диск / inode          %s, inode=%s\n' "$DISK_STATUS" "$INODE_STATUS"
+section "СЕТЬ И ПРОИЗВОДИТЕЛЬНОСТЬ"
+report_row "Буферы" "rmem=$(sysctl -n net.core.rmem_max 2>/dev/null || true) wmem=$(sysctl -n net.core.wmem_max 2>/dev/null || true)"
+report_row "Очереди / SYN" "$(sysctl -n net.core.netdev_max_backlog 2>/dev/null || true) / $(sysctl -n net.ipv4.tcp_max_syn_backlog 2>/dev/null || true)"
+report_row "BBR / qdisc" "$(sysctl -n net.ipv4.tcp_congestion_control 2>/dev/null || true) / $(sysctl -n net.core.default_qdisc 2>/dev/null || true)"
+report_row "Диапазон портов" "$(normalize_ws "$(sysctl -n net.ipv4.ip_local_port_range 2>/dev/null || true)")"
+report_row "Резерв UDP" "только явно заданные"
+if (( MANAGE_RESERVED )); then report_row "Зарезерв. порты" "$(sysctl -n net.ipv4.ip_local_reserved_ports 2>/dev/null || true)"; fi
+report_row "Лимиты нагрузки" "изменено=${LIMIT_CHANGES}, ошибок=${LIMIT_FIX_ERRORS}"
+report_row "Docker" "перезапусков=${DOCKER_RESTARTED}, пересозданий ноды=${DOCKER_CONTAINER_RECREATED}"
+report_row "Службы systemd" "перезапущено=${SYSTEMD_SERVICES_RESTARTED}"
 
-printf '\n%sСЕТЬ И ПРОИЗВОДИТЕЛЬНОСТЬ%s\n' "$C_BOLD" "$C_RESET"
-printf '  Буферы                rmem=%s wmem=%s\n' "$(sysctl -n net.core.rmem_max 2>/dev/null)" "$(sysctl -n net.core.wmem_max 2>/dev/null)"
-printf '  Backlog / SYN         %s / %s\n' "$(sysctl -n net.core.netdev_max_backlog 2>/dev/null)" "$(sysctl -n net.ipv4.tcp_max_syn_backlog 2>/dev/null)"
-printf '  BBR / qdisc           %s / %s\n' "$(sysctl -n net.ipv4.tcp_congestion_control 2>/dev/null)" "$(sysctl -n net.core.default_qdisc 2>/dev/null)"
-printf '  Диапазон портов       %s\n' "$(normalize_ws "$(sysctl -n net.ipv4.ip_local_port_range 2>/dev/null)")"
-printf '  Резерв UDP            только явно заданные\n'
-if (( MANAGE_RESERVED )); then printf '  Зарезерв. порты       %s\n' "$(sysctl -n net.ipv4.ip_local_reserved_ports 2>/dev/null || true)"; fi
-printf '  Лимиты нагрузки       изменено=%s, ошибок=%s\n' "$LIMIT_CHANGES" "$LIMIT_FIX_ERRORS"
-printf '  Docker                restart=%s, recreate remnanode=%s\n' "$DOCKER_RESTARTED" "$DOCKER_CONTAINER_RECREATED"
-printf '  Systemd-сервисы       перезапущено=%s\n' "$SYSTEMD_SERVICES_RESTARTED"
-
-printf '\n%sБЕЗОПАСНОСТЬ%s\n' "$C_BOLD" "$C_RESET"
-printf '  Защита ядра           %s параметров\n' "${#SECURITY_SYSCTL_KEYS[@]}"
-printf '  Fail2ban              %s\n' "$FAIL2BAN_STATUS"
-printf '  Обновления            %s\n' "$UPDATES_STATUS"
-printf '  Брандмауэр            %s\n' "$FIREWALL_STATUS"
+section "БЕЗОПАСНОСТЬ"
+report_row "Защита ядра" "${#SECURITY_SYSCTL_KEYS[@]} параметров"
+report_row "Fail2ban" "$FAIL2BAN_STATUS"
+report_row "Обновления" "$UPDATES_STATUS"
+report_row "Брандмауэр" "$FIREWALL_STATUS"
 if [[ -n ${PANEL_PORT:-} ]]; then
-    printf '  Панель %-15s %s\n' "${PANEL_PORT}/tcp" "$PANEL_FIREWALL_STATUS"
-    printf '  Определение панели    %s\n' "$PANEL_IDENTITY_SOURCE"
+    report_row "Панель ${PANEL_PORT}/tcp" "$PANEL_FIREWALL_STATUS"
+    report_row "Определение панели" "$PANEL_IDENTITY_SOURCE"
 else
-    printf '  Панель API            %s\n' "$PANEL_FIREWALL_STATUS"
+    report_row "API панели" "$PANEL_FIREWALL_STATUS"
 fi
-printf '  SSH                   %s\n' "$SSH_SECURITY_STATUS"
-printf '  Опасные порты         %s\n' "${PUBLIC_DANGEROUS_PORTS:-не проверены}"
-printf '  Файлы Nuvrion        %s\n' "$SECURITY_FILES_STATUS"
-printf '  Сертификаты           %s\n' "$CERT_STATUS"
-printf '  ACME / firewall       %s\n' "$CERT_FIREWALL_STATUS"
+report_row "SSH" "$SSH_SECURITY_STATUS"
+report_row "Чувствительные порты" "${PUBLIC_DANGEROUS_PORTS:-не проверены}"
+report_row "Файлы Nuvrion" "$SECURITY_FILES_STATUS"
+report_row "Сертификаты" "$CERT_STATUS"
+report_row "ACME / брандмауэр" "$CERT_FIREWALL_STATUS"
 
-printf '\n%sИЗМЕНЕНИЯ И ПРОВЕРКИ%s\n' "$C_BOLD" "$C_RESET"
-printf '  Предупреждения        %s\n' "$WARNINGS"
-printf '  Конфликты             %s\n' "$CONFLICTS"
-printf '  Пропущено sysctl      %s\n' "$SKIPPED"
-printf '  Изменено принудит.    %s параметров\n' "$FORCED_CHANGES"
-printf '  Уже совпадало         %s параметров\n' "$ALREADY_MATCHED"
-printf '  Отключено поздних     %s назначений / %s файлов\n' "$CLEANED_ASSIGNMENTS" "$CLEANED_FILES"
-printf '  Восстановлено старых  %s назначений / %s файлов\n' "$RESTORED_ASSIGNMENTS" "$RESTORED_FILES"
+section "ИЗМЕНЕНИЯ И ПРОВЕРКИ"
+report_row "Предупреждения" "$WARNINGS"
+report_row "Конфликты" "$CONFLICTS"
+report_row "Пропущено sysctl" "$SKIPPED"
+report_row "Изменено параметров" "$FORCED_CHANGES"
+report_row "Уже совпадало" "$ALREADY_MATCHED"
+report_row "Отключено поздних" "${CLEANED_ASSIGNMENTS} назначений / ${CLEANED_FILES} файлов"
+report_row "Восстановлено старых" "${RESTORED_ASSIGNMENTS} назначений / ${RESTORED_FILES} файлов"
 if (( AUTHORITATIVE_BOOT )); then
-    printf '  Автоприменение        после systemd-sysctl\n'
+    report_row "Автоприменение" "после systemd-sysctl"
 else
-    printf '  Автоприменение        только sysctl.d\n'
+    report_row "Автоприменение" "только sysctl.d"
 fi
-printf '  Самопроверка reboot   %s\n' "$POST_REBOOT_STATUS"
-printf '  Финальная проверка    %s\n' "$FINAL_CHECK_STATUS"
-if (( PROFILE_REBOOT_REQUIRED )); then printf '  Ожидает reboot        conntrack hash table\n'; fi
-
-printf '%s%s%s\n' "$C_DIM" "$UI_LINE" "$C_RESET"
+report_row "После перезагрузки" "$POST_REBOOT_STATUS"
+report_row "Финальная проверка" "$FINAL_CHECK_STATUS"
+if (( PROFILE_REBOOT_REQUIRED )); then report_row "После перезагрузки" "применение таблицы conntrack"; fi
 
 if (( CONFLICTS > 0 )); then
-    printf '%s%s  РЕЗУЛЬТАТ  КОНФЛИКТ%s\n' "$C_BOLD" "$C_RED" "$C_RESET"
-    printf '  Профиль применён, но требуется проверка найденных конфликтов.\n'
+    section "РЕЗУЛЬТАТ: КОНФЛИКТ"
+    ui_message '[!]' "$C_RED" "Профиль применён, но требуется проверка найденных конфликтов."
 elif (( WARNINGS > 0 || SKIPPED > 0 )); then
-    printf '%s%s  РЕЗУЛЬТАТ  ЕСТЬ ПРЕДУПРЕЖДЕНИЯ%s\n' "$C_BOLD" "$C_YELLOW" "$C_RESET"
-    printf '  Профиль активен; проверьте предупреждения выше.\n'
+    section "РЕЗУЛЬТАТ: ЕСТЬ ПРЕДУПРЕЖДЕНИЯ"
+    ui_message '[!]' "$C_YELLOW" "Профиль активен; проверьте предупреждения выше."
 else
-    printf '%s%s  РЕЗУЛЬТАТ  ВСЁ ОК%s\n' "$C_BOLD" "$C_GREEN" "$C_RESET"
+    section "РЕЗУЛЬТАТ: ВСЁ В ПОРЯДКЕ"
 fi
-printf '%s%s%s%s\n' "$C_BOLD" "$C_CYAN" "$UI_LINE" "$C_RESET"
 
 # ============================================================
 # Уведомление о необходимости перезагрузки
 # ============================================================
 if [[ -e /var/run/reboot-required || $PROFILE_REBOOT_REQUIRED -eq 1 ]]; then
-    printf '\n%s%s%s\n' "$C_BOLD" "$C_YELLOW" "$UI_LINE"
-    printf '  ПЕРЕЗАГРУЗКА СЕРВЕРА ТРЕБУЕТСЯ\n'
-    printf '%s%s\n' "$UI_LINE" "$C_RESET"
+    section "ПЕРЕЗАГРУЗКА СЕРВЕРА ТРЕБУЕТСЯ"
     if [[ -e /var/run/reboot-required ]]; then
-        printf 'Ubuntu сообщает, что после системных обновлений требуется перезагрузка.\n'
+        ui_message '[!]' "$C_YELLOW" "Система сообщает, что после обновлений требуется перезагрузка."
     fi
     if (( PROFILE_REBOOT_REQUIRED )); then
-        printf 'Часть параметров conntrack будет окончательно применена после перезагрузки.\n'
+        ui_message '[!]' "$C_YELLOW" "Часть параметров conntrack будет применена после перезагрузки."
     elif [[ -e /var/run/reboot-required ]]; then
-        printf 'Профиль Nuvrion и лимиты нагрузки уже применены; перезагрузка требуется из-за системных обновлений.\n'
+        ui_message '[•]' "$C_CYAN" "Профиль Nuvrion и лимиты нагрузки уже применены; перезагрузка требуется из-за обновлений системы."
     fi
     if [[ ${POST_REBOOT_STATUS:-} == запланирована* ]]; then
-        printf 'После загрузки отчёт самопроверки будет сохранён: %s\n' "$POST_REBOOT_LOG"
+        report_row "Отчёт после загрузки" "$POST_REBOOT_LOG"
     fi
-    printf '\n  Команда: %sreboot%s\n' "$C_BOLD" "$C_RESET"
-    printf '%s%s%s%s\n' "$C_BOLD" "$C_YELLOW" "$UI_LINE" "$C_RESET"
+    report_row "Команда" "reboot"
 else
-    printf '\n%s%s[✓]%s Перезагрузка сервера не требуется.\n' "$C_BOLD" "$C_GREEN" "$C_RESET"
+    ok "Перезагрузка сервера не требуется."
     if (( LIMIT_RESTART_NOTICE )); then
-        printf '%s%s[•]%s Изменённые лимиты уже применены перезапуском/пересозданием соответствующей нагрузки.\n' "$C_BOLD" "$C_CYAN" "$C_RESET"
+        info "Изменённые лимиты применены перезапуском или пересозданием соответствующей нагрузки."
     fi
 fi

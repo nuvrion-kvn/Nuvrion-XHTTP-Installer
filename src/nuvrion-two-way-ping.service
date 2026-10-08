@@ -1,6 +1,6 @@
 [Unit]
 Description=Nuvrion: защита от входящих Two-Way Ping запросов
-Documentation=https://github.com/nuvrion-kvn/Nuvrion-Vision-Installer
+Documentation=https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer
 DefaultDependencies=no
 Wants=network-pre.target
 Before=network-pre.target shutdown.target

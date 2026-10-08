@@ -135,7 +135,7 @@
 +    DETECTED_NODE_PORT=$(jget node_port <<< "$info")
 +    [[ $NODE_PORT_EXPLICIT == 0 || $NODE_PORT == "$DETECTED_NODE_PORT" ]] || { log_warn "Установленная нода использует API :$DETECTED_NODE_PORT. Изменение её порта автоматически не выполняется.";return 3; }
 +    NODE_PORT=$DETECTED_NODE_PORT;validate_node_port
-     [[ $(jget network_mode <<< "$info") == host ]] || { log_warn 'Для схемы eGames требуется уже настроенный network_mode: host.';return 3; }
+     [[ $(jget network_mode <<< "$info") == host ]] || { log_warn 'Для схемы Nuvrion требуется уже настроенный network_mode: host.';return 3; }
      IFS=',' read -r -a COMPOSE_FILES <<< "$files"
      # A fresh node may not need recreation when the first override is added;
 @@ -1085,7 +1126,7 @@

@@ -16,6 +16,6 @@
 - [nftables](https://netfilter.org/projects/nftables/)
 - [UFW](https://launchpad.net/ufw)
 - [Fail2ban](https://github.com/fail2ban/fail2ban)
-- системные пакеты Ubuntu и Debian.
+- системные пакеты Ubuntu 24.04 LTS.
 
 Каждый внешний источник и пакет сохраняет собственную лицензию и авторские права. Лицензия MIT в файле `LICENSE` относится к оригинальному коду Nuvrion.

@@ -10,6 +10,7 @@ import base64
 import hashlib
 import io
 import json
+import re
 import os
 from pathlib import Path
 import subprocess
@@ -65,7 +66,7 @@ def main():
     if installed.returncode:
         # Do not reproduce full diagnostics or environment on failure.
         raise RuntimeError('Reinstall failed: exit='+str(installed.returncode)+'; inspect root-only installer log')
-    assert 'Статус: RUNNING' in installed.stdout
+    assert re.search(r'Состояние\s+работает', installed.stdout)
     assert 'ошибок: 0; ожидают профиля: 0' in installed.stdout
     assert 'Decoy: HTTP 200' in installed.stdout and 'XHTTP route: HTTP 400' in installed.stdout
     assert before==baseline(),'Container/image/SSH/profile changed'

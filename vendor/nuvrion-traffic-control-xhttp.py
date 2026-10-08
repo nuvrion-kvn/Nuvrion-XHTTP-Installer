@@ -45,7 +45,7 @@ LABEL_LIMIT = 100
 CA_CERT = Path("/etc/ssl/certs/ca-certificates.crt")
 OS_RELEASE = Path("/etc/os-release")
 LOCK_FILE = Path("/run/nuvrion-traffic-control.lock")
-SUPPORTED_SYSTEMS = {"ubuntu": {"22.04", "24.04"}, "debian": {"12"}}
+SUPPORTED_SYSTEMS = {"ubuntu": {"24.04"}}
 SUPPORTED_ARCHITECTURES = {
     "x86_64": "amd64", "amd64": "amd64",
     "aarch64": "arm64", "arm64": "arm64",
@@ -227,7 +227,7 @@ def menu_status():
         return badge("ВКЛЮЧЕНИЕ НЕ ЗАВЕРШЕНО", "yellow")
     if (ROOT / "enabled").exists():
         try:
-            return badge("АКТИВЕН", "green") if present() else badge("ТРЕБУЕТ ВОССТАНОВЛЕНИЯ", "red")
+            return badge("АКТИВЕН", "green") if present() and filter_active() else badge("ТРЕБУЕТ ВОССТАНОВЛЕНИЯ", "red")
         except (OSError, subprocess.SubprocessError, ValueError):
             return badge("СТАТУС НЕДОСТУПЕН", "red")
     return badge("ВЫКЛЮЧЕН", "yellow")
@@ -259,7 +259,7 @@ def platform_details():
     supported_versions = SUPPORTED_SYSTEMS.get(system)
     if not supported_versions or not any(
             version == item or version.startswith(item + ".") for item in supported_versions):
-        expected = "Ubuntu 22.04/24.04 или Debian 12"
+        expected = "Ubuntu 24.04 LTS"
         raise ValueError(f"Неподдерживаемая система: {system or 'не определена'} "
                          f"{version or ''}. Требуется {expected}.")
     machine = os.uname().machine.lower()
@@ -280,10 +280,9 @@ def missing_packages():
 
 
 def apt_install(packages):
-    info = os_release()
-    family = " ".join((info.get("ID", ""), info.get("ID_LIKE", ""))).lower().split()
-    if not set(family) & {"debian", "ubuntu"} or not shutil.which("apt-get"):
-        raise ValueError("Автоустановка пакетов поддерживается только в Ubuntu и Debian с apt-get.")
+    platform_details()
+    if not shutil.which("apt-get"):
+        raise ValueError("Для автоустановки пакетов в Ubuntu 24.04 LTS требуется apt-get.")
     env = os.environ.copy()
     env["DEBIAN_FRONTEND"] = "noninteractive"
     pending("Обновляю индекс пакетов…")
@@ -723,6 +722,37 @@ def present():
                x.get("table", {}).get("name") == TABLE for x in tables["nftables"])
 
 
+def filter_active():
+    """Check the installed INPUT filter, rather than accepting an empty table."""
+    table = json.loads(run("nft", "-j", "list", "table", "inet", TABLE).stdout)
+    chains, sets, rules = [], {}, []
+    for item in table.get("nftables", []):
+        for kind, value in item.items():
+            if not isinstance(value, dict) or value.get("family") != "inet" or value.get("table") != TABLE:
+                continue
+            if kind == "chain" and value.get("name") == "ingress":
+                chains.append(value)
+            elif kind == "set":
+                sets[value.get("name")] = value
+            elif kind == "rule" and value.get("chain") == "ingress":
+                rules.append(value.get("expr", []))
+    if not any(chain.get("type") == "filter" and chain.get("hook") == "input"
+               and chain.get("prio") == -10 and chain.get("policy") == "accept" for chain in chains):
+        return False
+    for version in (4, 6):
+        for prefix in ("allow", "block"):
+            item = sets.get(f"{prefix}{version}", {})
+            if item.get("type") != f"ipv{version}_addr" or "interval" not in item.get("flags", []):
+                return False
+        protocol = "ip" if version == 4 else "ip6"
+        expected = {"op": "==", "left": {"payload": {"protocol": protocol, "field": "saddr"}},
+                    "right": f"@block{version}"}
+        if not any(any(expr.get("match") == expected for expr in rule if isinstance(expr, dict))
+                   and any("drop" in expr for expr in rule if isinstance(expr, dict)) for rule in rules):
+            return False
+    return True
+
+
 def apply(state):
     rules = render(state, present())
     run("nft", "-c", "-f", "-", data=rules, timeout=300)
@@ -812,15 +842,17 @@ def component_report(state):
     """Compact, human-readable report used by status and the main menu."""
     try:
         table = present()
+        active = table and filter_active()
     except (OSError, ValueError, subprocess.SubprocessError):
         table = False
+        active = False
     enabled = (ROOT / "enabled").exists()
     pending = (ROOT / "pending").exists()
     service_enabled = unit_state("is-enabled", UNIT + ".service") == "enabled"
     timer_active = unit_state("is-active", UNIT + "-update.timer") == "active"
     if pending:
         filtering = colored(symbol("pending") + " ВКЛЮЧЕНИЕ НЕ ЗАВЕРШЕНО", "yellow", "bold")
-    elif enabled and table:
+    elif enabled and active:
         filtering = colored(symbol("ok") + " АКТИВНА", "green", "bold")
     elif enabled:
         filtering = colored(symbol("error") + " ТРЕБУЕТ ВОССТАНОВЛЕНИЯ", "red", "bold")
@@ -1099,8 +1131,8 @@ def activate():
 
 def finish_activation():
     """Commit activation while holding the shared lock, including old installations."""
-    if not present():
-        raise ValueError("Таблица фильтрации отсутствует; включение не завершено.")
+    if not present() or not filter_active():
+        raise ValueError("Рабочая цепочка фильтрации не подтверждена; включение не завершено.")
     atomic(ROOT / "enabled", "1\n")
     try:
         run("systemctl", "enable", UNIT + ".service")
@@ -1219,7 +1251,12 @@ def diagnostic_items(state):
         add("Незавершённое включение", table and unit_state("is-active", UNIT + "-rollback.timer") == "active",
             "таймер отката активен")
     elif enabled:
-        add("Рабочая таблица", table, "загружена" if table else "отсутствует")
+        try:
+            active = table and filter_active()
+        except (OSError, ValueError, subprocess.SubprocessError):
+            active = False
+        add("Рабочая фильтрация", active,
+            "цепочка INPUT, наборы и правила блокировки подтверждены" if active else "требует восстановления")
         service_ok = unit_state("is-enabled", UNIT + ".service") == "enabled"
         timer_ok = (unit_state("is-enabled", UNIT + "-update.timer") == "enabled" and
                     unit_state("is-active", UNIT + "-update.timer") == "active")
@@ -1292,7 +1329,9 @@ def print_status(state):
     print()
     field("Версия", VERSION)
     field("Таблица nftables", 'создана' if present() else 'отсутствует')
-    field("Фильтрация", 'включена' if (ROOT / 'enabled').exists() else 'выключена')
+    enabled = (ROOT / 'enabled').exists()
+    active = present() and filter_active() if enabled else False
+    field("Фильтрация", 'включена' if active else 'требует восстановления' if enabled else 'выключена')
     field("Операция включения", 'не завершена' if (ROOT / 'pending').exists() else 'нет незавершённых операций')
     field("Списки обновлены", format_updated(state.get('updated')))
     for name, entries in state["lists"].items():
@@ -1340,7 +1379,8 @@ def execute(args):
     elif cmd == "status":
         if args.json:
             print(json.dumps({"version": VERSION, "table_present": present(),
-                  "enabled": (ROOT / "enabled").exists(), "pending": (ROOT / "pending").exists(),
+                  "enabled": (ROOT / "enabled").exists(), "filter_active": present() and filter_active(),
+                  "pending": (ROOT / "pending").exists(),
                   "updated": state["updated"], "sources": {k: len(v) for k, v in state["lists"].items()},
                   "allow": state["allow"], "ssh_ports": state["ssh_ports"], "manual": state["manual"]},
                   ensure_ascii=False, indent=2))
@@ -1621,7 +1661,7 @@ def main(argv=None):
 
 if __name__ == "__main__":
     try:
-        main()
+        sys.exit(main() or 0)
     except KeyboardInterrupt:
         print(file=sys.stderr)
         message("info", "Операция прервана пользователем.", file=sys.stderr)

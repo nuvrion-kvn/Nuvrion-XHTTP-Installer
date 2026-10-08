@@ -25,7 +25,7 @@ def build():
     manager = source.replace(MARK, 'payload() { base64 "$OWN/bundle.tar.gz"; }\n'
                                     'payload_hash() { cat "$OWN/bundle.sha256"; }')
     vendor = ROOT / 'vendor/nuvrion-auto-tuning-xhttp.sh'
-    assert hashlib.sha256(vendor.read_bytes()).hexdigest() == '8e02748df365be1e6df97641bb37520188cdd8c8c2fef2635a1a34300eee24a0'
+    assert hashlib.sha256(vendor.read_bytes()).hexdigest() == 'cffaa9db580b06432fb4f6a8d04dadacc413a8d627032d9dfe60fc114a14c489'
     tuner = vendor.read_text(encoding='utf-8')
     # Enable the complete security/performance module. Only its firewall writer
     # delegates to the installer's existing, backed-up multi-backend firewall.
@@ -33,7 +33,7 @@ def build():
     assert tuner.count(guard) == 1
     tuner = tuner.replace(guard, 'if [[ $SECURITY_ENABLED == 1 && ${NUVRION_MANAGED_FIREWALL:-0} != 1 ]]; then\n    OTHER_FIREWALL=""')
     traffic = ROOT / 'vendor/nuvrion-traffic-control-xhttp.py'
-    assert hashlib.sha256(traffic.read_bytes()).hexdigest() == '7ae1fa0b26f07c01b740781e04cb3f80b5d185286a961c4ae45f096604bb0d1c'
+    assert hashlib.sha256(traffic.read_bytes()).hexdigest() == 'dc2c66855f41c0c51ce6bd0ab4c9969cc57489363eef3dd84ac3525ff9e58401'
     traffic_source = traffic.read_text(encoding='utf-8')
     # A bounded lease keeps HTTP-01 reachable even when the update timer runs
     # concurrently. Every other Traffic Control function stays upstream.

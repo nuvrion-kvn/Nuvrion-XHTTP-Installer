@@ -22,7 +22,7 @@ root-only SECRET_KEY, проверка совместимости Xray до ст
 
 Доработан автономный `nuvrion-xhttp-install.sh`: Reality TCP + XHTTP через Unix
 socket, встроенный PokéHabitat, полный Config Profile, Host instructions и extra.
-Сохранена цепочка eGames/legiz: Xray :443 → локальный TLS Nginx с PROXY protocol
+Сохранена цепочка Nuvrion: Xray :443 → локальный TLS Nginx с PROXY protocol
 → HTTP proxy к XHTTP. Отдельная архитектура транспорта не вводилась.
 Название «selfsteal» из исходного описания заменено нейтральным Reality TCP;
 локальный target и `xver: 1` сохранены.

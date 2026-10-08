@@ -88,11 +88,12 @@ collect_node_secret;[[ -z ${NODE_SECRET:-} ]]
 NODE_PORT=3222;PANEL_IP=$TEST_PANEL;FW=$TEST_BACKEND
 mkdir -p "$BASE"
 state_value(){ :; }
-ufw(){ printf 'UFW %s\\n' "$*" >> "$BASE/../ufw.log"; }
+ufw(){ if [[ $1 == status ]];then printf 'Status: active\\n';else printf 'UFW %s\\n' "$*" >> "$BASE/../ufw.log";fi; }
 remove_ufw_comment(){ :; }
 grep(){ if [[ $* == *IPV6=yes* ]];then return 0;fi;command grep "$@"; }
 nft(){ if [[ $* == '-a -j list ruleset' ]];then printf '{"nftables":[]}';else cat;fi; }
-iptables(){ return 1; };ip6tables(){ return 1; }
+iptables(){ [[ $* != *'-S INPUT'* ]] || { printf '%s\\n' '-P INPUT ACCEPT';return 0; };return 1; }
+ip6tables(){ iptables "$@"; }
 iptables-restore(){ cat; };ip6tables-restore(){ cat; }
 configure_firewall
 [[ ! -f $BASE/../ufw.log ]] || cat "$BASE/../ufw.log"
@@ -163,7 +164,7 @@ printf 'RESULT domain=%s port=%s panel=%s secret-length=%s\\n' "$DOMAIN" "$NODE_
         with tempfile.TemporaryDirectory() as td:
             script=Path(td)/'setup.sh';script.write_text(code)
             master,slave=pty.openpty()
-            process=subprocess.Popen(['bash',str(script)],stdin=slave,stdout=slave,stderr=slave,preexec_fn=controlling_tty)
+            process=subprocess.Popen(['bash',str(script)],stdin=slave,stdout=slave,stderr=slave,preexec_fn=controlling_tty,env={**os.environ,'TERM':'xterm','NO_COLOR':''})
             os.close(slave);output=b'';step=0
             prompts=[('Домен сайта декой / SNI',b'node.example.org\n'),
                      ('Порт API ноды для панели',b'\n'),('IP панели Remnawave',b'192.0.2.10\n'),
@@ -191,7 +192,7 @@ printf 'RESULT domain=%s port=%s panel=%s secret-length=%s\\n' "$DOMAIN" "$NODE_
             self.assertIn('Лицензия: MIT',text)
             self.assertIn('Создатель: Nuvrion',text)
             self.assertLess(text.index('Компоненты установки:'),text.index('Домен сайта декой'))
-            for title,_ in prompts:self.assertIn('\x1b[1;33m'+title,text)
+            for title,_ in prompts:self.assertIn('\x1b[1;33m[?] '+title,text)
             self.assertNotIn(secret,text)
             self.assertIn('RESULT domain=node.example.org port=2222 panel=192.0.2.10 secret-length=80',text)
 
@@ -315,6 +316,7 @@ docker(){ echo MUST_NOT_EXEC;return 1; }
 iptables(){ return 1; };nft(){ return 1; }
 python3(){ if [[ $2 == *getaddrinfo* ]];then return 0;fi;command python3 "$@"; }
 security_plan(){ :; };find_certificate(){ CERT_LINEAGE=/existing/cert; }
+preflight_component_files(){ :; }
 package_plan(){ :; }
 YES=1;NODE_VERSION=latest;SECRET_FILE=$TEST_SECRET
 plan_install
