@@ -95,49 +95,34 @@ bash -c 'set -e; f=$(mktemp); cleanup(){ rm -f -- "$f"; }; trap cleanup EXIT; cu
 
 ## Архитектура трафика
 
-![Пути REALITY, HTTPS и XHTTP, TLS termination и передача IP](assets/xhttp-scheme.svg)
+### REALITY TCP / RAW
 
-<details>
-<summary>Текстовая схема для терминала</summary>
+![REALITY: путь клиента, маскировка для DPI РКН и ответы на активные HTTPS-сканы РКН и ГРЧЦ](assets/reality-scheme.svg)
 
-```text
-Internet / clients
-  |
-  v
-TCP/443 · Xray REALITY TCP/RAW · Remnawave Node
-  |
-  +-- authenticated REALITY/VLESS ------------------> Xray routing
-  |                                                       |
-  |                                                       +--> DIRECT / BLOCK
-  |
-  +-- ordinary TLS / XHTTP TLS · xver: 1 (PROXY v1)
-        |
-        v
-      /dev/shm/nuvrion-xhttp/nginx.sock
-        |
-        v
-      Nginx · TLS termination · HTTP/2
-        |
-        +-- / ------------------------------> site decoy (200)
-        +-- /api/game/ ---------------------> local API Unix socket / SQLite
-        +-- /api/v3/sync/ · HTTP proxy_pass
-              |
-              v
-            /dev/shm/nuvrion-xhttp/xrxh.socket
-              |
-              v
-            Xray XHTTP · VLESS --------------------> Xray routing
-```
+Inbound `NODE_TAG` слушает **TCP/443**. После проверки REALITY и UUID пользователя трафик поступает в Xray routing. Обычный TLS без авторизации REALITY пересылается к своему Nginx через `nginx.sock`: это локальный **selfsteal target**. Для рукопожатия REALITY Xray также обращается к Nginx; эта связь показана пунктиром. `xver: 1` передаёт исходный IP через PROXY protocol v1.
 
-</details>
+### XHTTP + TLS
 
-1. Xray внутри Remnawave Node слушает TCP/443. Авторизованный REALITY/VLESS-поток поступает сразу в маршрутизацию Xray.
-2. Обычный HTTPS, включая TLS-соединение XHTTP-клиента, передаётся локальному REALITY target: `nginx.sock`. `xver: 1` добавляет PROXY protocol v1 с адресом клиента.
-3. Nginx завершает TLS на `listen unix:… ssl proxy_protocol;`, включает `http2 on;` и выбирает HTTP location.
-4. `/` возвращает сайт декой. `/api/game/` обращается к локальному API сайта. `/api/v3/sync/` передаётся через **HTTP/1.1 `proxy_pass`** в `xrxh.socket`, без буферизации запросов и ответов.
-5. XHTTP inbound Xray принимает VLESS из Unix socket и применяет routing профиля. Внутренний участок Nginx → Xray не использует TLS: TLS завершается в Nginx.
+![XHTTP: TLS через общий TCP/443, Nginx, Unix inbound, маскировка для DPI и ответы на сканы](assets/xhttp-scheme.svg)
 
-В XHTTP location `X-Real-IP` и `X-Forwarded-For` устанавливаются из `$proxy_protocol_addr`. Xray принимает этот заголовок через `sockopt.trustedXForwardedFor: ["X-Forwarded-For"]`; совместимость установленного core проверяется до генерации профиля. Backend доступен через ограниченный Unix socket, а не публичный TCP-порт.
+Клиент XHTTP использует обычный **TLS к домену ноды**. Общий listener Xray на TCP/443 пересылает это соединение к Nginx. Nginx завершает TLS, выбирает XHTTP path и отправляет локальный HTTP/1.1 в `xrxh.socket` через `proxy_pass` без buffering. Inbound `NODE_TAG XHTTP` проверяет UUID и применяет Xray routing.
+
+`X-Real-IP` и `X-Forwarded-For` берутся из `$proxy_protocol_addr`; `trustedXForwardedFor` передаёт Xray реальный IP клиента. XHTTP extra наследуется из профиля, cookie-padding включается после проверки совместимости core. Путь `/api/v3/sync/` на схеме — значение по умолчанию; при установке можно задать свой.
+
+### Маскировка и ответы на сканирование
+
+На схемах РКН / DPI обозначает наблюдение за соединением, а активный скан РКН / ГРЧЦ — TLS/HTTPS-проверку без профиля клиента. Показано поведение новой конфигурации, создаваемой установщиком.
+
+| Проверка | Что происходит в этой схеме |
+|---|---|
+| Пассивное наблюдение DPI | `firefox` задаёт профиль **TLS ClientHello**. Содержимое защищено REALITY или TLS; IP, SNI, размеры пакетов, время и объём соединения остаются видимыми. |
+| HTTPS-запрос к `/` по домену ноды | Nginx показывает сертификат собственного домена и **PokéHabitat с HTTP 200**. Обычный TLS направляется в сайт через selfsteal. |
+| Запрос к API с чужим SNI или Host | **HTTP 404**. Default vhost использует сертификат домена ноды, обслуживает сайт на `/`, а `/api/` возвращает 404; XHTTP и игровой API также проверяют SNI/Host. |
+| Одиночный запрос на XHTTP path без сессии | Возможен **HTTP 400 от XHTTP backend**. Ответ определяется запросом; работоспособность VPN проверяется авторизованным клиентом. |
+| Источник совпал с IP-блок-листом Traffic Control | Если модуль установлен, новое соединение получает **DROP** с учётом allowlist и исключений. Источники вне выбранных списков передаются следующим правилам firewall. |
+| Поиск отдельного сетевого XHTTP backend | Nginx и Xray связаны **Unix socket**; дополнительный публичный TCP upstream для XHTTP не создаётся. |
+
+Механизмы TLS и REALITY описаны в официальных документах [REALITY target](https://xtls.github.io/en/config/transports/reality.html#realityobject), [TLS fingerprint](https://xtls.github.io/en/config/transports/tls.html#tlsobject) и коде [REALITY Server](https://github.com/XTLS/REALITY/blob/main/tls.go). Конкретные маршруты сайта/API и фильтрация источников определяются кодом этого установщика. Исходник схем: [tools/draw_inbound_schemes.py](tools/draw_inbound_schemes.py).
 
 ### Контейнеры, mounts и права
 

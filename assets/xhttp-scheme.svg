@@ -1,76 +1,118 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1120" viewBox="0 0 1440 1120" role="img" aria-labelledby="title desc">
-<title id="title">Два транспорта · один внешний TCP/443</title><desc id="desc">REALITY обрабатывается Xray; HTTPS и XHTTP проходят через локальный TLS target Nginx.</desc>
-<defs><marker id="gold" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#a77b32"/></marker><marker id="teal" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#287d72"/></marker><marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#416eab"/></marker><marker id="gray" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#5d7083"/></marker></defs>
-<rect width="1440" height="1120" rx="20" fill="#f8f7f3"/>
-<text x="36" y="43" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#a77b32" font-weight="700">NUVRION / TECHNICAL ARCHITECTURE</text>
-<text x="36" y="80" font-family="Segoe UI, Arial, sans-serif" font-size="27" fill="#233447" font-weight="700">Два транспорта · один внешний TCP/443</text>
-<text x="36" y="111" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">REALITY обрабатывается Xray; HTTPS и XHTTP проходят через локальный TLS target Nginx.</text>
-<rect x="36" y="155" width="390" height="139" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="36" y="169" width="4" height="111" rx="2" fill="#416eab"/>
-<text x="56" y="186" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Клиенты / Internet</text>
-<text x="56" y="215" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">REALITY VLESS · Firefox · Vision</text>
-<text x="56" y="240" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">HTTPS браузер → сайт декой</text>
-<text x="56" y="265" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">XHTTP + TLS · Firefox · h2 / http/1.1</text>
-<rect x="520" y="155" width="420" height="139" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="520" y="169" width="4" height="111" rx="2" fill="#287d72"/>
-<text x="540" y="186" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Xray · REALITY TCP / RAW</text>
-<text x="540" y="215" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Remnawave Node · network_mode: host</text>
-<text x="540" y="240" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Публичный listener TCP/443</text>
-<text x="540" y="265" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Авторизация VLESS / REALITY</text>
-<path d="M426,224 L520,224" fill="none" stroke="#416eab" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
-<text x="438" y="205" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#416eab" font-weight="500">TLS / :443</text>
-<rect x="1018" y="155" width="386" height="139" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="1018" y="169" width="4" height="111" rx="2" fill="#287d72"/>
-<text x="1038" y="186" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Routing / Outbound Xray</text>
-<text x="1038" y="215" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">DIRECT → целевой Internet</text>
-<text x="1038" y="240" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">BLOCK → правила профиля</text>
-<text x="1038" y="265" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Оба inbound используют routing</text>
-<path d="M940,224 L1018,224" fill="none" stroke="#287d72" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#teal)"/>
-<text x="975" y="332" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#287d72" font-weight="500">Авторизованный REALITY → напрямую</text>
-<path d="M730,294 L730,400" fill="none" stroke="#a77b32" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gold)"/>
-<text x="750" y="340" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#a77b32" font-weight="500">Обычный TLS / XHTTP TLS</text>
-<text x="750" y="365" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#a77b32" font-weight="500">Reality target · xver: 1</text>
-<rect x="390" y="400" width="680" height="112" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="390" y="414" width="4" height="84" rx="2" fill="#a77b32"/>
-<text x="410" y="431" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Unix socket · nginx.sock</text>
-<text x="410" y="460" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">/dev/shm/nuvrion-xhttp/nginx.sock · mode 0600</text>
-<text x="410" y="485" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">TLS bytes + PROXY protocol v1 (реальный IP клиента)</text>
-<path d="M730,512 L730,566" fill="none" stroke="#a77b32" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gold)"/>
-<text x="754" y="548" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#a77b32" font-weight="500">TLS termination</text>
-<rect x="390" y="566" width="680" height="139" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="390" y="580" width="4" height="111" rx="2" fill="#a77b32"/>
-<text x="410" y="597" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Nginx · ssl proxy_protocol · HTTP/2</text>
-<text x="410" y="626" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">listen unix:…/nginx.sock ssl proxy_protocol;  http2 on;</text>
-<text x="410" y="651" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">X-Forwarded-For / X-Real-IP ← $proxy_protocol_addr</text>
-<text x="410" y="676" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">Маршрутизация по location; TLS-сертификат Let’s Encrypt</text>
-<rect x="36" y="790" width="318" height="111" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="36" y="804" width="4" height="83" rx="2" fill="#416eab"/>
-<text x="56" y="821" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">/ → сайт декой</text>
-<text x="56" y="850" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Статические HTML / JS / assets</text>
-<text x="56" y="875" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#5d7083" font-weight="400">Ожидаемый HTTPS status: 200</text>
-<rect x="402" y="790" width="342" height="111" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="402" y="804" width="4" height="83" rx="2" fill="#416eab"/>
-<text x="422" y="821" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">/api/game/ → local API</text>
-<text x="422" y="850" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">Unix socket /run/…/game.sock</text>
-<text x="422" y="875" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">systemd · SQLite · без TCP upstream</text>
-<rect x="802" y="790" width="602" height="111" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="802" y="804" width="4" height="83" rx="2" fill="#a77b32"/>
-<text x="822" y="821" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">/api/v3/sync/ → XHTTP proxy</text>
-<text x="822" y="850" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">proxy_pass http://unix:…/xrxh.socket;</text>
-<text x="822" y="875" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">HTTP/1.1 · buffering off · request_buffering off</text>
-<path d="M535,705 L535,742 L195,742 L195,790" fill="none" stroke="#416eab" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
-<path d="M640,705 L640,763 L573,763 L573,790" fill="none" stroke="#416eab" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
-<path d="M930,705 L930,741 L1103,741 L1103,790" fill="none" stroke="#a77b32" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gold)"/>
-<rect x="802" y="963" width="602" height="99" rx="12" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
-<rect x="802" y="977" width="4" height="71" rx="2" fill="#287d72"/>
-<text x="822" y="994" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#233447" font-weight="650">Xray · VLESS XHTTP inbound</text>
-<text x="822" y="1023" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">…/xrxh.socket,0660 · mode auto · extra из профиля</text>
-<text x="822" y="1048" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">trustedXForwardedFor → IP клиента; далее routing</text>
-<path d="M1103,901 L1103,963" fill="none" stroke="#a77b32" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gold)"/>
-<text x="1124" y="941" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#a77b32" font-weight="500">Локальный HTTP · без TLS</text>
-<text x="36" y="965" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#233447" font-weight="600">HTTP 400 без XHTTP-сессии допустим,</text>
-<text x="36" y="991" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">если ответ подтверждён прямым backend.</text>
-<text x="36" y="1020" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#5d7083" font-weight="400">502 / socket error → инфраструктура не готова.</text>
-<path d="M36,1070 H1404" stroke="#d9dfdf"/>
-<text x="36" y="1092" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#5d7083" font-weight="400">Пути показаны для новой защищённой установки. При legacy-импорте сохраняются /dev/shm/nginx.sock и xrxh.socket,0666.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1708" viewBox="0 0 1440 1708" role="img" aria-labelledby="title desc">
+<title id="title">XHTTP + TLS через Nginx</title>
+<desc id="desc">HTTP-транспорт внутри TLS. Общий TCP/443 → Nginx → локальный XHTTP inbound.</desc>
+<defs>
+<marker id="vpn" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#287d72"/></marker>
+<marker id="web" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#a77b32"/></marker>
+<marker id="scan" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#a94747"/></marker>
+<marker id="muted" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L8 4L0 8Z" fill="#5d7083"/></marker>
+</defs>
+<rect width="1440" height="1708" rx="24" fill="#f8f7f3"/>
+<text x="48" y="46" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" fill="#a77b32">NUVRION / INBOUND 02</text>
+<text x="48" y="93" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="38" font-weight="700" fill="#233447">XHTTP + TLS через Nginx</text>
+<text x="48" y="128" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">HTTP-транспорт внутри TLS. Общий TCP/443 → Nginx → локальный XHTTP inbound.</text>
+<rect x="48" y="153" width="22" height="5" rx="2" fill="#287d72"/>
+<text x="82" y="164" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#5d7083">Авторизованный трафик</text>
+<rect x="420" y="153" width="22" height="5" rx="2" fill="#a77b32"/>
+<text x="454" y="164" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#5d7083">HTTPS / активный скан</text>
+<rect x="814" y="153" width="22" height="5" rx="2" fill="#a94747"/>
+<text x="848" y="164" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#5d7083">Фильтрация источников</text>
+<g id="client"><rect x="48" y="198" width="416" height="162" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="48" y="216" width="5" height="126" rx="2" fill="#287d72"/>
+<text x="72" y="237" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Клиент XHTTP + TLS</text>
+<text x="72" y="270" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">VLESS · mode: auto · Firefox.</text>
+<text x="72" y="298" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">SNI: домен ноды.</text>
+<text x="72" y="326" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">ALPN: h2,http/1.1.</text>
+</g>
+<g id="dpi"><rect x="512" y="198" width="416" height="162" rx="16" fill="#f1f4f5" stroke="#d8dfdf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<rect x="512" y="216" width="5" height="126" rx="2" fill="#5d7083"/>
+<text x="536" y="237" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">РКН / DPI · наблюдение</text>
+<text x="536" y="270" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Видны IP, SNI и TCP/443.</text>
+<text x="536" y="298" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">HTTP-путь и данные внутри TLS.</text>
+<text x="536" y="326" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Время и размеры пакетов видны.</text>
+</g>
+<g id="scanner"><rect x="976" y="198" width="416" height="162" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="976" y="216" width="5" height="126" rx="2" fill="#a77b32"/>
+<text x="1000" y="237" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Скан РКН / ГРЧЦ</text>
+<text x="1000" y="270" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Обычный TLS + HTTPS-запрос.</text>
+<text x="1000" y="298" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">SNI: домен ноды; запрос к /.</text>
+<text x="1000" y="326" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Нет профиля / UUID клиента.</text>
+</g>
+<path d="M256 360V408H600V446" fill="none" stroke="#287d72" stroke-width="3" stroke-linejoin="round" marker-end="url(#vpn)"/>
+<path d="M1184 360V408H840V446" fill="none" stroke="#a77b32" stroke-width="3" stroke-linejoin="round" marker-end="url(#web)"/>
+<g id="traffic-control"><rect x="220" y="446" width="972" height="128" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="220" y="464" width="5" height="92" rx="2" fill="#a94747"/>
+<text x="244" y="485" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Traffic Control · если установлен</text>
+<text x="244" y="518" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Выбранные IP-списки: antiscanner / government_networks / skipa.</text>
+<text x="244" y="546" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Allowlist и исключения → дальше; блокируемые IP → DROP.</text>
+</g>
+<g id="source-drop"><rect x="1248" y="472" width="144" height="76" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="1248" y="490" width="5" height="40" rx="2" fill="#a94747"/>
+<text x="1272" y="511" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">DROP</text>
+</g>
+<path d="M1192 510H1248" fill="none" stroke="#a94747" stroke-width="3" stroke-linejoin="round" marker-end="url(#scan)"/>
+<path d="M720 574V642" fill="none" stroke="#5d7083" stroke-width="3" stroke-linejoin="round" marker-end="url(#muted)"/>
+<text x="743" y="618" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="20" font-weight="400" fill="#5d7083">Источник пропущен firewall</text>
+<g id="shared-front"><rect x="352" y="642" width="736" height="130" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="352" y="660" width="5" height="94" rx="2" fill="#a77b32"/>
+<text x="376" y="681" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Xray · общий listener TCP/443</text>
+<text x="376" y="714" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Обычный TLS, без REALITY-авторизации.</text>
+<text x="376" y="742" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">target: nginx.sock · пересылка TLS + PROXY v1.</text>
+</g>
+<path d="M720 772V824" fill="none" stroke="#a77b32" stroke-width="3" stroke-linejoin="round" marker-end="url(#web)"/>
+<g id="nginx"><rect x="220" y="824" width="1000" height="150" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="220" y="842" width="5" height="114" rx="2" fill="#a77b32"/>
+<text x="244" y="863" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Nginx · завершение TLS и HTTP-маршрутизация</text>
+<text x="244" y="896" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Сертификат своего домена · TLS 1.2/1.3 · HTTP/2.</text>
+<text x="244" y="924" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Перед доступом к XHTTP / API проверяет SNI и Host.</text>
+<text x="244" y="952" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">X-Forwarded-For и X-Real-IP берутся из PROXY v1.</text>
+</g>
+<path d="M500 974V1016H372V1070" fill="none" stroke="#287d72" stroke-width="3" stroke-linejoin="round" marker-end="url(#vpn)"/>
+<path d="M940 974V1016H1068V1070" fill="none" stroke="#a77b32" stroke-width="3" stroke-linejoin="round" marker-end="url(#web)"/>
+<text x="72" y="1042" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="22" font-weight="600" fill="#287d72">XHTTP-запрос</text>
+<text x="768" y="1042" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="22" font-weight="600" fill="#a77b32">HTTPS / скан</text>
+<g id="xhttp-location"><rect x="48" y="1070" width="648" height="146" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="48" y="1088" width="5" height="110" rx="2" fill="#287d72"/>
+<text x="72" y="1109" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Nginx location → XHTTP</text>
+<text x="72" y="1142" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Path: /api/v3/sync/ или свой путь из профиля.</text>
+<text x="72" y="1170" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">proxy_pass → Unix socket xrxh.socket.</text>
+<text x="72" y="1198" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">HTTP/1.1 локально · buffering off.</text>
+</g>
+<g id="https-response"><rect x="744" y="1070" width="648" height="146" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="744" y="1088" width="5" height="110" rx="2" fill="#a77b32"/>
+<text x="768" y="1109" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Ответ сайта или API</text>
+<text x="768" y="1142" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">/ → PokéHabitat · HTTP 200.</text>
+<text x="768" y="1170" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Чужой SNI / Host на API → HTTP 404.</text>
+<text x="768" y="1198" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">XHTTP path без сессии: возможен HTTP 400.</text>
+</g>
+<path d="M372 1216V1276" fill="none" stroke="#287d72" stroke-width="3" stroke-linejoin="round" marker-end="url(#vpn)"/>
+<g id="xhttp-inbound"><rect x="48" y="1276" width="648" height="146" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="48" y="1294" width="5" height="110" rx="2" fill="#287d72"/>
+<text x="72" y="1315" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Xray · VLESS XHTTP inbound</text>
+<text x="72" y="1348" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Tag: NODE_TAG XHTTP · mode auto.</text>
+<text x="72" y="1376" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Проверка UUID пользователя из Remnawave.</text>
+<text x="72" y="1404" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">trustedXForwardedFor сохраняет IP клиента.</text>
+</g>
+<g id="http-camouflage"><rect x="744" y="1276" width="648" height="146" rx="16" fill="#f1f4f5" stroke="#d8dfdf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<rect x="744" y="1294" width="5" height="110" rx="2" fill="#5d7083"/>
+<text x="768" y="1315" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Маскировка HTTP внутри TLS</text>
+<text x="768" y="1348" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">firefox задаёт профиль ClientHello.</text>
+<text x="768" y="1376" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Padding 100–1000 байт берётся из extra.</text>
+<text x="768" y="1404" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Cookie-padding — после проверки core.</text>
+</g>
+<path d="M372 1422V1482" fill="none" stroke="#287d72" stroke-width="3" stroke-linejoin="round" marker-end="url(#vpn)"/>
+<g id="routing"><rect x="48" y="1482" width="648" height="126" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
+<rect x="48" y="1500" width="5" height="90" rx="2" fill="#287d72"/>
+<text x="72" y="1521" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Xray routing → Internet</text>
+<text x="72" y="1554" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">DIRECT → разрешённый целевой ресурс.</text>
+<text x="72" y="1582" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">BLOCK → запрещённые профилем назначения.</text>
+</g>
+<g id="local-only"><rect x="744" y="1482" width="648" height="126" rx="16" fill="#f1f4f5" stroke="#d8dfdf" stroke-width="1.5" stroke-dasharray="6 5"/>
+<rect x="744" y="1500" width="5" height="90" rx="2" fill="#5d7083"/>
+<text x="768" y="1521" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Локальная связь через Unix socket</text>
+<text x="768" y="1554" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">XHTTP backend без отдельного TCP-порта.</text>
+<text x="768" y="1582" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Для клиента снаружи: домен ноды и TCP/443.</text>
+</g>
+<text x="48" y="1655" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="20" font-weight="400" fill="#5d7083">XHTTP socket: /dev/shm/nuvrion-xhttp/xrxh.socket · между Nginx и Xray локальный HTTP без TLS.</text>
+<text x="48" y="1686" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#5d7083">Показана новая установка. Legacy-путь: /dev/shm/xrxh.socket. Пользователь может задать другой path.</text>
 </svg>
