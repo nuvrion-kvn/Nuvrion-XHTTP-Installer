@@ -93,7 +93,7 @@
 </g>
 <g id="decoy"><rect x="744" y="1104" width="648" height="126" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
 <rect x="744" y="1122" width="5" height="90" rx="2" fill="#a77b32"/>
-<text x="768" y="1143" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">PokéHabitat · ответ на HTTPS /</text>
+<text x="768" y="1143" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Атлас пива · ответ на HTTPS /</text>
 <text x="768" y="1176" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">По домену ноды скан видит сайт и HTTP 200.</text>
 <text x="768" y="1204" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">HTML / JS / assets + локальный API игры.</text>
 </g>

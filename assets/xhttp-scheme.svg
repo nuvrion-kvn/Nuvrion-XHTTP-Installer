@@ -81,7 +81,7 @@
 <g id="https-response"><rect x="744" y="1070" width="648" height="146" rx="16" fill="#ffffff" stroke="#d8dfdf" stroke-width="1.5"/>
 <rect x="744" y="1088" width="5" height="110" rx="2" fill="#a77b32"/>
 <text x="768" y="1109" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#233447">Ответ сайта или API</text>
-<text x="768" y="1142" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">/ → PokéHabitat · HTTP 200.</text>
+<text x="768" y="1142" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">/ → Атлас пива · HTTP 200.</text>
 <text x="768" y="1170" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">Чужой SNI / Host на API → HTTP 404.</text>
 <text x="768" y="1198" font-family="DejaVu Sans, Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#5d7083">XHTTP path без сессии: возможен HTTP 400.</text>
 </g>

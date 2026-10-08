@@ -6,6 +6,7 @@ to the official image (CI uses nginx:1.30). Every socket/file is temporary.
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import socket
@@ -58,13 +59,14 @@ class AtlasNginxTests(unittest.TestCase):
         text=text.replace('/var/run/nginx.pid',str(cls.work/'nginx.pid'))
         text=text.replace('/dev/shm/nginx.sock',str(cls.sock)).replace('/dev/shm/xrxh.socket',str(backend))
         text=text.replace('/var/www/decoy',str(cls.site))
+        text=text.replace('error_log /dev/stderr warn;',f'error_log {cls.work}/runtime-error.log warn;')
         temps=''.join('\n    '+kind+'_temp_path '+str(cls.work/kind)+';' for kind in ['client_body','proxy','fastcgi','uwsgi','scgi'])
         text=text.replace('access_log off;','access_log off;'+temps)
         config=cls.work/'nginx.conf';config.write_text(text)
         base=['-p',str(cls.work)+'/', '-c',str(config),'-e',str(cls.work/'error.log')]
         if IMAGE:
             cls.container='atlas-nginx-'+uuid.uuid4().hex[:12]
-            docker=['docker','run','--rm','--network','none','-v',str(cls.work)+':'+str(cls.work), '--entrypoint','nginx']
+            docker=['docker','run','--rm','--network','none','--user',str(os.getuid())+':'+str(os.getgid()),'-v',str(cls.work)+':'+str(cls.work), '--entrypoint','nginx']
             command=docker+['--name',cls.container,IMAGE]
             validate=docker+[IMAGE]
             cls.addClassCleanup(lambda:subprocess.run(['docker','rm','-f',cls.container],capture_output=True,timeout=20))
@@ -112,8 +114,9 @@ class AtlasNginxTests(unittest.TestCase):
 
     def test_all_runtime_assets_are_served_intact_with_correct_mime_and_revalidation(self):
         types={'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css',
-               '.json':'application/json','.webp':'image/webp','.woff2':'font/woff2','.svg':'image/svg+xml'}
-        count=0
+               '.json':'application/json','.webp':'image/webp','.jpg':'image/jpeg','.jpeg':'image/jpeg',
+               '.png':'image/png','.gif':'image/gif','.ico':'image/x-icon','.woff2':'font/woff2','.woff':'font/woff','.svg':'image/svg+xml'}
+        tested=set()
         for file in sorted((ROOT/'site/dist').rglob('*')):
             if not file.is_file() or file.suffix not in types:continue
             path='/'+file.relative_to(ROOT/'site/dist').as_posix()
@@ -124,8 +127,16 @@ class AtlasNginxTests(unittest.TestCase):
                 self.assertEqual(headers['cache-control'],'no-cache')
                 self.assertEqual(headers['x-content-type-options'],'nosniff')
                 self.assertEqual(hashlib.sha256(body).digest(),hashlib.sha256(file.read_bytes()).digest())
-            count+=1
-        self.assertGreater(count,110)
+            tested.add(path)
+        beers=json.loads((ROOT/'site/dist/beers.json').read_text())
+        required={'/'+beer['image'].lstrip('/') for beer in beers}
+        html=(ROOT/'site/dist/index.html').read_text()
+        required.update(re.findall(r'(?:href|src)="(/(?!/)[^"?#]+)"',html))
+        css=(ROOT/'site/dist/style.css').read_text()
+        required.update('/'+match for match in re.findall(r'url\([\"\']?/?(assets/[^)\"\']+)',css))
+        required.add('/vendor/topolines-0.3.0.js')
+        self.assertFalse(required-tested,'Runtime references not checked: '+str(required-tested))
+        print(f'Verified {len(tested)} runtime files, including every catalogue image and local HTML/CSS reference',flush=True)
         self.assertEqual(len(json.loads(self.request('/beers.json')[2])),96)
 
     def test_default_vhost_tls_versions_missing_assets_and_hidden_files(self):
