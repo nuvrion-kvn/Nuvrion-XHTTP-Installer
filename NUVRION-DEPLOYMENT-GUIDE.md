@@ -97,8 +97,8 @@ Inbound:        NODE_TAG XHTTP
 Оставьте extra Host пустым для наследования `xhttpSettings.extra` из inbound.
 Непустой Host extra переопределяет клиентский объект в подписке, не меняя
 серверный Config Profile. Выгрузка extra не требует отдельного применения.
-Копируемые JSON-шаблоны профиля и обоих Host доступны в [README](README.md#шаблон-профиля-ноды)
-и каталоге [templates](templates/).
+JSON-шаблон профиля доступен в [README](README.md#шаблон-профиля-ноды)
+и файле [templates/node-profile.json](templates/node-profile.json).
 Скрытые Host исключаются из обычной подписки: для теста используйте их connection
 keys либо разрешённую отдельную подписку. Не ослабляйте глобальные правила панели.
 

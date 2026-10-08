@@ -17,7 +17,18 @@
 
 ## Быстрый запуск с GitHub
 
-Скопируйте **весь блок** в SSH-терминал сервера с Ubuntu 24.04.x. Команда проверит ОС, установит средства скачивания, определит текущий коммит `main`, загрузит установщик и SHA-256 из **одного коммита**, проверит целостность и запустит установку. Авторизация GitHub не требуется.
+Скопируйте **одну строку** в SSH-терминал сервера с Ubuntu 24.04.x. Для загрузки нужен `curl`:
+
+```bash
+bash -c 'set -e; f=$(mktemp); cleanup(){ rm -f -- "$f"; }; trap cleanup EXIT; curl --proto "=https" --tlsv1.2 -fsSL https://raw.githubusercontent.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/main/install.sh -o "$f"; bash "$f"'
+```
+
+Команда скачает и запустит [install.sh](https://raw.githubusercontent.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/main/install.sh). Он проверит ОС, установит средства скачивания, определит текущий коммит `main`, загрузит установщик и SHA-256 из **одного коммита**, проверит целостность и запустит интерактивную установку. Авторизация GitHub не требуется.
+
+<details>
+<summary>Развёрнутая команда без install.sh</summary>
+
+Скопируйте весь блок:
 
 ```bash
 (
@@ -52,6 +63,8 @@
   sudo bash "$launch_dir/nuvrion-xhttp-install.sh" --install
 )
 ```
+
+</details>
 
 [Скачать текущий установщик](https://raw.githubusercontent.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/main/nuvrion-xhttp-install.sh) · [SHA256SUMS](https://raw.githubusercontent.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/main/SHA256SUMS) · [История опубликованных релизов](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases)
 
@@ -159,8 +172,6 @@ Node API использует выбранный порт (**2222 по умол�
 - Для новой ноды — `SECRET_KEY` из панели. Для существующей — экспорт действующего Config Profile в root-only файл.
 - Для существующей ноды — Docker Compose и `network_mode: host`. Образ и Xray автоматически не обновляются.
 - Доступ к официальным package/registry/ACME endpoints, DoH и источникам выбранных блок-листов.
-
-Проверенная связка: Remnawave Node **3.4.2**, Xray **26.7.28**, Nginx **1.30**. При выборе другой версии установщик проверяет доступность XHTTP и `trustedXForwardedFor` штатным бинарником core. Cookie-padding добавляется только для проверенного Xray 26.7.28; это не основание автоматически обновлять существующий core.
 
 ## Установка
 
@@ -521,67 +532,9 @@ TLS завершается в Nginx. В поле Host укажите `DOMAIN`, �
 
 Адрес и SNI обоих Host должны совпадать с доменом ноды (`DOMAIN` в профиле). Внешний порт обоих Host — `443`. В Inbound выберите соответствующий тег из профиля и назначьте оба inbound ноде.
 
-Следующие JSON — тела **двух отдельных запросов создания Host** через Remnawave API (`POST /api/hosts`), а не Config Profile и не общий bulk import. Их поля сверены с [официальным контрактом CreateHost](https://github.com/remnawave/backend/blob/010b365ab1fabea01192b5e6ade4e98e66ee1dbd/libs/contract/commands/hosts/create.command.ts). При работе через UI перенесите значения из блоков выше.
-
-Замените `CONFIG_PROFILE_UUID`, `REALITY_INBOUND_UUID`, `XHTTP_INBOUND_UUID` и `NODE_UUID` на UUID объектов **своей панели** после создания профиля. `DOMAIN` и `NODE_TAG` должны совпасть с профилем. Поле `nodes` ограничивает Host выбранной нодой.
-
-**REALITY TCP Host** · [отдельный файл](templates/host-reality.json)
-
-```json
-{
-  "inbound": {
-    "configProfileUuid": "CONFIG_PROFILE_UUID",
-    "configProfileInboundUuid": "REALITY_INBOUND_UUID"
-  },
-  "remark": "NODE_TAG REALITY",
-  "address": "DOMAIN",
-  "port": 443,
-  "sni": "DOMAIN",
-  "host": null,
-  "path": null,
-  "alpn": null,
-  "fingerprint": "firefox",
-  "securityLayer": "DEFAULT",
-  "xhttpExtraParams": null,
-  "isDisabled": false,
-  "isHidden": false,
-  "nodes": [
-    "NODE_UUID"
-  ]
-}
-```
-
-**XHTTP Host** · [отдельный файл](templates/host-xhttp.json)
-
-```json
-{
-  "inbound": {
-    "configProfileUuid": "CONFIG_PROFILE_UUID",
-    "configProfileInboundUuid": "XHTTP_INBOUND_UUID"
-  },
-  "remark": "NODE_TAG XHTTP",
-  "address": "DOMAIN",
-  "port": 443,
-  "sni": "DOMAIN",
-  "host": "DOMAIN",
-  "path": "/api/v3/sync/",
-  "alpn": "h2,http/1.1",
-  "fingerprint": "firefox",
-  "securityLayer": "TLS",
-  "xhttpExtraParams": null,
-  "isDisabled": false,
-  "isHidden": false,
-  "nodes": [
-    "NODE_UUID"
-  ]
-}
-```
-
-В API ALPN хранится строкой `"h2,http/1.1"`; в сгенерированном клиентском Xray JSON это массив `["h2", "http/1.1"]`. REALITY public key, Short ID, transport и flow берутся из привязанного inbound — они не являются дополнительными полями CreateHost. Внешний порт обоих Host всегда 443.
-
 ### Наследование extra
 
-**Extra уже находится в профиле ноды; отдельное заполнение extra в Host для этой схемы не требуется.** В шаблоне XHTTP Host используется `"xhttpExtraParams": null`. Remnawave берёт `streamSettings.xhttpSettings.extra` выбранного inbound при построении клиентской подписки. Такое поведение подтверждено в [официальном resolver Remnawave](https://github.com/remnawave/backend/blob/010b365ab1fabea01192b5e6ade4e98e66ee1dbd/src/modules/subscription-template/resolve-proxy/resolve-proxy-config.service.ts).
+**Extra уже находится в профиле ноды; отдельное заполнение extra в Host для этой схемы не требуется.** Remnawave берёт `streamSettings.xhttpSettings.extra` выбранного inbound при построении клиентской подписки. Такое поведение подтверждено в [официальном resolver Remnawave](https://github.com/remnawave/backend/blob/010b365ab1fabea01192b5e6ade4e98e66ee1dbd/src/modules/subscription-template/resolve-proxy/resolve-proxy-config.service.ts).
 
 Непустой Host extra является явным переопределением клиентского объекта. Он не изменяет серверный профиль и может заменить унаследованные параметры. Используйте его только при намеренной настройке отдельного Host. Файл `/root/nuvrion-xhttp-extra.json` содержит выгрузку клиентских knobs; это не третий обязательный шаг настройки и не полная копия серверного extra. Stream separation и `downloadSettings` по умолчанию не добавляются.
 

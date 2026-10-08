@@ -18,6 +18,7 @@ jobs:
 
       - name: Проверка Bash и SHA-256
         run: |
+          bash -n install.sh
           bash -n nuvrion-xhttp-install.sh
           sha256sum -c SHA256SUMS
 
@@ -68,7 +69,7 @@ jobs:
       - name: Проверка ShellCheck
         run: |
           shellcheck --version
-          shellcheck -S style nuvrion-xhttp-install.sh vendor/nuvrion-auto-tuning-xhttp.sh src/*.sh
+          shellcheck -S style install.sh nuvrion-xhttp-install.sh vendor/nuvrion-auto-tuning-xhttp.sh src/*.sh
 
       - name: Проверка diff
         run: git diff --check
