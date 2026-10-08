@@ -13,6 +13,34 @@
 
 </div>
 
+## Быстрый запуск с GitHub
+
+Скопируйте **весь блок** в SSH-терминал сервера с Ubuntu 24.04.x. Команда установит средства скачивания, загрузит официальный релиз, проверит SHA-256 и запустит установку. Авторизация GitHub не требуется.
+
+```bash
+sudo apt-get update && sudo apt-get install -y curl ca-certificates && bash -c '
+  set -Eeuo pipefail
+  umask 077
+  launch_dir=$(mktemp -d /tmp/nuvrion-xhttp-launch.XXXXXXXX)
+  cleanup() {
+    rm -f -- "$launch_dir/nuvrion-xhttp-install.sh" "$launch_dir/SHA256SUMS"
+    rmdir -- "$launch_dir"
+  }
+  trap cleanup EXIT
+  release_url=https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest/download
+  curl --proto "=https" --tlsv1.2 -fsSL --retry 3 \
+    "$release_url/nuvrion-xhttp-install.sh" -o "$launch_dir/nuvrion-xhttp-install.sh"
+  curl --proto "=https" --tlsv1.2 -fsSL --retry 3 \
+    "$release_url/SHA256SUMS" -o "$launch_dir/SHA256SUMS"
+  (cd "$launch_dir" && sha256sum -c SHA256SUMS)
+  sudo bash "$launch_dir/nuvrion-xhttp-install.sh" --install
+'
+```
+
+[Скачать установщик](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest/download/nuvrion-xhttp-install.sh) · [SHA256SUMS](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest/download/SHA256SUMS) · [Официальный релиз](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest)
+
+После запуска установщик покажет состав компонентов и запросит домен, API-порт ноды, IP панели и секретный ключ. Сначала проверяются DNS и найденная конфигурация, затем показывается план и запрашивается подтверждение изменений. Секретный ключ вводится скрыто. Дальнейшие параметры и применение профиля описаны в [разделе установки](#установка).
+
 ## Назначение и состав
 
 Автономный Bash-установщик разворачивает Remnawave Node или подключает XHTTP-инфраструктуру к существующей ноде. Внешний вход обоих транспортов — **TCP/443 в Xray**. REALITY TCP работает с локальным selfsteal target: Nginx принимает перенаправленный TLS-поток через Unix socket. Nginx обслуживает сайт декой и проксирует XHTTP к отдельному Unix inbound Xray.
@@ -122,7 +150,9 @@ Node API использует выбранный порт (**2222 по умол�
 
 ### Получение файла
 
-Репозиторий приватный. Скачайте `nuvrion-xhttp-install.sh` и `SHA256SUMS` из [актуального релиза](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest) с авторизованного аккаунта либо через GitHub CLI на своём компьютере:
+Для запуска прямо на сервере используйте [готовую команду выше](#быстрый-запуск-с-github). Репозиторий и файлы релиза доступны публично, без аккаунта или токена GitHub.
+
+Если хотите предварительно сохранить файлы на компьютере, скачайте `nuvrion-xhttp-install.sh` и `SHA256SUMS` из [актуального релиза](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest) либо через GitHub CLI:
 
 ```bash
 gh release download \

@@ -3,6 +3,9 @@
 Автономная установка Remnawave Node на Ubuntu 24.04.x: VLESS REALITY TCP
 selfsteal + XHTTP, Nginx через Unix sockets и локальный сайт декой.
 
+**[Готовая команда установки прямо из GitHub](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer#быстрый-запуск-с-github)** — скачивание публичного релиза, проверка SHA-256 и интерактивный запуск без токена.
+[Скачать Bash-файл](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest/download/nuvrion-xhttp-install.sh) · [SHA256SUMS](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/releases/latest/download/SHA256SUMS).
+
 - Один Bash-файл со встроенными шаблонами, сайтом, API и компонентами.
 - В начале: название, лицензия MIT, создатель Nuvrion / nuvrion-kvn и состав установки.
 - Ручной ввод домена, API-порта (default 2222), IP панели и секретного ключа:
