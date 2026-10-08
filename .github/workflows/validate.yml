@@ -106,6 +106,16 @@ jobs:
           cmp /tmp/xhttp.before nuvrion-xhttp-install.sh
           cmp /tmp/SHA256SUMS.before SHA256SUMS
 
+      - name: Совместимость объединения с Docker Compose 2.24.6
+        run: |
+          curl --proto '=https' --tlsv1.2 -fsSL --retry 3 --max-time 120 \
+            https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 \
+            -o "$RUNNER_TEMP/docker-compose-2.24.6"
+          echo "eca30ae32dc451f9e6d6c8ddce078a76f23b355c3ca0ab391d58f59e87c0d310  $RUNNER_TEMP/docker-compose-2.24.6" | sha256sum -c -
+          chmod +x "$RUNNER_TEMP/docker-compose-2.24.6"
+          NUVRION_TEST_COMPOSE_BIN="$RUNNER_TEMP/docker-compose-2.24.6" \
+            python3 -m unittest discover -s tests -p 'test_compose_merge.py' -v
+
       - name: Настоящий nginx, TLS, MIME, ресурсы и защита маршрутов
         env:
           NUVRION_NGINX_DOCKER: nginx:1.30

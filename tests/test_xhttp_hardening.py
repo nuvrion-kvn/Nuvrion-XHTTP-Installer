@@ -122,13 +122,14 @@ class HardeningTests(unittest.TestCase):
         override = LIB['compose_override'](state, before, {})
         node = override['services']['remnanode'];nginx = override['services']['nginx']
         self.assertEqual(node['pids_limit'], 2048)
-        self.assertEqual(node['security_opt'], ['apparmor=docker-default', 'no-new-privileges:true'])
+        self.assertEqual(node['security_opt'], ['no-new-privileges:true'])
         self.assertNotIn('cap_drop', node)
         self.assertTrue(nginx['read_only'])
         self.assertEqual(nginx['cap_drop'], ['ALL'])
         self.assertNotIn('NET_ADMIN', nginx['cap_add'])
         after = copy.deepcopy(before)
         after['services']['remnanode'].update(node)
+        after['services']['remnanode']['security_opt']=before['services']['remnanode']['security_opt']+node['security_opt']
         after['services']['nginx'] = nginx
         LIB['verify_compose'](before, after, state)
         self.assertEqual(before['services']['remnanode']['environment'], {'KEEP':'value'})
@@ -179,14 +180,14 @@ class HardeningTests(unittest.TestCase):
             self.assertEqual(before,preserved)
         before={'services':{'remnanode':{'network_mode':'host'},'nginx':{'tmpfs':['/custom:rw,size=1m']}}}
         after=LIB['compose_override'](state,before,{})
-        self.assertIn('/custom:rw,size=1m',after['services']['nginx']['tmpfs'])
+        self.assertNotIn('/custom:rw,size=1m',after['services']['nginx']['tmpfs'])
 
     def test_compose_preserves_escaped_shell_variables_on_reinstall(self):
         state=self.state();before={'services':{'remnanode':{'network_mode':'host'}}}
         overlay=LIB['compose_override'](state,before,{})
         self.assertIn('$$p',overlay['services']['nginx']['command'][2])
         config=copy.deepcopy(before);config['services']['nginx']=copy.deepcopy(overlay['services']['nginx'])
-        repeated=LIB['compose_override'](state,config,overlay)
+        repeated=LIB['compose_override'](state,config,overlay,before)
         self.assertEqual(overlay,repeated)
 
 

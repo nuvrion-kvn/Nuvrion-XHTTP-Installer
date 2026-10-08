@@ -352,6 +352,40 @@ apt_run(){
         self.assertEqual(r.returncode,0,r.stderr)
         self.assertIn('EXEC -y --no-remove --with-new-pkgs upgrade',r.stdout)
 
+    def test_apt_progress_reaches_terminal_and_journal_before_return(self):
+        r=self.run_shell('''
+apt_run(){ printf 'APT_STDOUT\\n';printf 'APT_STDERR\\n' >&2; }
+apt_run_logged update
+printf 'AFTER_APT\\n'
+[[ $(cat "$LOG") == $'APT_STDOUT\\nAPT_STDERR' ]]
+''')
+        self.assertEqual(r.returncode,0,r.stderr)
+        self.assertIn('APT_STDOUT\nAPT_STDERR\nAFTER_APT',r.stdout)
+
+    def test_apt_failure_is_not_hidden_by_successful_journal_write(self):
+        r=self.run_shell('''
+apt_run(){ printf 'APT_DOWNLOAD_ERROR\\n' >&2;return 100; }
+rc=0;apt_run_logged update || rc=$?
+[[ $rc == 100 ]]
+grep -qx APT_DOWNLOAD_ERROR "$LOG"
+''')
+        self.assertEqual(r.returncode,0,r.stderr)
+        self.assertIn('APT_DOWNLOAD_ERROR',r.stdout)
+
+    def test_failed_apt_application_does_not_report_success(self):
+        r=self.run_shell('''
+apt_run(){
+ if [[ $1 == -s ]];then printf 'Inst pkg [1] (2 repo)\\nConf pkg (2 repo)\\n';return 0;fi
+ printf 'APT_DOWNLOAD_ERROR\\n' >&2;return 100
+}
+apt_apply_checked --with-new-pkgs upgrade
+printf 'MUST_NOT_CONTINUE\\n'
+''')
+        self.assertEqual(r.returncode,1,r.stderr)
+        self.assertIn('APT_DOWNLOAD_ERROR',r.stdout)
+        self.assertNotIn('План APT применён',r.stdout)
+        self.assertNotIn('MUST_NOT_CONTINUE',r.stdout)
+
     def test_cleanup_protects_kernel_boot_network_and_components(self):
         for package in ('linux-image-6.8.0-146-generic','grub-common','openssh-server',
                         'docker-ce','containerd.io','python3:amd64','util-linux','zram-tools','kmod'):
