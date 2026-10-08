@@ -29,7 +29,8 @@ class XhttpShellTests(unittest.TestCase):
                 source=source.replace('/etc/systemd/system/nuvrion-rps.service',env['TEST_RPS_ROOT']+'/rps.service')
             if 'TEST_KERNEL_ROOT' in env:
                 for path, name in [('/boot/','/boot/'),('/lib/modules/','/modules/'),
-                                   ('/var/lib/nuvrion-tuning/','/state/')]:
+                                   ('/var/lib/nuvrion-tuning','/state'),('/usr/local/sbin','/bin'),
+                                   ('/etc/systemd/system/nuvrion-zram.service','/zram.service')]:
                     source=source.replace(path,env['TEST_KERNEL_ROOT']+name)
             return subprocess.run(['bash'], input=source+'\n'+code,
                                   env={**os.environ,'TEST_POLICY':fixture+'/policy-rc.d',**env},
@@ -456,15 +457,19 @@ validate_zram
         self.assertEqual(r.returncode,0,r.stderr)
 
     def test_pending_zram_requires_new_kernel_image_initrd_module_and_autostart(self):
-        for missing in ('', 'image', 'initrd', 'module', 'autostart', 'newer'):
+        for missing in ('', 'image', 'initrd', 'module', 'autostart', 'newer', 'helper', 'unit'):
             with self.subTest(missing=missing), tempfile.TemporaryDirectory() as td:
                 root=Path(td);kernel='6.8.0-146-generic'
-                for directory in ('boot','state','modules/'+kernel+'/kernel/drivers/block/zram'):
+                for directory in ('boot','state','bin','modules/'+kernel+'/kernel/drivers/block/zram'):
                     (root/directory).mkdir(parents=True,exist_ok=True)
                 (root/'state/zram-pending-kernel').write_text(kernel)
                 for name, file in [('image','boot/vmlinuz-'+kernel),('initrd','boot/initrd.img-'+kernel),
                                   ('module','modules/'+kernel+'/kernel/drivers/block/zram/zram.ko.zst')]:
                     if missing!=name:(root/file).write_text('fixture')
+                if missing!='helper':
+                    helper=root/'bin/nuvrion-zram-setup.sh';helper.write_text('#!/bin/sh\nexit 0\n');helper.chmod(0o755)
+                if missing!='unit':
+                    (root/'zram.service').write_text('ExecStart='+str(root/'bin/nuvrion-zram-setup.sh')+'\n')
                 r=self.run_shell('''
 uname(){ echo "$TEST_RUNNING"; }
 systemctl(){ [[ $TEST_ENABLED == 1 ]]; }

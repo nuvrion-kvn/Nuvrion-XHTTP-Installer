@@ -120,7 +120,7 @@ create_or_repair_nuvrion_zram(){ touch "$TEST_RUNTIME/unexpected-repair"; }
             result = test_xhttp_shell.XhttpShellTests().run_shell('''
 WORK="$TEST_RUNTIME"; command install -d "$OWN"
 PATH="$TEST_RUNTIME/bin:$PATH"; export PATH
-security_baseline(){ :; }; repair_owned_rps(){ :; }
+security_baseline(){ :; }; repair_owned_rps(){ :; }; prepare_zram_kernel(){ :; }
 helper(){ :; }; capture_owned_rps(){ :; }
 NODE_PORT=2222; PANEL_IP=203.0.113.2
 apply_tuning
