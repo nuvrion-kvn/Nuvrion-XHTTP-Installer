@@ -6,12 +6,19 @@ Security-ревизия от 08.10.2026. Установщик — один фа�
 ## Требования
 
 Ubuntu 24.04.x, systemd, root, чистый сервер либо установленный Remnanode с Docker Compose,
-`network_mode: host`, Node API 2222 и общий `/dev/shm`. Нужны домен с A-записью
+`network_mode: host`, выбранный Node API port (default 2222) и общий `/dev/shm`. Нужны домен с A-записью
 на сервер, IP панели и email Let's Encrypt. Совместимость cookie-padding проверена
 на **Xray 26.7.28 / Remnanode 3.4.2**; другие версии требуют отдельного теста.
 Новая нода устанавливается с выбором latest/стабильной версии; отсутствующие
 Docker/Compose устанавливаются через APT. Образ и Xray действующей ноды сохраняются.
 SECRET_KEY новой ноды вводится скрыто либо читается из root-only файла `0600`.
+В начале установки выводятся лицензия MIT, создатель и состав компонентов,
+затем жирные жёлтые русские запросы домена, API-порта, IP панели и секретного ключа.
+Все A-записи должны совпадать с внешним IPv4 сервера: иначе установка отменяется
+до изменения конфигурации, включая `--yes`. `--panel-port` задаёт Node API port,
+а не порт веб-интерфейса панели. Тот же порт нужно указать в карточке Node.
+Для существующей ноды определяются и сохраняются API-порт и credentials;
+в запросе ключа Enter сохраняет действующий ключ, другой ключ отклоняется.
 
 Не переносите JSON другого сервера: Reality private key должен принадлежать этой
 ноде. Для существующего профиля экспортируйте полный Config Profile из панели
@@ -23,7 +30,7 @@ SECRET_KEY новой ноды вводится скрыто либо читае
 sha256sum -c SHA256SUMS
 sudo bash ./nuvrion-xhttp-install.sh --diagnose
 sudo bash ./nuvrion-xhttp-install.sh --install \
-  --domain node.example.com --panel-ip 192.0.2.10 \
+  --domain node.example.com --panel-port 2222 --panel-ip 192.0.2.10 \
   --email admin@example.com --node-tag 'My Node' --node-version keep \
   --profile-input /root/existing-profile.json
 ```

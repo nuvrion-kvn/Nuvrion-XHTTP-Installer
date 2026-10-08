@@ -1,6 +1,8 @@
 """Security regressions for the XHTTP installer; no host configuration writes."""
 import copy
+import json
 import os
+import sys
 from pathlib import Path
 import tempfile
 import unittest
@@ -13,6 +15,33 @@ class HardeningTests(unittest.TestCase):
     def state(self):
         return {**test_xhttp.XhttpTests().state(), 'secure_sockets': True,
                 'padding_supported': True, 'docker_hardening': True, 'nginx_new': True}
+
+    def test_api_port_persists_without_secret_in_saved_state(self):
+        with tempfile.TemporaryDirectory() as td:
+            state=Path(td)/'state.json'
+            env={'DOMAIN':'node.example.org','PANEL_IP':'192.0.2.10','NODE_PORT':'3222',
+                 'NGINX_NEW':'1','FILES_JSON':'[]','NODE_IMAGE_ID':'fixed',
+                 'NGINX_IMAGE_ID':'fixed-nginx','BACKUP':'/root/backup','FW':'nft',
+                 'TRUSTED_XFF':'1','NODE_SECRET':'A'*80}
+            with patch.dict(LIB,STATE=state),patch.dict(os.environ,env),patch.object(sys,'argv',['helper','state']):
+                LIB['run']()
+            saved=json.loads(state.read_text())
+            self.assertEqual(saved['node_port'],'3222')
+            self.assertEqual(saved['panel_ip'],'192.0.2.10')
+            self.assertNotIn('A'*80,state.read_text())
+
+    def test_nft_guard_validates_api_port_and_preserves_foreign_rules(self):
+        original={'nftables':[{'rule':{'comment':'foreign','family':'inet','table':'keep','chain':'input','handle':123}}]}
+        before=copy.deepcopy(original)
+        for panel in ('192.0.2.10','2001:db8::10'):
+            rules=LIB['nft_security_rules'](panel,False,original,3222)
+            self.assertIn('tcp dport 3222 drop',rules)
+            self.assertIn('saddr '+panel+' tcp dport 3222 accept',rules)
+            self.assertNotIn('handle 123',rules)
+            self.assertNotIn('2222',rules)
+        for port in (0,80,443,65536,'invalid'):
+            with self.assertRaises(ValueError):LIB['nft_security_rules']('192.0.2.10',False,original,port)
+        self.assertEqual(before,original)
 
     def test_padding_gate_is_exact_not_a_speculative_version_comparison(self):
         for version, supported in [('Xray 26.7.28 (Xray, Penetrates Everything.)', True),

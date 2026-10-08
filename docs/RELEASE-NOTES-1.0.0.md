@@ -1,44 +1,48 @@
 # Nuvrion XHTTP Installer 1.0.0
 
-Автономная установка и настройка Remnawave-ноды: VLESS REALITY TCP + XHTTP,
-Nginx через Unix sockets и локальный сайт декой.
+Автономная установка Remnawave Node на Ubuntu 24.04.x: VLESS REALITY TCP
+selfsteal + XHTTP, Nginx через Unix sockets и локальный сайт декой.
 
-- Один Bash-файл со встроенными шаблонами, сайтом, игровым API и компонентами.
-- Первая установка Node: latest или доступная стабильная версия официального image.
-- Отсутствующие Docker/Compose устанавливаются через APT; SECRET_KEY вводится скрыто/файлом 0600.
-- Сохранена схема Xray :443 → Reality local target/PROXY protocol → nginx → XHTTP socket.
-- Готовый Config Profile со встроенным XHTTP extra и параметры двух Host с Firefox.
+- Один Bash-файл со встроенными шаблонами, сайтом, API и компонентами.
+- В начале: название, лицензия MIT, создатель Nuvrion / nuvrion-kvn и состав установки.
+- Ручной ввод домена, API-порта (default 2222), IP панели и секретного ключа:
+  жирные жёлтые русские подсказки, ключ скрыт и не записывается в журнал.
+- Все DNS A-записи должны совпадать с внешним IPv4 сервера; несовпадение
+  отменяет установку до изменений. `--yes` не обходит DNS guard.
+- Выбранный API-порт используется в NODE_PORT, firewall IPv4/IPv6, Auto Tuning,
+  сохранённом состоянии, автозапуске и диагностике. Доступ — только IP панели.
+- Latest или доступный стабильный image для новой ноды; отсутствующие
+  Docker/Compose и зависимости устанавливаются через APT.
+- Существующие Compose, API-порт, SECRET_KEY, Reality keys, clients, SSH,
+  image и бинарник Xray сохраняются. Введённый действующий ключ проверяется;
+  автоматическая замена credentials/порта установленной ноды запрещена.
+- Config Profile с двумя inbound и XHTTP extra, два Host с Firefox.
   В Host extra оставляется пустым: панель наследует его из inbound.
-- Cookie-padding для проверенного Xray 26.7.28, DNS AdGuard → COMSS.
-- Защищённые socket permissions, Docker NNP, pids limits и read-only Nginx.
-- Auto Tuning, ZRAM/RPS/BBR, Traffic Control, Two-Way Ping, Fail2ban и security automation.
-- Certbot renewal, firewall API guard, backup/rollback, диагностика и self-check.
-- Повторная установка сохраняет действующие keys, clients, SSH, image и бинарник Xray.
+- Защищённые Unix sockets, TLS 1.2/1.3, HTTP/2, PROXY protocol и client real IP.
+- Auto Tuning: BBR/fq, ZRAM, RPS/RFS, sysctl и лимиты; Traffic Control,
+  Two-Way Ping, Fail2ban, security automation и обслуживание пакетов.
+- Certbot renewal, backup/rollback, diagnostics и self-check.
 
-Установщик предназначен для Ubuntu 24.04.x: чистый сервер или существующий Remnanode.
-Смена образа/Xray действующей ноды и изменения SSH запрещены.
-Профиль применяется через Remnawave отдельно; до этого возможен статус
-WAITING_FOR_REMNAWAVE_PROFILE.
+Порт панели в подсказке — **API-порт на сервере ноды**, а не порт
+веб-интерфейса панели. В карточке Node укажите тот же порт. Пользовательские
+Host REALITY/XHTTP используют TCP/443. Профиль применяется через Remnawave;
+до его загрузки возможен `WAITING_FOR_REMNAWAVE_PROFILE`.
 
-Проверены оба транспорта настоящим Xray-клиентом, сайт HTTP 200, XHTTP backend
-HTTP 400, TLS 1.2/1.3, h2, DNS fallback, права сокетов, firewall, reinstall,
-rollback и повтор после reboot тестовой ноды. 215 тестов общего проекта прошли
-до выделения репозитория. Ошибки SIGPIPE, Compose interpolation и NUL logs исправлены.
-HAPP/INCY, публичная подписка скрытых Host, чистая ОС и WAN line-rate не подтверждены.
+Проверки: 71 unit/shell test на Linux, настоящий терминал со скрытым вводом,
+Bash syntax, ShellCheck 0.11.0, воспроизводимая сборка (119 встроенных файлов).
+Настоящие Node fixtures: latest/API 2222 и 3.4.2/API 3222; kernel firewall
+проверен в отдельном network namespace на обоих портах. REALITY и XHTTP
+проверены авторизованными Xray-клиентами, включая сайт, API, TLS/h2, real IP,
+cookie-padding, DNS fallback и Nginx rollback.
 
-Дополнительно проверен реальный первый запуск **latest и 3.4.2** в изолированных
-Node fixtures: API, NNP, image ID, credentials 0600 и сохранение действующей ноды.
-60 unit/shell tests прошли на Linux. Полный reinstall исправленного скрипта
-на действующей тестовой ноде дал RUNNING, сайт 200/XHTTP 400 и успешный staging
-renewal; контейнеры, image/Xray, SSH и профиль сохранились.
-Полная установка новой ОС с первоначальным Docker/APT и новым ACME issuance
-не проводилась; эта граница отражена в отчёте.
+Полная установка чистой ОС с первоначальным Docker/APT и новым ACME issuance,
+HAPP/INCY и WAN throughput не подтверждены; границы проверки описаны в отчёте.
 
 Файлы релиза: **nuvrion-xhttp-install.sh** и **SHA256SUMS**.
-Проверенный SHA-256 Bash:
+SHA-256 Bash:
 
 ```text
-16ced4c52dee93d803e1d70b182dd288e3eae3820254fb1b062186af5c620952
+027748f902320406c6e9dd5e9acb8b986f4b0427b4d13ae8c27a86eb10f19c6d
 ```
 
 [Установка и команды](https://github.com/nuvrion-kvn/Nuvrion-XHTTP-Installer/blob/main/README.md)

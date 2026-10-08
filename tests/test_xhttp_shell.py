@@ -40,6 +40,161 @@ class XhttpShellTests(unittest.TestCase):
         self.assertEqual(r.returncode,0,r.stderr)
         self.assertIn('installer=1.0.0',r.stdout)
 
+    def test_api_port_validation_and_cli(self):
+        for value,rc in [('2222',0),('03222',0),('65535',0),('0',1),('65536',1),
+                         ('80',1),('443',1),('-1',1),('abc',1),('22;echo BAD',1)]:
+            r=self.run_shell('NODE_PORT=$TEST_PORT;validate_node_port;printf "port=%s" "$NODE_PORT"',TEST_PORT=value)
+            self.assertEqual(r.returncode,rc,r.stderr)
+            self.assertNotIn('BAD',r.stdout)
+        r=self.run_shell('parse_args --install --panel-port 3222;[[ $NODE_PORT == 3222 && $NODE_PORT_EXPLICIT == 1 ]]')
+        self.assertEqual(r.returncode,0,r.stderr)
+
+    def test_dns_mismatch_never_asks_to_override_or_reaches_firewall(self):
+        for yes in ('0','1'):
+            for ip,records in [('', '192.0.2.1'),('192.0.2.1',''),('192.0.2.1','192.0.2.2'),
+                               ('192.0.2.1','192.0.2.1 192.0.2.2')]:
+                r=self.run_shell('''
+installation_components(){ :; };detect_os(){ :; };detect_remnanode(){ return 3; }
+collect_inputs(){ DOMAIN=node.example; };detect_network(){ IPV4=$TEST_IP;A_RECORDS=$TEST_RECORDS; }
+ask_yes(){ echo MUST_NOT_PROMPT;exit 1; };detect_firewall(){ echo MUST_NOT_CHANGE;exit 1; }
+YES=$TEST_YES;plan_install
+''',TEST_IP=ip,TEST_RECORDS=records,TEST_YES=yes)
+                self.assertEqual(r.returncode,4,r.stderr)
+                self.assertIn('Установка отменена',r.stderr)
+                self.assertNotIn('MUST_NOT',r.stdout)
+        r=self.run_shell('DOMAIN=node.example;IPV4=192.0.2.1;A_RECORDS="192.0.2.1 192.0.2.1";validate_domain_address')
+        self.assertEqual(r.returncode,0,r.stderr)
+
+    def test_existing_secret_is_verified_without_rotation_or_disclosure(self):
+        with tempfile.TemporaryDirectory() as td:
+            secret=Path(td)/'secret';secret.write_text('A'*80);secret.chmod(0o600)
+            for value,rc in [('A'*80,0),('B'*80,3)]:
+                r=self.run_shell('''
+docker(){ printf '{"Config":{"Env":["SECRET_KEY=%s"]}}' "$TEST_EXISTING" | python3 -c 'import json,sys;print(json.dumps([json.load(sys.stdin)]))'; }
+NODE_NEW=0;NODE_CONTAINER=fixture;YES=1;SECRET_FILE=$TEST_SECRET
+collect_node_secret;[[ -z ${NODE_SECRET:-} ]]
+''',TEST_SECRET=str(secret),TEST_EXISTING=value)
+                self.assertEqual(r.returncode,rc,r.stderr)
+                self.assertNotIn('A'*80,r.stdout+r.stderr)
+                self.assertNotIn('B'*80,r.stdout+r.stderr)
+        r=self.run_shell('NODE_NEW=0;YES=1;docker(){ echo MUST_NOT_RUN;exit 1; };collect_node_secret')
+        self.assertEqual(r.returncode,0,r.stderr)
+        self.assertNotIn('MUST_NOT',r.stdout)
+
+    def test_dynamic_firewall_port_for_all_backends_and_panel_families(self):
+        for backend in ('ufw','nft','iptables'):
+            for panel in ('192.0.2.10','2001:db8::10'):
+                r=self.run_shell('''
+NODE_PORT=3222;PANEL_IP=$TEST_PANEL;FW=$TEST_BACKEND
+mkdir -p "$BASE"
+state_value(){ :; }
+ufw(){ printf 'UFW %s\\n' "$*" >> "$BASE/../ufw.log"; }
+remove_ufw_comment(){ :; }
+grep(){ if [[ $* == *IPV6=yes* ]];then return 0;fi;command grep "$@"; }
+nft(){ if [[ $* == '-a -j list ruleset' ]];then printf '{"nftables":[]}';else cat;fi; }
+iptables(){ return 1; };ip6tables(){ return 1; }
+iptables-restore(){ cat; };ip6tables-restore(){ cat; }
+configure_firewall
+[[ ! -f $BASE/../ufw.log ]] || cat "$BASE/../ufw.log"
+''',TEST_PANEL=panel,TEST_BACKEND=backend)
+                self.assertEqual(r.returncode,0,r.stderr)
+                self.assertIn('3222',r.stdout)
+                self.assertIn(panel,r.stdout)
+                self.assertNotIn('2222',r.stdout)
+                if backend=='iptables':
+                    self.assertEqual(r.stdout.count('--dport 3222 -j DROP'),4)
+                    self.assertEqual(r.stdout.count('-s '+panel+' --dport 3222 -j ACCEPT'),2)
+
+    def test_state_loads_custom_api_port_and_old_state_keeps_default(self):
+        for saved,expected in [('3222','3222'),(None,'2222')]:
+            r=self.run_shell('''
+mkdir -p "$OWN";printf '%s' "$TEST_STATE" > "$STATE";chmod 600 "$STATE"
+load_settings;[[ $NODE_PORT == "$TEST_EXPECTED" ]]
+NODE_PORT=4222;NODE_PORT_EXPLICIT=1;load_settings;[[ $NODE_PORT == 4222 ]]
+''',TEST_STATE=json.dumps({'node_port':saved} if saved else {}),TEST_EXPECTED=expected)
+            self.assertEqual(r.returncode,0,r.stderr)
+
+    def test_existing_node_port_is_detected_and_explicit_mismatch_is_refused(self):
+        for requested,expected_rc in [('',0),('3222',0),('4222',3)]:
+            r=self.run_shell('''
+mkdir -p "$BASE";printf '{}' > "$BASE/compose.json"
+docker(){
+ case $1 in
+  info|compose) :;;ps) echo fixture;;
+  inspect) python3 -c 'import json,sys
+root=sys.argv[1]
+print(json.dumps([{"Name":"/fixture","Image":"sha256:fixed","State":{"Running":True},"Mounts":[],"Config":{"Image":"remnawave/node:3.4.2","Env":["NODE_PORT=3222"],"Labels":{"com.docker.compose.service":"node","com.docker.compose.project":"fixture","com.docker.compose.project.working_dir":root,"com.docker.compose.project.config_files":root+"/compose.json"}},"HostConfig":{"NetworkMode":"host"}}]))' "$BASE";;
+  exec) echo 'Xray 26.7.28';;
+ esac
+}
+if [[ -n $TEST_REQUESTED ]];then NODE_PORT=$TEST_REQUESTED;NODE_PORT_EXPLICIT=1;fi
+detect_remnanode
+[[ $NODE_PORT == 3222 && $DETECTED_NODE_PORT == 3222 ]]
+''',TEST_REQUESTED=requested)
+            self.assertEqual(r.returncode,expected_rc,r.stderr)
+
+    def test_ssh_conflict_uses_selected_api_port_and_prevents_install_plan(self):
+        r=self.run_shell('''
+installation_components(){ :; };detect_os(){ :; };detect_remnanode(){ return 3; }
+collect_inputs(){ NODE_PORT=3222; };detect_network(){ IPV4=192.0.2.1;A_RECORDS=192.0.2.1; }
+detect_firewall(){ :; };ss(){ [[ $* == *:3222* ]] && echo sshd; }
+assert_clean_node_target(){ echo MUST_NOT_INSTALL;exit 1; }
+plan_install
+''')
+        self.assertEqual(r.returncode,7,r.stderr)
+        self.assertNotIn('MUST_NOT',r.stdout)
+
+    def test_configured_ssh_port_conflict_is_refused_even_without_listener(self):
+        r=self.run_shell('NODE_PORT=3222;SSH_PORT=3222;ADMIN_IP=192.0.2.10;security_plan')
+        self.assertEqual(r.returncode,7,r.stderr)
+        self.assertIn('совпадает с SSH',r.stderr)
+
+    def test_header_components_colored_prompts_and_hidden_secret_in_real_tty(self):
+        import fcntl,pty,select,termios,time
+        secret='A'*80
+        code=SOURCE+'''
+banner;installation_components
+NODE_NEW=1;EMAIL=admin@example.org;NODE_TAG=fixture;PATH_EXPLICIT=1
+collect_inputs
+printf 'RESULT domain=%s port=%s panel=%s secret-length=%s\\n' "$DOMAIN" "$NODE_PORT" "$PANEL_IP" "${#NODE_SECRET}"
+'''
+        def controlling_tty():
+            os.setsid();fcntl.ioctl(0,termios.TIOCSCTTY,0)
+        with tempfile.TemporaryDirectory() as td:
+            script=Path(td)/'setup.sh';script.write_text(code)
+            master,slave=pty.openpty()
+            process=subprocess.Popen(['bash',str(script)],stdin=slave,stdout=slave,stderr=slave,preexec_fn=controlling_tty)
+            os.close(slave);output=b'';step=0
+            prompts=[('Домен сайта декой / SNI',b'node.example.org\n'),
+                     ('Порт API ноды для панели',b'\n'),('IP панели Remnawave',b'192.0.2.10\n'),
+                     ('Секретный ключ ноды из панели',secret.encode()+b'\n')]
+            try:
+                deadline=time.monotonic()+15
+                while time.monotonic()<deadline:
+                    if select.select([master],[],[],.1)[0]:
+                        try:chunk=os.read(master,65536)
+                        except OSError:break
+                        if not chunk:break
+                        output+=chunk
+                    if step<len(prompts) and prompts[step][0].encode() in output:
+                        # Wait for read -s to disable echo on the terminal.
+                        if step==3 and termios.tcgetattr(master)[3]&termios.ECHO:continue
+                        os.write(master,prompts[step][1]);step+=1
+                    if process.poll() is not None:break
+                process.wait(timeout=5)
+            finally:
+                if process.poll() is None:process.kill();process.wait()
+                os.close(master)
+            text=output.decode(errors='replace')
+            self.assertEqual(process.returncode,0,text)
+            self.assertEqual(step,4,text)
+            self.assertIn('Лицензия: MIT',text)
+            self.assertIn('Создатель: Nuvrion',text)
+            self.assertLess(text.index('Компоненты установки:'),text.index('Домен сайта декой'))
+            for title,_ in prompts:self.assertIn('\x1b[1;33m'+title,text)
+            self.assertNotIn(secret,text)
+            self.assertIn('RESULT domain=node.example.org port=2222 panel=192.0.2.10 secret-length=80',text)
+
     def test_binary_log_padding_does_not_hide_real_errors_or_warn_about_null_bytes(self):
         result=self.run_shell(r'''docker(){ printf 'padding\000invalid config\n'; }
 NODE_CONTAINER=fixture;NGINX_CONTAINER=fixture

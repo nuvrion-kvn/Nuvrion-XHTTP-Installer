@@ -1,0 +1,402 @@
+--- previous/nuvrion-xhttp-install.sh
++++ current/nuvrion-xhttp-install.sh
+@@ -19,6 +19,7 @@
+ readonly EXTRA=/root/nuvrion-xhttp-extra.json
+ readonly LOG=/var/log/nuvrion-xhttp-installer.log
+ ACTION=menu DOMAIN='' PANEL_IP='' EMAIL='' NODE_TAG='' XHTTP_PATH=/api/v3/sync/
++NODE_PORT=2222 NODE_PORT_EXPLICIT=0 DETECTED_NODE_PORT=''
+ DOWNLOAD_DOMAIN='' NODE_CONTAINER='' PROFILE_INPUT='' YES=0 NO_TUNING=0
+ NO_UPDATES=0 APT_POLICY_ACTIVE=0 APT_POLICY_ORIGINAL=0 APT_PREFERENCES=''
+ ZRAM_STATUS='NOT CONFIGURED' REBOOT_NEEDED=0
+@@ -52,13 +53,33 @@
+ prompt() {
+     local name=$1 title=$2 default=${3:-} value
+     [[ -r /dev/tty ]] || die 1 "Требуется параметр $name для неинтерактивного запуска."
+-    printf '  %s [%s]: ' "$title" "$default" > /dev/tty
++    printf '  \033[1;33m%s [%s]:\033[0m ' "$title" "$default" > /dev/tty
+     IFS= read -r value < /dev/tty || die 1 'Ввод прерван.'
+     printf -v "$name" '%s' "${value:-$default}"
+ }
+ banner() {
+-    printf '\n══════════════════════════════════════════════════\n  Nuvrion XHTTP Installer · v%s\n  Автор: Nuvrion · nuvrion-kvn\n══════════════════════════════════════════════════\n' "$INSTALLER_VERSION"
+-    printf '  Reality TCP + XHTTP · PokéHabitat\n  Д = Да · Н = Нет\n\n'
++    printf '\n══════════════════════════════════════════════════\n  Nuvrion XHTTP Installer · v%s\n  Лицензия: MIT\n  Создатель: Nuvrion · nuvrion-kvn\n  https://github.com/nuvrion-kvn\n══════════════════════════════════════════════════\n' "$INSTALLER_VERSION"
++    printf '  Reality TCP selfsteal + XHTTP · сайт декой\n  Д = Да · Н = Нет\n\n'
++}
++installation_components() {
++    printf '  Компоненты установки:\n'
++    printf '    • Remnawave Node: установка при отсутствии; выбор версии.\n'
++    printf '    • Xray: REALITY TCP selfsteal и XHTTP через Unix sockets.\n'
++    printf '    • Nginx: HTTPS/HTTP2, локальный сайт декой и XHTTP proxy.\n'
++    printf "    • Let's Encrypt: сертификат и автоматическое продление.\n"
++    printf '    • Firewall: публичный 443; API ноды только для IP панели.\n'
++    if (( NO_TUNING==0 ));then printf '    • Auto Tuning: BBR, sysctl, ZRAM, RPS/RFS и лимиты.\n';fi
++    if (( NO_TRAFFIC==0 ));then printf '    • Traffic Control: блок-листы IPv4/IPv6 и allowlist.\n';fi
++    if (( NO_PRIVACY==0 ));then printf '    • Two-Way Ping: защита от входящего ping.\n';fi
++    printf '    • Fail2ban, security updates, backup/rollback и диагностика.\n'
++    printf '    • Готовый профиль ноды с extra и настройки двух Host.\n\n'
++    printf '  Порт панели здесь — порт API ноды для подключения панели,\n  по умолчанию 2222. Это отдельный канал управления.\n'
++    printf '  Секретный ключ вводится скрыто и не попадает в журнал.\n\n'
++}
++validate_node_port() {
++    [[ $NODE_PORT =~ ^[0-9]{1,5}$ ]] || die 1 'Порт API ноды должен быть числом от 1 до 65535.'
++    NODE_PORT=$((10#$NODE_PORT))
++    (( NODE_PORT>=1 && NODE_PORT<=65535 && NODE_PORT!=80 && NODE_PORT!=443 )) || die 1 'Порт API: допустимы 1–65535, кроме 80 и 443.'
+ }
+ require_root() { (( EUID == 0 )) || die 1 'Запустите от root.'; }
+ detect_os() {
+@@ -642,7 +663,9 @@
+     results.append(('PASS' if ok else 'FAIL','XHTTP cookie padding/backend HTTP 400'))
+     return results
+ 
+-def nft_security_rules(panel,api_only,ruleset):
++def nft_security_rules(panel,api_only,ruleset,node_port=2222):
++    node_port=int(node_port)
++    if not 1<=node_port<=65535 or node_port in (80,443):raise ValueError('Invalid Node API port')
+     address=ipaddress.ip_address(panel);items=ruleset.get('nftables',[])
+     def q(value):
+         value=str(value)
+@@ -665,15 +688,15 @@
+     if guard:
+         if guard.get('hook')!='input' or guard.get('prio')!=-250:raise ValueError('Conflicting API guard chain')
+     else:lines.append('add chain inet nuvrion_xhttp api_guard { type filter hook input priority -250; policy accept; }')
+-    lines.append('insert rule inet nuvrion_xhttp api_guard tcp dport 2222 drop comment "Nuvrion-XHTTP"')
++    lines.append(f'insert rule inet nuvrion_xhttp api_guard tcp dport {node_port} drop comment "Nuvrion-XHTTP"')
+     ip='ip' if address.version==4 else 'ip6'
+-    lines.append(f'insert rule inet nuvrion_xhttp api_guard {ip} saddr {address} tcp dport 2222 accept comment "Nuvrion-XHTTP"')
++    lines.append(f'insert rule inet nuvrion_xhttp api_guard {ip} saddr {address} tcp dport {node_port} accept comment "Nuvrion-XHTTP"')
+     for c in chains:
+         family=c.get('family');table=c.get('table');chain=c.get('name')
+         if c.get('hook')!='input' or family not in ('inet','ip','ip6') or table in ('nuvrion_xhttp','nuvrion_tc','nuvrion_privacy'):continue
+         if not api_only:lines.append(f'insert rule {family} {q(table)} {q(chain)} tcp dport 443 accept comment "Nuvrion-XHTTP"')
+         if family=='inet' or family==ip:
+-            lines.append(f'insert rule {family} {q(table)} {q(chain)} {ip} saddr {address} tcp dport 2222 accept comment "Nuvrion-XHTTP"')
++            lines.append(f'insert rule {family} {q(table)} {q(chain)} {ip} saddr {address} tcp dport {node_port} accept comment "Nuvrion-XHTTP"')
+     return '\n'.join(lines)+'\n'
+ 
+ def digest(p):
+@@ -755,7 +778,13 @@
+         results=profile_checks(read(args[0]),len(args)>1 and args[1]=='new')
+         for status,name in results:print(f'[{status}] {name}')
+         if any(status=='FAIL' for status,_ in results):raise ValueError('Profile self-check failed')
+-    elif action=='nft-security-rules':print(nft_security_rules(args[0],args[1]=='1',json.load(sys.stdin)),end='')
++    elif action=='nft-security-rules':print(nft_security_rules(args[0],args[1]=='1',json.load(sys.stdin),args[2] if len(args)>2 else 2222),end='')
++    elif action=='external-ip':
++        for url in ('https://api.ipify.org','https://ifconfig.me/ip'):
++            try:
++                with urllib.request.urlopen(url,timeout=10) as response:value=response.read(128).decode().strip()
++                if ipaddress.ip_address(value).version==4:print(value);break
++            except (OSError,ValueError):pass
+     elif action=='dns':
+         try:print(' '.join(sorted({x[4][0] for x in socket.getaddrinfo(args[0],None,socket.AF_INET)})))
+         except socket.gaierror:print('')
+@@ -766,7 +795,7 @@
+     elif action=='set':
+         obj=read(args[0]);obj[args[1]]=json.loads(args[2]);write(args[0],obj)
+     elif action=='state':
+-        obj={k.lower():v for k,v in os.environ.items() if k in ('DOMAIN','PANEL_IP','EMAIL','NODE_TAG','XHTTP_PATH','DOWNLOAD_DOMAIN',
++        obj={k.lower():v for k,v in os.environ.items() if k in ('DOMAIN','PANEL_IP','NODE_PORT','EMAIL','NODE_TAG','XHTTP_PATH','DOWNLOAD_DOMAIN',
+              'NODE_CONTAINER','NODE_SERVICE','PROJECT','WORKDIR','NGINX_KIND','NGINX_CONTAINER','NGINX_SERVICE',
+              'NGINX_CONFIG','NGINX_MAIN','NGINX_ROOT','SITE_ROOT','WEB_GID','CERT_LINEAGE','XRAY_BIN','IPV4')}
+         obj.update(read(STATE) if STATE.exists() else {})
+@@ -1018,6 +1047,8 @@
+         [[ -n ${!name} || $value == '{}' ]] || printf -v "$name" '%s' "$value"
+     done
+     if [[ $PATH_EXPLICIT == 0 ]]; then value=$(state_value xhttp_path); [[ $value == '{}' ]] || XHTTP_PATH=$value; fi
++    if [[ $NODE_PORT_EXPLICIT == 0 ]];then value=$(state_value node_port);[[ $value == '{}' ]] || NODE_PORT=$value;fi
++    validate_node_port
+     [[ $(state_value secure_sockets) != true ]] || SECURE_SOCKETS=1
+     socket_settings
+ }
+@@ -1046,9 +1077,17 @@
+             value=$(curl --noproxy '*' -4 -fsS --connect-timeout 5 --max-time 10 "$endpoint" 2>/dev/null || true)
+             if python3 -c 'import ipaddress,sys;assert ipaddress.ip_address(sys.argv[1]).version==4' "$value" 2>/dev/null; then IPV4=$value;break;fi
+         done
+-    fi
++    else IPV4=$(helper external-ip);fi
+     [[ -z $DOMAIN ]] || A_RECORDS=$(helper dns "$DOMAIN")
+     log_info "Внешний IPv4: ${IPV4:-не определён}; A ${DOMAIN:-—}: ${A_RECORDS:-не найден}"
++}
++validate_domain_address() {
++    [[ -n $IPV4 && -n $A_RECORDS ]] || die 4 'Установка отменена: не удалось проверить внешний IPv4 или DNS A домена. Исправьте DNS/доступ к сети.'
++    local address
++    for address in $A_RECORDS;do
++        [[ $address == "$IPV4" ]] || die 4 "Установка отменена: DNS A домена $DOMAIN ($A_RECORDS) не совпадает с IPv4 сервера $IPV4. Исправьте A-запись и повторите запуск."
++    done
++    log_ok 'Все DNS A-записи домена совпадают с внешним IPv4 сервера.'
+ }
+ compose_command() {
+     COMPOSE_CMD=(docker compose --project-directory "$WORKDIR" -p "$PROJECT")
+@@ -1070,7 +1109,9 @@
+     NODE_SERVICE=$(jget service <<< "$info"); PROJECT=$(jget project <<< "$info"); WORKDIR=$(jget workdir <<< "$info")
+     files=$(jget files <<< "$info")
+     [[ -n $NODE_SERVICE && -n $PROJECT && -d $WORKDIR && -n $files ]] || { log_warn 'У ноды отсутствуют Compose-метаданные. Безопасная автоматическая правка невозможна.';return 3; }
+-    [[ $(jget node_port <<< "$info") == 2222 ]] || { log_warn 'NODE_PORT отличается от 2222; существующий API-порт не меняется автоматически.';return 3; }
++    DETECTED_NODE_PORT=$(jget node_port <<< "$info")
++    [[ $NODE_PORT_EXPLICIT == 0 || $NODE_PORT == "$DETECTED_NODE_PORT" ]] || { log_warn "Установленная нода использует API :$DETECTED_NODE_PORT. Изменение её порта автоматически не выполняется.";return 3; }
++    NODE_PORT=$DETECTED_NODE_PORT;validate_node_port
+     [[ $(jget network_mode <<< "$info") == host ]] || { log_warn 'Для схемы eGames требуется уже настроенный network_mode: host.';return 3; }
+     IFS=',' read -r -a COMPOSE_FILES <<< "$files"
+     # A fresh node may not need recreation when the first override is added;
+@@ -1085,7 +1126,7 @@
+     done
+     compose_command
+     log_info "Remnanode: $NODE_CONTAINER; service=$NODE_SERVICE; project=$PROJECT"
+-    log_info "Image: $(jget image <<< "$info"); сеть: host; API: 2222"
++    log_info "Image: $(jget image <<< "$info"); сеть: host; API: $NODE_PORT"
+     log_info "Environment (только имена): $(jget env_names <<< "$info")"
+     log_info "Capabilities: $(jget capabilities <<< "$info"); security_opt: $(jget security_opt <<< "$info")"
+     log_info "Restart: $(jget restart <<< "$info"); healthcheck: $(jget healthcheck_present <<< "$info")"
+@@ -1267,12 +1308,12 @@
+         nft)
+             local guard
+             guard=$(nft list chain inet nuvrion_xhttp api_guard 2>/dev/null || true)
+-            [[ $guard == *"$PANEL_IP"* && $guard == *'tcp dport 2222'* && $guard == *'drop'* && $guard == *'Nuvrion-XHTTP'* ]] || ok=0;;
++            [[ $guard == *"$PANEL_IP"* && $guard == *"tcp dport $NODE_PORT"* && $guard == *'drop'* && $guard == *'Nuvrion-XHTTP'* ]] || ok=0;;
+         iptables)
+-            iptables -C NUVRION_XHTTP -p tcp --dport 2222 -j DROP 2>/dev/null || ok=0
+-            ip6tables -C NUVRION_XHTTP -p tcp --dport 2222 -j DROP 2>/dev/null || ok=0
+-            if [[ $version == 4 ]];then iptables -C NUVRION_XHTTP -p tcp -s "$PANEL_IP" --dport 2222 -j ACCEPT 2>/dev/null || ok=0
+-            else ip6tables -C NUVRION_XHTTP -p tcp -s "$PANEL_IP" --dport 2222 -j ACCEPT 2>/dev/null || ok=0;fi;;
++            iptables -C NUVRION_XHTTP -p tcp --dport "$NODE_PORT" -j DROP 2>/dev/null || ok=0
++            ip6tables -C NUVRION_XHTTP -p tcp --dport "$NODE_PORT" -j DROP 2>/dev/null || ok=0
++            if [[ $version == 4 ]];then iptables -C NUVRION_XHTTP -p tcp -s "$PANEL_IP" --dport "$NODE_PORT" -j ACCEPT 2>/dev/null || ok=0
++            else ip6tables -C NUVRION_XHTTP -p tcp -s "$PANEL_IP" --dport "$NODE_PORT" -j ACCEPT 2>/dev/null || ok=0;fi;;
+         *) ok=0;;
+     esac
+     check_result "$ok" 'Firewall: ограничения API присутствуют для IPv4/IPv6'
+@@ -1295,13 +1336,13 @@
+     if ! detect_remnanode; then log_warn 'Remnanode/Compose/Xray не обнаружен либо конфигурация неоднозначна.';FAILS=$((FAILS+1));fi
+     [[ -z $DOMAIN ]] || detect_nginx || { log_warn 'Nginx не удалось однозначно определить.';FAILS=$((FAILS+1)); }
+     docker --version 2>/dev/null || true;docker compose version 2>/dev/null || true;docker ps -a 2>/dev/null || true
+-    ss -H -lntp '( sport = :443 or sport = :2222 or sport = :80 )' || true
++    ss -H -lntp "( sport = :443 or sport = :$NODE_PORT or sport = :80 )" || true
+     if [[ -n $NODE_CONTAINER ]]; then
+         local running api external
+         running=$(docker inspect -f '{{.State.Running}}' "$NODE_CONTAINER" 2>/dev/null || true)
+         if [[ $running == true ]];then check_result 1 'Remnanode Running';else check_result 0 'Remnanode Running';fi
+-        api=$(ss -H -lntp '( sport = :2222 )');external=$(ss -H -lntp '( sport = :443 )')
+-        if [[ $api == *rw-node* ]];then check_result 1 'Node API :2222 принадлежит rw-node';else check_result 0 'Node API :2222 принадлежит rw-node';fi
++        api=$(ss -H -lntp "( sport = :$NODE_PORT )");external=$(ss -H -lntp '( sport = :443 )')
++        if [[ $api == *rw-node* ]];then check_result 1 "Node API :$NODE_PORT принадлежит rw-node";else check_result 0 "Node API :$NODE_PORT принадлежит rw-node";fi
+         if [[ $external == *rw-core* || $external == *xray* ]]; then check_result 1 ':443 принадлежит Xray'
+         elif [[ ! -f $OWN/profile-applied ]]; then WAITS=$((WAITS+1));log_warn '[WAIT] Xray :443: примените профиль'
+         else check_result 0 ':443 принадлежит Xray';fi
+@@ -1418,16 +1459,16 @@
+         ufw)
+             # Reconcile only our marked rules; retain all foreign rules.
+             # Temporary deny precedes removal, so API cannot become public.
+-            ufw insert 1 deny 2222/tcp comment 'Nuvrion-XHTTP-API-STAGING' >/dev/null
++            ufw insert 1 deny "$NODE_PORT/tcp" comment 'Nuvrion-XHTTP-API-STAGING' >/dev/null
+             remove_ufw_comment 'Nuvrion-XHTTP '
+-            ufw insert 1 deny 2222/tcp comment 'Nuvrion-XHTTP API guard' >/dev/null
+-            ufw insert 1 allow from "$PANEL_IP" to any port 2222 proto tcp comment 'Nuvrion-XHTTP panel' >/dev/null
++            ufw insert 1 deny "$NODE_PORT/tcp" comment 'Nuvrion-XHTTP API guard' >/dev/null
++            ufw insert 1 allow from "$PANEL_IP" to any port "$NODE_PORT" proto tcp comment 'Nuvrion-XHTTP panel' >/dev/null
+             (( api_only==1 )) || ufw insert 1 allow 443/tcp comment 'Nuvrion-XHTTP HTTPS' >/dev/null
+             remove_ufw_comment 'Nuvrion-XHTTP-API-STAGING'
+             grep -Eq '^IPV6=yes$' /etc/default/ufw || die 7 'UFW не фильтрует IPv6. Глобальная настройка UFW автоматически не меняется.';;
+         nft)
+             local rules
+-            rules=$(nft -a -j list ruleset | helper nft-security-rules "$PANEL_IP" "$api_only") || die 7 'Не удалось подготовить атомарные правила firewall.'
++            rules=$(nft -a -j list ruleset | helper nft-security-rules "$PANEL_IP" "$api_only" "$NODE_PORT") || die 7 'Не удалось подготовить атомарные правила firewall.'
+             printf '%s\n' "$rules" | nft -c -f - || die 7 'nftables отклонил новые правила; действующие правила сохранены.'
+             printf '%s\n' "$rules" | nft -f - || die 7 'Атомарное применение не удалось; прежняя защита сохранена.';;
+         iptables)
+@@ -1442,9 +1483,9 @@
+ for line in lines:
+  if line.startswith("-A "):print("-D "+line[3:])')
+                 if [[ $binary == iptables && $panel_version == 4 || $binary == ip6tables && $panel_version == 6 ]]; then
+-                    batch+=$'\n'"-A NUVRION_XHTTP -p tcp -s $PANEL_IP --dport 2222 -j ACCEPT"
++                    batch+=$'\n'"-A NUVRION_XHTTP -p tcp -s $PANEL_IP --dport $NODE_PORT -j ACCEPT"
+                 fi
+-                batch+=$'\n''-A NUVRION_XHTTP -p tcp --dport 2222 -j DROP'
++                batch+=$'\n'"-A NUVRION_XHTTP -p tcp --dport $NODE_PORT -j DROP"
+                 (( api_only==1 )) || batch+=$'\n''-A NUVRION_XHTTP -p tcp --dport 443 -j ACCEPT'
+                 [[ -z $jump ]] || batch+=$'\n'"$jump"
+                 batch+=$'\nCOMMIT\n'
+@@ -1611,7 +1652,7 @@
+     else NGINX_IMAGE_ID=$(docker image inspect -f '{{.Id}}' nginx:1.30);fi
+     FILES_JSON=$(python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "${COMPOSE_FILES[@]}")
+     TRUSTED_XFF=$(helper xff-version "$XRAY_VERSION")
+-    export DOMAIN PANEL_IP EMAIL NODE_TAG XHTTP_PATH DOWNLOAD_DOMAIN NODE_CONTAINER NODE_SERVICE PROJECT WORKDIR NGINX_KIND NGINX_CONTAINER NGINX_SERVICE NGINX_CONFIG NGINX_MAIN NGINX_ROOT SITE_ROOT WEB_GID CERT_LINEAGE XRAY_BIN IPV4 NGINX_NEW NODE_IMAGE_ID NGINX_IMAGE_ID FILES_JSON BACKUP FW TRUSTED_XFF SECURE_SOCKETS XRAY_VERSION HARDEN_PROFILE
++    export DOMAIN PANEL_IP NODE_PORT EMAIL NODE_TAG XHTTP_PATH DOWNLOAD_DOMAIN NODE_CONTAINER NODE_SERVICE PROJECT WORKDIR NGINX_KIND NGINX_CONTAINER NGINX_SERVICE NGINX_CONFIG NGINX_MAIN NGINX_ROOT SITE_ROOT WEB_GID CERT_LINEAGE XRAY_BIN IPV4 NGINX_NEW NODE_IMAGE_ID NGINX_IMAGE_ID FILES_JSON BACKUP FW TRUSTED_XFF SECURE_SOCKETS XRAY_VERSION HARDEN_PROFILE
+     helper state
+ }
+ unpack_bundle() {
+@@ -1727,7 +1768,7 @@
+     for candidate in docker-compose.yml docker-compose.yaml compose.yml compose.yaml nuvrion-node.env;do
+         [[ ! -e $BASE/$candidate && ! -L $BASE/$candidate ]] || die 3 'Существующий Compose/credentials не заменяются. Выполните диагностику.'
+     done
+-    [[ -z $(ss -H -lnt '( sport = :443 or sport = :2222 )') ]] || die 3 'Порты 443/2222 заняты: сервер не является чистым для установки ноды.'
++    [[ -z $(ss -H -lnt "( sport = :443 or sport = :$NODE_PORT )") ]] || die 3 "Порты 443/$NODE_PORT заняты: сервер не является чистым для установки ноды."
+     if command -v docker >/dev/null;then
+         docker info >/dev/null 2>&1 || die 3 'Существующий Docker daemon недоступен: сначала восстановите его; новая установка не выполняется.'
+         ids=$(docker ps -aq) || die 3 'Не удалось проверить существующие контейнеры.'
+@@ -1741,23 +1782,40 @@
+     fi
+ }
+ collect_node_secret() {
+-    (( NODE_NEW==1 )) || return 0
+     if [[ -n $SECRET_FILE ]];then
+         [[ -f $SECRET_FILE && ! -L $SECRET_FILE && -O $SECRET_FILE ]] || die 3 'SECRET_KEY file должен быть обычным файлом root.'
+         [[ $(stat -c %a "$SECRET_FILE") == 600 ]] || die 3 'SECRET_KEY file: нужны права 0600.'
+         NODE_SECRET=$(< "$SECRET_FILE")
+     else
++        if (( YES==1 && NODE_NEW==0 ));then return 0;fi
+         (( YES==0 )) && [[ -r /dev/tty ]] || die 3 'Для новой ноды нужен --secret-key-file с правами 0600.'
+-        printf '  SECRET_KEY новой ноды из панели (ввод скрыт): ' > /dev/tty
++        local hint='ввод скрыт'
++        (( NODE_NEW==1 )) || hint='ввод скрыт; Enter — сохранить действующий ключ'
++        printf '  \033[1;33mСекретный ключ ноды из панели (%s):\033[0m ' "$hint" > /dev/tty
+         IFS= read -rs NODE_SECRET < /dev/tty || die 3 'Ввод SECRET_KEY прерван.'
+         printf '\n' > /dev/tty
++        if (( NODE_NEW==0 )) && [[ -z $NODE_SECRET ]];then return 0;fi
+     fi
+     [[ $NODE_SECRET =~ ^[A-Za-z0-9_./+=-]+$ && ${#NODE_SECRET} -ge 32 ]] || die 3 'Некорректный SECRET_KEY; получите его в панели Remnawave.'
++    if (( NODE_NEW==0 ));then
++        local existing_secret
++        existing_secret=$(docker inspect "$NODE_CONTAINER" | python3 -c 'import json,sys
++print(next((v.split("=",1)[1] for v in json.load(sys.stdin)[0]["Config"].get("Env",[]) if v.startswith("SECRET_KEY=")),""))') || die 3 'Не удалось проверить действующий SECRET_KEY.'
++        [[ -n $existing_secret && $NODE_SECRET == "$existing_secret" ]] || die 3 'Введённый ключ отличается от действующего SECRET_KEY. Автоматическая замена ключа существующей ноды запрещена.'
++        unset NODE_SECRET existing_secret
++        log_ok 'Введённый секретный ключ соответствует существующей ноде.'
++    fi
+ }
+ collect_inputs() {
+-    [[ -n $DOMAIN ]] || prompt DOMAIN 'Домен decoy / SNI' ''
++    if (( YES==0 ));then prompt DOMAIN 'Домен сайта декой / SNI' "$DOMAIN"
++    else [[ -n $DOMAIN ]] || die 1 'Для --yes требуется --domain.';fi
+     DOMAIN=$(helper domain "$DOMAIN")
+-    [[ -n $PANEL_IP ]] || prompt PANEL_IP 'IP панели Remnawave' ''
++    if (( YES==0 ));then prompt NODE_PORT 'Порт API ноды для панели' "$NODE_PORT";fi
++    validate_node_port
++    [[ -z $DETECTED_NODE_PORT || $NODE_PORT == "$DETECTED_NODE_PORT" ]] || die 3 "Установка отменена: API существующей ноды :$DETECTED_NODE_PORT; его порт сохраняется."
++    if (( YES==0 ));then prompt PANEL_IP 'IP панели Remnawave' "$PANEL_IP"
++    else [[ -n $PANEL_IP ]] || die 1 'Для --yes требуется --panel-ip.';fi
++    collect_node_secret
+     [[ -n $EMAIL ]] || prompt EMAIL "Email Let's Encrypt" ''
+     [[ -n $NODE_TAG ]] || prompt NODE_TAG 'Tag Reality inbound' Nuvrion
+     [[ $PATH_EXPLICIT == 1 || $YES == 1 ]] || prompt XHTTP_PATH 'XHTTP path' "$XHTTP_PATH"
+@@ -1765,11 +1823,13 @@
+     [[ -z $PROFILE_INPUT || -f $PROFILE_INPUT && ! -L $PROFILE_INPUT ]] || die 1 'Исходный профиль должен быть обычным JSON-файлом.'
+ }
+ plan_install() {
+-    detect_os;collect_inputs;detect_network;detect_firewall
+-    [[ $(ss -H -lntp '( sport = :443 or sport = :2222 )') != *sshd* ]] || die 7 'SSH использует 443/2222: установка могла бы ограничить SSH. Сначала выберите другой сервер.'
+-    ss -H -lntp '( sport = :443 or sport = :2222 or sport = :80 )' || true
++    installation_components;detect_os
++    if ! detect_remnanode;then NODE_NEW=1;fi
++    collect_inputs;detect_network;validate_domain_address;detect_firewall
++    [[ $(ss -H -lntp "( sport = :443 or sport = :$NODE_PORT )") != *sshd* ]] || die 7 "SSH использует 443/$NODE_PORT: установка могла бы ограничить SSH. Выберите другой порт API/сервер."
++    ss -H -lntp "( sport = :443 or sport = :$NODE_PORT or sport = :80 )" || true
+     stat -c '%n %F %a %U:%G' /dev/shm/nginx.sock /dev/shm/xrxh.socket 2>/dev/null || true
+-    if ! detect_remnanode; then
++    if (( NODE_NEW==1 ));then
+         # An existing, ambiguous or stopped installation must be repaired
+         # explicitly; it is never mistaken for a clean server.
+         assert_clean_node_target
+@@ -1777,7 +1837,7 @@
+         NODE_CONTAINER=remnanode;COMPOSE_FILES=("$BASE/docker-compose.yml");compose_command
+         log_info 'Remnanode отсутствует: будет создан новый Compose, существующие файлы не заменяются.'
+     fi
+-    choose_node_version;collect_node_secret
++    choose_node_version
+     detect_nginx || die 5 'Нельзя безопасно адаптировать найденный Nginx.'
+     if (( HARDEN_PROFILE==1 ));then SECURE_SOCKETS=1
+     elif [[ ! -f $STATE && ! -f $PROFILE && -z $PROFILE_INPUT && $NGINX_NEW == 1 ]];then SECURE_SOCKETS=1;fi
+@@ -1802,12 +1862,6 @@
+     fi
+     if [[ -n $NGINX_CONTAINER && $(state_value nginx_new) == true ]]; then NGINX_NEW=1;fi
+     [[ $SITE_ROOT == /* && ! -L $SITE_ROOT && ! -L $OWN && ! -L $BASE ]] || die 1 'Небезопасный путь установки.'
+-    if [[ -n $IPV4 && " $A_RECORDS " == *" $IPV4 "* ]]; then log_ok 'DNS A совпадает с IPv4 сервера.'
+-    else
+-        log_warn 'DNS A не совпадает с сервером; standalone ACME может не пройти.'
+-        if (( YES==1 ));then die 4 'Исправьте DNS A перед неинтерактивной установкой.';fi
+-        ask_yes 'Продолжить несмотря на DNS?' || die 4 'Установка отменена: DNS не совпадает.'
+-    fi
+     local aaaa
+     aaaa=$(python3 -c 'import socket,sys
+ try: print(" ".join(sorted({x[4][0] for x in socket.getaddrinfo(sys.argv[1],None,socket.AF_INET6)})))
+@@ -1832,8 +1886,8 @@
+     find_certificate
+     if [[ -z $CERT_LINEAGE ]]; then port80_plan >/dev/null || die 4 'Неизвестный владелец порта 80.';fi
+     printf '\n  Будет изменено:\n'
+-    printf '    Remnanode: %s\n    Nginx: %s (%s)\n    Shared sockets: /dev/shm\n    Сайт: PokéHabitat → %s\n' "${SELECTED_IMAGE:-сохранить текущий образ}" "$NGINX_CONFIG" "${NGINX_CONTAINER:-новый отдельный сервис}" "$SITE_ROOT"
+-    printf '    Compose: отдельный override %s\n    TLS: %s\n    Firewall: 443 public, 2222 только %s, временный 80\n' "$OVERRIDE" "${CERT_LINEAGE:-новый Let’s Encrypt сертификат}" "$PANEL_IP"
++    printf '    Remnanode: %s\n    Nginx: %s (%s)\n    Shared sockets: /dev/shm\n    Сайт декой → %s\n' "${SELECTED_IMAGE:-сохранить текущий образ}" "$NGINX_CONFIG" "${NGINX_CONTAINER:-новый отдельный сервис}" "$SITE_ROOT"
++    printf '    Compose: отдельный override %s\n    TLS: %s\n    Firewall: 443 public, API %s только %s, временный 80\n' "$OVERRIDE" "${CERT_LINEAGE:-новый Let’s Encrypt сертификат}" "$NODE_PORT" "$PANEL_IP"
+     printf '    Backup: %s/<timestamp>/\n    Выход: профиль ноды, Host settings, extra\n' "$BACKUPS"
+     package_plan
+     log_warn 'Если действующей ноде понадобятся новый mount или лимит nofile, VPN-соединения могут кратковременно прерваться.'
+@@ -1959,7 +2013,7 @@
+     if (( NODE_NEW==1 )); then
+         [[ -n $SELECTED_IMAGE && -n $NODE_SECRET ]] || die 3 'Для новой ноды необходимы выбранный образ и SECRET_KEY.'
+         ! docker container inspect "$NODE_CONTAINER" >/dev/null 2>&1 || die 3 'Контейнер с выбранным именем появился после диагностики; новая установка остановлена.'
+-        printf 'NODE_PORT=2222\nSECRET_KEY=%s\n' "$NODE_SECRET" | python3 -c 'import os,sys;fd=os.open(sys.argv[1],os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600);f=os.fdopen(fd,"w");f.write(sys.stdin.read());f.close()' "$OWN/node.env"
++        printf 'NODE_PORT=%s\nSECRET_KEY=%s\n' "$NODE_PORT" "$NODE_SECRET" | python3 -c 'import os,sys;fd=os.open(sys.argv[1],os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600);f=os.fdopen(fd,"w");f.write(sys.stdin.read());f.close()' "$OWN/node.env"
+         unset NODE_SECRET
+         helper fresh-compose "$BASE/docker-compose.yml" "$SELECTED_IMAGE"
+         command install -d -m 755 /var/log/remnanode
+@@ -2132,6 +2186,7 @@
+         prompt ADMIN_IP 'IP администратора для исключения Traffic Control' ''
+     fi
+     python3 -c 'import ipaddress,sys;assert 1<=int(sys.argv[2])<=65535;assert not sys.argv[1] or ipaddress.ip_address(sys.argv[1])' "$ADMIN_IP" "$SSH_PORT" || die 1 'Некорректный IP администратора/SSH-порт.'
++    [[ $NODE_PORT != "$SSH_PORT" ]] || die 7 'Порт API ноды совпадает с SSH-портом. Выберите другой API-порт.'
+     (( SSH_KEY_ONLY==0 && SSH_KEY_CONFIRMED==0 )) || die 1 'Изменения SSH отключены этой версией установщика.'
+     log_info 'Auto Tuning: performance/security, Fail2ban, updates, NTP/TRIM; SSH только аудит.'
+     (( NO_PRIVACY==1 )) || log_info 'Two-Way Ping: собственные правила; PMTU и исходящий ping сохраняются.'
+@@ -2326,7 +2381,7 @@
+       NUVRION_SECURITY=1 NUVRION_INSTALL_SECURITY_PACKAGES=0 NUVRION_HARDEN_SSH=0 \
+       NUVRION_SSH_KEY_LOGIN_CONFIRMED=0 NUVRION_MANAGED_FIREWALL=1 NUVRION_ENABLE_UFW=0 \
+       NUVRION_ALLOW_NODE_RECREATE=0 NUVRION_ALLOW_DOCKER_RESTART=0 NUVRION_CERTIFICATES=0 \
+-      NUVRION_INSTALL_ZRAM_MODULES=1 NUVRION_PANEL_PORT=2222 NUVRION_PANEL_IPS="$PANEL_IP" \
++      NUVRION_INSTALL_ZRAM_MODULES=1 NUVRION_PANEL_PORT="$NODE_PORT" NUVRION_PANEL_IPS="$PANEL_IP" \
+       bash -c '
+         source "$1"
+         # Reuse the pinned tuner setup without resetting an active swap. Its
+@@ -2633,7 +2688,7 @@
+ }
+ final_report() {
+     printf '\n══════════════════════════════════════════════════\n  Nuvrion XHTTP Installer · v%s\n\n' "$INSTALLER_VERSION"
+-    printf '  Статус: %s\n  Домен: %s\n  Remnanode: %s\n  Xray: %s\n  Node API: :2222\n  Внешний вход: :443\n' "$STATUS" "$DOMAIN" "$NODE_CONTAINER" "$XRAY_VERSION"
++    printf '  Статус: %s\n  Домен: %s\n  Remnanode: %s\n  Xray: %s\n  Node API: :%s\n  Внешний вход: :443\n' "$STATUS" "$DOMAIN" "$NODE_CONTAINER" "$XRAY_VERSION" "$NODE_PORT"
+     printf '  Nginx socket: %s\n  XHTTP socket: %s\n  XHTTP path: %s\n' "$NGINX_SOCKET" "$([[ -S $XHTTP_SOCKET ]] && printf '%s' "$XHTTP_SOCKET" || printf 'ожидает применения Remnawave profile')" "$XHTTP_PATH"
+     printf '  Decoy: HTTP %s\n  XHTTP route: HTTP %s\n  TLS: %s\n  Certbot: renewal enabled\n  Firewall: %s, API только %s\n' "$DECOY_CODE" "$ROUTE_CODE" "$CERT_LINEAGE" "$FW" "$PANEL_IP"
+     [[ -z $CERT_LINEAGE ]] || openssl x509 -in "$CERT_LINEAGE/fullchain.pem" -noout -enddate
+@@ -2707,12 +2762,13 @@
+     cat <<'EOF'
+ Nuvrion XHTTP Installer v1.0.0
+   --install | --reinstall | --maintain | --diagnose | --self-check | --remove | --restore
+-  --domain DOMAIN --panel-ip IP --email EMAIL --node-tag TAG
++  --domain DOMAIN --panel-port PORT --panel-ip IP --email EMAIL --node-tag TAG
++      --panel-port: порт API ноды для панели, по умолчанию 2222; не порт веб-панели
+   --xhttp-path /api/v3/sync/ --node-container NAME
+   --node-version latest|X.Y.Z|keep
+       новая нода: latest или доступная стабильная версия; существующая: только keep
+   --harden-profile       (явная миграция output: защищённые sockets, cookie-padding, AdGuard/COMSS)
+-  --secret-key-file /root/node-secret.txt   (новая нода; root 0600)
++  --secret-key-file /root/node-secret.txt   (root 0600; существующий ключ только проверяется)
+   --profile-input /root/existing-profile.json
+   Действующие Reality keys сохраняются; --allow-new-reality отклоняется.
+   --backup /root/nuvrion-xhttp-backups/TIMESTAMP --no-tuning --no-updates --yes
+@@ -2721,6 +2777,7 @@
+   SSH: только аудит; прежние параметры изменения SSH отклоняются.
+ Диагностика ничего не меняет. --yes подтверждает показанный план и rollback
+ при критической ошибке. Существующие образ ноды и бинарник Xray не заменяются.
++Несовпадение DNS A и IPv4 сервера всегда отменяет установку, включая --yes.
+ --maintain: пакеты Ubuntu, зависимости, ZRAM/сеть и безопасная очистка;
+ без изменения профиля/образов и автоматической перезагрузки.
+ EOF
+@@ -2731,9 +2788,9 @@
+             --install) ACTION=install;;--reinstall) ACTION=reinstall;;--maintain) ACTION=maintain;;--diagnose) ACTION=diagnose;;--self-check) ACTION=self-check;;--remove) ACTION=remove;;--restore) ACTION=restore;;
+             --acme-pre) ACTION=acme-pre;;--acme-post) ACTION=acme-post;;--acme-deploy) ACTION=acme-deploy;;
+             --firewall-apply) ACTION=firewall-apply;;--game-socket) ACTION=game-socket;;
+-            --domain|--panel-ip|--email|--node-tag|--xhttp-path|--node-container|--node-version|--secret-key-file|--profile-input|--backup|--admin-ip|--ssh-port)
++            --domain|--panel-port|--panel-ip|--email|--node-tag|--xhttp-path|--node-container|--node-version|--secret-key-file|--profile-input|--backup|--admin-ip|--ssh-port)
+                 (($#>=2)) && [[ -n $2 && $2 != --* ]] || die 1 "Для $1 нужен аргумент."
+-                case $1 in --domain) DOMAIN=$2;;--panel-ip) PANEL_IP=$2;;--email) EMAIL=$2;;--node-tag) NODE_TAG=$2;;
++                case $1 in --domain) DOMAIN=$2;;--panel-port) NODE_PORT=$2;NODE_PORT_EXPLICIT=1;validate_node_port;;--panel-ip) PANEL_IP=$2;;--email) EMAIL=$2;;--node-tag) NODE_TAG=$2;;
+                     --xhttp-path) XHTTP_PATH=$2;PATH_EXPLICIT=1;;--node-container) NODE_CONTAINER=$2;;--node-version) NODE_VERSION=$2;;
+                     --secret-key-file) SECRET_FILE=$2;;--profile-input) PROFILE_INPUT=$2;;--backup) BACKUP_INPUT=$2;;--admin-ip) ADMIN_IP=$2;;--ssh-port) SSH_PORT=$2;;esac;shift;;
+             --no-traffic-control) NO_TRAFFIC=1;;--no-two-way-ping) NO_PRIVACY=1;;--no-ssh-hardening) :;;

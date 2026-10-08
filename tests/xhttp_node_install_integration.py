@@ -43,7 +43,7 @@ def main():
     live = json.loads(run(['docker', 'inspect', args.node_container]))[0]
     secret = next(v.split('=', 1)[1] for v in live['Config']['Env'] if v.startswith('SECRET_KEY='))
     source = (ROOT / 'nuvrion-xhttp-install.sh').read_text().split('# BEGIN EMBEDDED NUVRION XHTTP')[0]
-    for version in ['latest', '3.4.2']:
+    for version,api_port in [('latest',2222),('3.4.2',3222)]:
         name = 'nuvrion-first-install-' + uuid.uuid4().hex[:12]
         with tempfile.TemporaryDirectory(prefix='nuvrion-node-first-install.') as td:
             work = Path(td)
@@ -57,6 +57,7 @@ def main():
             # service AFTER checking the unmodified fresh-install template.
             driver = r'''
 NODE_NEW=1;YES=1;NODE_VERSION=$TEST_VERSION
+NODE_PORT=$TEST_NODE_PORT;validate_node_port
 NODE_CONTAINER=$TEST_CONTAINER;NODE_SERVICE=remnanode;NGINX_NEW=0
 SECURE_SOCKETS=1;SECRET_FILE=$TEST_SECRET
 command install -d -m 700 "$OWN" "$BASE/private-shm" "$BASE/logs"
@@ -90,17 +91,19 @@ test "$(stat -c %a "$OWN/node.env")" = 600
 test "$(stat -c %a "$BASE/docker-compose.yml")" = 600
 docker exec "$NODE_CONTAINER" sh -c 'grep -q "NoNewPrivs:.*1" /proc/1/status'
 api_ready=0
+api_hex=$(printf '%04X' "$NODE_PORT")
 for attempt in {1..30};do
-    if docker exec "$NODE_CONTAINER" sh -c 'awk '\''$2 ~ /:08AE$/ && $4 == "0A" {found=1} END {exit !found}'\'' /proc/net/tcp /proc/net/tcp6';then api_ready=1;break;fi
+    if docker exec "$NODE_CONTAINER" sh -c 'awk -v port="$1" '\''$2 ~ (":" port "$") && $4 == "0A" {found=1} END {exit !found}'\'' /proc/net/tcp /proc/net/tcp6' sh "$api_hex";then api_ready=1;break;fi
     sleep 1
 done
 [[ $api_ready == 1 ]]
+grep -q "^NODE_PORT=$NODE_PORT$" "$OWN/node.env"
 printf 'FIRST_INSTALL_PASS version=%s\n' "$NODE_VERSION"
 '''
             try:
                 output = run(['bash'], input=fixture + '\n' + driver,redact=(secret,),
                              env={**os.environ, 'TEST_VERSION': version,
-                                  'TEST_CONTAINER': name, 'TEST_SECRET': str(secret_file)})
+                                  'TEST_CONTAINER': name, 'TEST_SECRET': str(secret_file),'TEST_NODE_PORT':str(api_port)})
                 if secret in output:
                     raise AssertionError('Secret appeared in installer output')
                 created = json.loads(run(['docker', 'inspect', name]))[0]
@@ -108,7 +111,7 @@ printf 'FIRST_INSTALL_PASS version=%s\n' "$NODE_VERSION"
                 assert created['Config']['Image'].startswith('sha256:')
                 assert not created['HostConfig']['Privileged']
                 assert not created['HostConfig'].get('PortBindings')
-                print(f'[PASS] first-install {version}: real Node/API, pinned image, NNP, root-only credentials, private network', flush=True)
+                print(f'[PASS] first-install {version}: real Node/API :{api_port}, pinned image, NNP, root-only credentials, private network', flush=True)
             finally:
                 subprocess.run(['docker', 'rm', '-f', name], capture_output=True, timeout=30)
         assert before == baseline(args.node_container), 'Installed Node changed'
