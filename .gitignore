@@ -8,4 +8,5 @@ node_modules/
 *.sqlite*
 *.log
 .release-state.json
+.release-backups/
 .test-tmp/

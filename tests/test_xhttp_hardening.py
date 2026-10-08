@@ -129,6 +129,7 @@ class HardeningTests(unittest.TestCase):
         self.assertNotIn('systemctl reload ssh.service', SOURCE)
         self.assertNotIn('MaxAuthTries 3', SOURCE)
         self.assertIn('NODE_VERSION=keep;SELECTED_IMAGE=', SOURCE)
+        self.assertIn('Выбор image допустим только при первой установке', SOURCE)
         self.assertNotIn('| head -n 1', SOURCE.split('# BEGIN EMBEDDED NUVRION XHTTP')[0])
 
     def test_custom_nginx_capabilities_command_and_tmpfs_are_not_overwritten(self):

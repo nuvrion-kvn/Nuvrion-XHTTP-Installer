@@ -21,6 +21,9 @@ class XhttpShellTests(unittest.TestCase):
                                   'readonly LOG='+fixture+'/installer.log')
             source=source.replace('/usr/sbin/policy-rc.d',fixture+'/policy-rc.d')
             source=source.replace('readonly BASE=/opt/remnanode','readonly BASE='+fixture+'/remnanode')
+            if 'TEST_SOCKET_ROOT' in env:
+                source=source.replace('/dev/shm/nuvrion-xhttp',env['TEST_SOCKET_ROOT']+'/sockets')
+                source=source.replace('/etc/tmpfiles.d/nuvrion-xhttp.conf',env['TEST_SOCKET_ROOT']+'/tmpfiles.conf')
             if 'TEST_RPS_ROOT' in env:
                 source=source.replace('/usr/local/sbin/nuvrion-rps-setup.sh',env['TEST_RPS_ROOT']+'/setup.sh')
                 source=source.replace('/etc/systemd/system/nuvrion-rps.service',env['TEST_RPS_ROOT']+'/rps.service')
@@ -80,6 +83,92 @@ install
 ''')
         self.assertEqual(r.returncode,0,r.stderr)
         self.assertLess(r.stdout.index('API_GUARD'),r.stdout.index('NODE_START'))
+
+    def test_fresh_version_selection_and_existing_node_image_preservation(self):
+        for requested, expected, rc in [('latest','remnawave/node:latest',0),
+                                        ('3.4.2','remnawave/node:3.4.2',0),
+                                        ('9.9.9','',3),('keep','',3),('dev','',3)]:
+            with self.subTest(requested=requested):
+                r=self.run_shell('''
+helper(){ printf '3.4.2\\n3.4.1\\n'; }
+NODE_NEW=1;NODE_VERSION=$TEST_VERSION;YES=1
+choose_node_version;printf 'selected=%s' "$SELECTED_IMAGE"
+''',TEST_VERSION=requested)
+                self.assertEqual(r.returncode,rc,r.stderr)
+                if rc==0:self.assertIn('selected='+expected,r.stdout)
+        r=self.run_shell('NODE_NEW=1;YES=1;choose_node_version;[[ $NODE_VERSION == latest ]]')
+        self.assertEqual(r.returncode,0,r.stderr)
+        for requested,rc in [('',0),('keep',0),('latest',3),('3.4.2',3)]:
+            r=self.run_shell('''
+docker(){ echo MUST_NOT_RUN;exit 1; }
+NODE_NEW=0;NODE_VERSION=$TEST_VERSION
+choose_node_version;[[ $NODE_VERSION == keep && -z $SELECTED_IMAGE ]]
+''',TEST_VERSION=requested)
+            self.assertEqual(r.returncode,rc,r.stderr)
+            self.assertNotIn('MUST_NOT_RUN',r.stdout)
+
+    def test_new_secret_is_checked_before_changes_and_never_printed(self):
+        with tempfile.TemporaryDirectory() as td:
+            secret=Path(td)/'secret';secret.write_text('A'*80);secret.chmod(0o600)
+            for mode,rc in [(0o600,0),(0o644,3)]:
+                secret.chmod(mode)
+                r=self.run_shell('NODE_NEW=1;YES=1;SECRET_FILE=$TEST_SECRET;collect_node_secret',TEST_SECRET=str(secret))
+                self.assertEqual(r.returncode,rc,r.stderr)
+                self.assertNotIn('A'*80,r.stdout+r.stderr)
+        r=self.run_shell('NODE_NEW=1;YES=1;collect_node_secret')
+        self.assertEqual(r.returncode,3)
+
+    def test_clean_detection_refuses_stopped_nodes_compose_and_occupied_ports(self):
+        for setup in ['mkdir -p "$BASE";printf foreign > "$BASE/compose.yaml"',
+                      'docker(){ case "$*" in "info") :;;"ps -aq") echo stopped;;"inspect stopped") echo data;;*) return 1;;esac; };helper(){ echo oldnode; }',
+                      'ss(){ echo occupied; }']:
+            r=self.run_shell('ss(){ :; };docker(){ return 1; };'+setup+'\nassert_clean_node_target')
+            self.assertEqual(r.returncode,3,r.stderr)
+
+    def test_prepare_node_cannot_pull_an_image_for_existing_node(self):
+        r=self.run_shell('''
+state_value(){ :; };docker(){ echo MUST_NOT_PULL; }
+NODE_NEW=0;SELECTED_IMAGE=remnawave/node:latest
+prepare_node
+''')
+        self.assertEqual(r.returncode,3,r.stderr)
+        self.assertNotIn('MUST_NOT_PULL',r.stdout)
+
+    def test_new_node_collision_after_diagnostics_cannot_overwrite_credentials(self):
+        r=self.run_shell('''
+state_value(){ :; }
+docker(){ case $1 in pull) :;;image) echo sha256:fixture;;run) echo 'Xray 26.7.28';;container) return 0;;*) echo MUST_NOT_START;exit 1;;esac; }
+NODE_NEW=1;NODE_CONTAINER=fixture;NODE_SECRET=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+SELECTED_IMAGE=remnawave/node:3.4.2
+prepare_node
+''')
+        self.assertEqual(r.returncode,3,r.stderr)
+        self.assertIn('появился после диагностики',r.stderr)
+        self.assertNotIn('MUST_NOT_START',r.stdout)
+        self.assertNotIn('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',r.stdout+r.stderr)
+
+    def test_fresh_plan_does_not_execute_a_nonexistent_node_or_change_files(self):
+        with tempfile.TemporaryDirectory() as td:
+            secret=Path(td)/'secret';secret.write_text('A'*80);secret.chmod(0o600)
+            r=self.run_shell('''
+detect_os(){ :; };collect_inputs(){ DOMAIN=node.example;PANEL_IP=192.0.2.10; }
+detect_network(){ IPV4=192.0.2.1;A_RECORDS=192.0.2.1; }
+detect_firewall(){ FW=iptables; };ss(){ :; }
+detect_remnanode(){ return 3; };assert_clean_node_target(){ echo CLEAN_CHECK; }
+detect_nginx(){ NGINX_NEW=1;NGINX_CONFIG=$OWN/nginx.conf;SITE_ROOT=$OWN/decoy; }
+docker(){ echo MUST_NOT_EXEC;return 1; }
+iptables(){ return 1; };nft(){ return 1; }
+python3(){ if [[ $2 == *getaddrinfo* ]];then return 0;fi;command python3 "$@"; }
+security_plan(){ :; };find_certificate(){ CERT_LINEAGE=/existing/cert; }
+package_plan(){ :; }
+YES=1;NODE_VERSION=latest;SECRET_FILE=$TEST_SECRET
+plan_install
+[[ $NODE_NEW == 1 && $SECURE_SOCKETS == 1 ]]
+[[ ! -e $BASE && ! -e $LOG ]]
+''',TEST_SECRET=str(secret),TEST_SOCKET_ROOT=td)
+            self.assertEqual(r.returncode,0,r.stderr)
+            self.assertIn('CLEAN_CHECK',r.stdout)
+            self.assertNotIn('MUST_NOT_EXEC',r.stdout)
 
     def apt_fixture(self, operation, plan='', changed=False):
         with tempfile.TemporaryDirectory() as td:

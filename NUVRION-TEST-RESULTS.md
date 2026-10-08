@@ -1,5 +1,45 @@
 # Nuvrion: результаты тестирования 08.10.2026
 
+## Исправление первой установки в том же 1.0.0
+
+Восстановлена первая установка Remnanode: latest/доступная стабильная версия,
+проверка чистого сервера и скрытый/root-only SECRET_KEY. Существующий образ
+ноды/Xray сохраняется; stopped/неоднозначные ноды и занятые порты не считаются
+чистым сервером. Fresh Compose создаётся эксклюзивно, API guard применяется до старта.
+
+- PASS: настоящая первая установка **latest** и **3.4.2** вызовом `prepare_node`
+  в отдельных Docker fixtures: API 2222, image ID, NNP, credentials 0600.
+- PASS: исходный fresh template использует host network/shared shm. В самом тесте
+  только имена, network и writable mounts заменяются на приватные fixture ресурсы.
+- PASS: ID/image/StartedAt и Xray hash действующей ноды сохранились.
+- PASS: изолированная транспортная проверка Reality/XHTTP, PokéHabitat, Game API,
+  HTTP/2, TLS, cookie padding, real IP, DNS fallback и восстановление Nginx.
+- PASS: 60 unit/shell tests на Linux, Bash syntax, ShellCheck 0.11.0 и
+  воспроизводимая сборка Windows/Linux (119 embedded files).
+- PASS: полный повторный запуск исправленного installer на действующей тестовой
+  ноде: **RUNNING**, 0 ошибок/ожиданий, сайт HTTP 200, XHTTP backend HTTP 400,
+  certbot staging renewal, ZRAM/RPS и firewall. Backups `20261008-074318`
+  и финального файла релиза `20261008-075212`.
+- PASS: повторный запуск сохранил оба container ID/StartedAt, image/Xray hash,
+  SSH, профиль, сертификат и исходный Compose; пересоздания контейнеров не было.
+- PASS: рабочая нода после исправления: оба настоящих Xray-клиента получили
+  сайт/Game API/remote DNS HTTP 200, по 3 reconnect, 8 677 152 bytes download
+  и 1 MiB upload на транспорт. Временные пользователь, Squad и client configs удалены.
+- Существующий XHTTP Host оказался видимым (`isHidden=false`), Reality — скрытым.
+  Старый тест, читавший только hiddenKeys, остановился; адаптирован developer
+  harness для enabledKeys + hiddenKeys, затем оба транспорта прошли. Видимость
+  Host не менялась тестом/installer. Старый panel baseline отличается только этим
+  флагом; контейнеры ботов/панели, пользователи и остальные Host fields совпадают.
+- NOT RUN: полная установка на новой ОС с первоначальной установкой Docker/APT
+  и новым выпуском ACME certificate; проверка старта ноды не равна такому испытанию.
+
+Текущий Bash SHA-256: `16ced4c52dee93d803e1d70b182dd288e3eae3820254fb1b062186af5c620952`.
+Текущий embedded manager: `8f7029ea248a444ff4ef1200f133a698066916bb65aa867e355d02391eb7be16`.
+Версия и release URL остаются **1.0.0** по явному запросу автора. Матрица ниже
+описывает предыдущее серверное испытание; её исторические SHA/backup сохранены.
+
+## Предыдущее полное серверное испытание
+
 Проверена security-ревизия автономного `nuvrion-xhttp-install.sh` на разрешённом
 тестовом сервере **45.198.0.253**, `test.nodescheburnet.beer`. Итоговое состояние
 **RUNNING**, ошибок диагностики **0**, ожиданий Remnawave profile **0**.
