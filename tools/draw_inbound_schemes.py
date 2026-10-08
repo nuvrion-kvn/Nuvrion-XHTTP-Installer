@@ -107,7 +107,7 @@ def reality():
             'BLOCK → запрещённые профилем назначения.'])
     d.card('decoy', 744, 1104, 648, 126, 'Атлас пива · ответ на HTTPS /',
            ['По домену ноды скан видит сайт и HTTP 200.',
-            'HTML / JS / assets + локальный API игры.'], 'web')
+            'HTML / JS / assets + локальный каталог.'], 'web')
     d.card('reality-camouflage', 48, 1288, 648, 172, 'Маскировка для DPI',
            ['firefox задаёт профиль TLS ClientHello.',
             'Данные клиента защищены REALITY.',
